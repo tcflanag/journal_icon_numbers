@@ -1,0 +1,9 @@
+{
+  "name": "journal_icon_numbers",
+  "title": "Journal Icon Numbers - An Example FVTT Module",
+  "description": "A simple module created as a demo for working in the Foundry Virtual Tabletop framework.",
+  "author": "Tiwato",
+  "version": "1.0.0",
+  "minimumCoreVersion": "0.6.6",
+  "esmodules":["src/index.js"]
+}
