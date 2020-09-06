@@ -37,7 +37,7 @@ function* label_itr() {
 
 function renderNoteConfig(app, html, data) {
     // user-placed map note
-    const label_source = data.object.text
+    const label_source = (data.object.text != undefined && data.object.text.length >=1) ? data.object.text : data.entryName;
     const idx1 = label_source.length >= 1 ? label_source.substr(0, 1) : "";
     const idx2 = label_source.length >= 2 ? label_source.substr(0, 2) : "";
     const idx3 = label_source.length >= 3 ? label_source.substr(0, 3) : "";
@@ -45,7 +45,7 @@ function renderNoteConfig(app, html, data) {
     
     for (const idx of [idx3, idx2, idx1]) {
         for (const label of label_itr()) {
-            const iconFilename = `modules/journal_icon_numbers/icons/${label}.svg`;
+            const iconFilename = `modules/journal-icon-numbers/icons/${label}.svg`;
             if (idx === label) {
                
                 // Iterator returns >10K entries, so only display ones that match this label
