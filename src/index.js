@@ -58,10 +58,11 @@ function renderNoteConfig(app, html, data) {
 }
 
 
+// Add the hook in ready() to ensure it goes after other conflicting modules
+// Need to figure out a better way to do this
 
 Hooks.once("ready", function() {
   Hooks.on("renderNoteConfig", renderNoteConfig);
-
 });
 
 
