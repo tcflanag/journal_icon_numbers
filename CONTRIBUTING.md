@@ -1,0 +1,1 @@
+This project is based on a portion of https://github.com/VTTAssets/vtta-dndbeyond/, which is also under the MIT license.  Thank you @VTTAssets!  
