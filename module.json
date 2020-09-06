@@ -1,9 +1,11 @@
 {
   "name": "journal-icon-numbers",
-  "title": "Journal Icon Numbers - An Example FVTT Module",
-  "description": "A simple module created as a demo for working in the Foundry Virtual Tabletop framework.",
-  "author": "Tiwato",
+  "title": "Automatic Journal Icon Numbers",
+  "description": "Automatically pick numbered icons for journal icons added to the map. Supports numbers 1-99, with an option prefix or postfix of a single letter.",
+  "author": "Chris Flanagan <tiwato@gmail.com>",
   "version": "1.0.0",
-  "minimumCoreVersion": "0.6.6",
-  "esmodules":["src/index.js"]
+  "minimumCoreVersion": "0.6.0",
+  "compatibleCoreVersion":"0.6.6",
+  "esmodules":["src/index.js"],
+  "url":"https://gitlab.com/tiwato/journal_icon_numbers"
 }
