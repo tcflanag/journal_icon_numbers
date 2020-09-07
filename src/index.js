@@ -19,20 +19,16 @@ function* label_itr() {
     }
 
     // Number + Letter ordering
-    for (const number of numbers) {
-        for (const letter of letters) {
-            const label = number + letter;
-            yield label;
+    for (const order of [0,1]){
+        for (const number of numbers) {
+            for (const letter of letters) {
+                const label = order ? number + letter: letter + number;
+                const u_l = letter == letter.toUpperCase()?"upper":"lower";
+                const iconFilename = `modules/journal-icon-numbers/icons/${u_l}/${label}.svg`;
+                yield [label,iconFilename];
+            }
         }
     }
-    
-    // Letter + Number ordering
-    for (const letter of letters) {
-        for (const number of numbers) {
-            const label = letter + number;
-            yield label;
-        }
-    }     
 }
 
 function renderNoteConfig(app, html, data) {
@@ -44,10 +40,10 @@ function renderNoteConfig(app, html, data) {
     
     
     for (const idx of [idx3, idx2, idx1]) {
-        for (const label of label_itr()) {
-            const iconFilename = `modules/journal-icon-numbers/icons/${label}.svg`;
+        for (const [label,iconFilename] of label_itr()) {
+            
             if (idx === label) {
-               
+                console.log(label,iconFilename);
                 // Iterator returns >10K entries, so only display ones that match this label
                 $('select[name="icon"]', html).append(`<option value="${iconFilename}" selected>${label}</option>`);
                 $('input[name="iconSize"]').val(Math.round(game.scenes.viewed.data.grid * 0.75));
