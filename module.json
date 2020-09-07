@@ -7,5 +7,7 @@
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion":"0.6.6",
   "esmodules":["src/index.js"],
-  "url":"https://gitlab.com/tiwato/journal_icon_numbers"
+  "url":"https://gitlab.com/tiwato/journal_icon_numbers",
+  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/master/module.json",
+  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.0.0/journal_icon_numbers.zip"
 }
