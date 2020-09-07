@@ -13,5 +13,4 @@ To use, just drag correctly named journals to your map. The icon will be automat
 ![](icons/d75.svg)
 
 ## Known issues
-* Case sensitivy on labels, due to windows limitations. 
 * If you rename a icon, you need to re-edit it to get the new icon.
