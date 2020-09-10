@@ -25,6 +25,7 @@ function* label_itr() {
                 const label = order ? number + letter: letter + number;
                 const u_l = letter == letter.toUpperCase()?"upper":"lower";
                 const iconFilename = `modules/journal-icon-numbers/icons/${u_l}/${label}.svg`;
+                //const iconFilename = `modules/journal-icon-numbers/icons/icon.svg?id=${label}`;
                 yield [label,iconFilename];
             }
         }
@@ -43,10 +44,16 @@ function renderNoteConfig(app, html, data) {
         for (const [label,iconFilename] of label_itr()) {
             
             if (idx === label) {
-                console.log(label,iconFilename);
+                console.debug("Auto-Journal-Icon",label,iconFilename);
                 // Iterator returns >10K entries, so only display ones that match this label
+
+                // Fix for Pin Cushion, which uses a file picker instead of the dropdown
+                $('input.icon-path[name="icon"]').val(iconFilename);
+
                 $('select[name="icon"]', html).append(`<option value="${iconFilename}" selected>${label}</option>`);
+                
                 $('input[name="iconSize"]').val(Math.round(game.scenes.viewed.data.grid * 0.75));
+
                 return;
             }
         }        
@@ -54,7 +61,7 @@ function renderNoteConfig(app, html, data) {
 }
 
 
-// Add the hook in ready() to ensure it goes after other conflicting modules
+// Add the hook in ready() to ensure it goes after other conflicting modules 
 // Need to figure out a better way to do this
 
 Hooks.once("ready", function() {
