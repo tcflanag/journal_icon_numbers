@@ -74,7 +74,7 @@ async function getMakeIcon(label_source) {
                 svgString += templateDiamond(foreColor,backColor) + templateText(backColor, label);
                 break;
             case "none":
-                svgString += templateTextStart(backColor);
+                svgString += templateText(backColor,label);
                 break;
             default:
                 svgString += templateCircle(foreColor,backColor) + templateText(backColor, label);
