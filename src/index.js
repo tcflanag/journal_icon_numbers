@@ -99,7 +99,9 @@ async function getMakeIcon(label_source) {
 // Need to figure out a better way to do this
 
 Hooks.once("ready", function() {
-    makeDirs();
+    if (game.user.isGM) {
+        makeDirs();
+    }
     Hooks.on("renderNoteConfig", renderNoteConfig); 
 });
 
