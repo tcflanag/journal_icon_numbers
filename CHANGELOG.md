@@ -1,9 +1,9 @@
 # 1.0.6
- * Fix second error on clients from makedir
+ * Fix second error on clients from makedir.  This would cause error messages to appear in the console
 
 # 1.0.5
-* Add Square and Diamond shapes
-* Fix error on clients from v1.0.4 auto upgrade code
+* Add Square and Diamond shapes.  Also seperated color selection from shape.
+* Fix error on clients from v1.0.4 auto upgrade code. This would cause clients to get spammed on scene changes
 * Make settings on world level, not client level
 
 # 1.0.4
