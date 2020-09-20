@@ -8,7 +8,7 @@ This module will automatically apply numbered icons to journal entries that star
 For the single digit numbers, it support an option '0' padded format as well (i.e "A09", or "A9" )
 
 To use, just drag correctly named journals to your map. The icon will be automatically selected to match the name.
-![](example.png)
+![](example1.png)
 
 The multiple styles seen in the example can be selected from the config menu.  
 
