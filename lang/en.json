@@ -1,5 +1,7 @@
 {
     "SETTINGS.IconStyleN": "Select Icon Style",
-    "SETTINGS.IconStyleH": "Select the type of icon you want"
+    "SETTINGS.IconStyleH": "Select the type of icon you want",
 
+    "SETTINGS.IconColorN": "Select Icon Colors",
+    "SETTINGS.IconColorH": "Select the foreground/background coloring. If icon tint is selected, it will replace the white."
 }

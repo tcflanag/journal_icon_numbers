@@ -19,4 +19,4 @@ The multiple styles seen in the example can be selected from the config menu.
 
 ## Known issues
 
-* If you rename a note, you need to re-edit it to get the new icon.
+* If you rename a note using the "Text Label", you need to re-edit it to get the new icon.

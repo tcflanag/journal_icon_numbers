@@ -1,100 +1,94 @@
 
-function* label_itr() {
-    // Generate all letters [a-zA-Z], including blank
-    var letters = [""]
-    for (let x = 0;x<26;x++) {
-        letters.push(String.fromCharCode(97+x));
-    }
-    for (let x = 0;x<26;x++) {
-        letters.push(String.fromCharCode(65+x));
-    }
-    
-    // All numbers 1-99, both 0 padded and not
-    var numbers = []
-    for (let i = 1; i < 10; i++) {
-        numbers.push(("" + i ))
-    }
-    for (let i = 1; i < 100; i++) {
-        numbers.push(("" + i ).padStart(2, "0"));
-    }
-
-    // Number + Letter ordering
-    for (const order of [0,1]){
-        for (const number of numbers) {
-            for (const letter of letters) {
-                const label = order ? number + letter: letter + number;
-                const u_l = letter == letter.toUpperCase()?"upper":"lower";
-                const iconType = game.settings.get('journal-icon-numbers', "iconType");
-                
-                const iconFilename = `${iconType}_${u_l}_${label}.svg`;
-                yield [label,iconFilename];
-            }
-        }
-    }
-}
-
-
-    
 
 async function renderNoteConfig(app, html, data) {
-
+    
     const label_source = (data.object.text != undefined && data.object.text.length >=1) ? data.object.text : data.entryName;
     var [iconFilepath,label] = await getMakeIcon(label_source);
     if (iconFilepath === null){
-        return;
+        return; // Not valid, so keep default icon.
     }
     // Fix for Pin Cushion, which uses a file picker instead of the dropdown
     $('input.icon-path[name="icon"]').val(iconFilepath);
+    //$('input.icon-path[name="icon"]').val("auto.svg");
 
     // Add item to selector
     $('select[name="icon"]', html).append(`<option value=${iconFilepath} selected>${label}</option>`);
-
+    //$('select[name="icon"]', html).append(`<option value=Auto selected>Auto</option>`);
+    
+    //console.log($('section.window-content',html)[0].children)
+    //console.log($('section.window-content',html)[0].children[0])
+    //console.log($('section.window-content',html)[0].children[0][8])
+    //html.find('div.form-group')[6].after("<p> asdf</p>")
+    
     // TODO Add config for this size override
     $('input[name="iconSize"]').val(Math.round(game.scenes.viewed.data.grid * 0.75));
 }
 
 
+function templateCircle(fill, stroke) {
+    return `<circle style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" cx="250" cy="250" r="220" />`
+}
+function templateSquare(fill, stroke) {
+    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="31" y="31" height="450" width="450"/>`
+}
+function templateDiamond(fill, stroke) {
+    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="190" y="-170" height="340" width="340"  transform="rotate(45)" ry="50"/>`
+}
+function templateText(color,label) {
+    return `<text font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' font-size="200" font-weight="400"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
+}
+
 
 async function getMakeIcon(label_source) {            
     // user-placed map note
+     
+    var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
+    if (matches) {
+        var label = matches[0];
+        var u_l = label.match(/[A-Z]/) ?"upper":"lower"; 
+        
+        const iconType = game.settings.get('journal-icon-numbers', "iconType");
+        const iconColor = game.settings.get('journal-icon-numbers', "iconColor");
+        
+        var iconFilename = `${iconColor}_${iconType}_${u_l}_${label}.svg`;
     
-    const idx1 = label_source.length >= 1 ? label_source.substr(0, 1) : "";
-    const idx2 = label_source.length >= 2 ? label_source.substr(0, 2) : "";
-    const idx3 = label_source.length >= 3 ? label_source.substr(0, 3) : "";
-    
-    for (const idx of [idx3, idx2, idx1]) {
-        for (const [label,iconFilename] of label_itr()) {
-            
-            if (idx === label) {
-                console.debug("Auto-Journal-Icon",label,iconFilename);
-                // Iterator returns >10K entries, so only display ones that match this label
+        console.debug("Auto-Journal-Icon",label,iconFilename);
 
-                const iconType = game.settings.get('journal-icon-numbers', "iconType");
-                              
-                // TODO refactor blobs of html
-                var typeString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
-                
-                switch (iconType) {
-                    case "wcbf":
-                        typeString += '<circle style="fill:#ffffff;stroke:#010101;stroke-width:30;stroke-miterlimit:10;" cx="250" cy="250" r="220"> </circle> <text font-family=\'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"\' font-size="200" font-weight="400" fill="black" x="50%" y="52%" text-anchor="middle" stroke="#000000" dy=".3em">';
-                        break
-                    case "ncwf":
-                        typeString += ' <text font-family=\'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"\' font-size="200" font-weight="400" fill="white" x="50%" y="52%" text-anchor="middle" stroke="#FFFFFF" dy=".3em">';
-                        break;
-                    case "bcwf":
-                        typeString += '<circle style="fill:#010101;stroke:#FFFFFF;stroke-width:30;stroke-miterlimit:10;" cx="250" cy="250" r="220"> </circle> <text font-family=\'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"\' font-size="200" font-weight="400" fill="white" x="50%" y="52%" text-anchor="middle" stroke="#FFFFFF" dy=".3em">';
-                }
-                
-                let file = new File([typeString  + label + '</text></g></svg>'], iconFilename, {});
-                
-                // TODO Add config for save path (And maybe code for s3?)
-                var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });
-                    
-                console.log("Auto-Journal-Icon - Succesfully uploaded", result);
-                return [result.path,label];
-                
-            }
-        }        
+
+        var svgString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
+         
+        if (iconColor == "black") {
+            var foreColor = "#FFFFFF";
+            var backColor = "#000000";
+        }
+        else {
+            var foreColor = "#000000";
+            var backColor = "#FFFFFF";
+        }
+        
+        switch (iconType) {
+            case "square":
+                svgString += templateSquare(foreColor,backColor) + templateText(backColor, label);
+                break;
+            case "diamond":
+                svgString += templateDiamond(foreColor,backColor) + templateText(backColor, label);
+                break;
+            case "none":
+                svgString += templateTextStart(backColor);
+                break;
+            default:
+                svgString += templateCircle(foreColor,backColor) + templateText(backColor, label);
+                break;
+        }
+        
+        let file = new File([svgString], iconFilename, {});
+        
+        // TODO Add config for save path (And maybe code for s3?)
+        var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });
+            
+        console.log("Auto-Journal-Icon - Succesfully uploaded", result);
+        return [result.path,label];
+
     }
     console.log("Auto-Journal-Icon - No Match found");
     return [null,null];
@@ -109,10 +103,22 @@ Hooks.once("ready", function() {
     Hooks.on("renderNoteConfig", renderNoteConfig); 
 });
 
-Hooks.on("closeNoteConfig", function(c) {  
+//Hooks.on("closeNoteConfig", closeNote)
+
+async function closeNote(c,d) {  
    // TODO Good spot for generating file after requested
-   //console.log("AJIN - closeNoteConfig",c); 
-});
+   console.log("AJIN - closeNoteConfig",c,d); 
+   console.log(c.getData())
+   //c.object.data.icon = "fake.svg"
+   
+   const label_source = (c.object.data.text != undefined && c.object.data.text.length >=1) ? c.object.data.text : c.object.entry.data.name;
+    var [iconFilepath,label] = await getMakeIcon(label_source);
+    if (iconFilepath === null){
+        return;
+    }
+   
+   console.log(canvas.notes.get(c.object.data._id).update({icon:iconFilepath}))
+};
 
 async function makeDirs() {
   console.log("Auto-Journal-Icon - Creating dirs");
@@ -144,7 +150,9 @@ Hooks.on("init", () => {
 
 
 Hooks.on("canvasInit", () => {
-    cleanup_legacy_icons();
+    if (game.user.isGM) {
+        cleanup_legacy_icons();
+    }
 })
 
 async function cleanup_legacy_icons() {
@@ -178,17 +186,31 @@ function registerSettings() {
     game.settings.register('journal-icon-numbers', "iconType", {
         name: "SETTINGS.IconStyleN",
         hint: "SETTINGS.IconStyleH",
-        scope: "client",
+        scope: "world",
         type: String,
         choices: {
-            wcbf: "Black text on white circle",
-            bcwf: "White text on black circle",
-            ncwf: "White text, no circle"
+            diamond: "Diamond",
+            square: "Square",
+            circle: "Circle",
+            none: "None",
         },
-        default: "wcbf",
+        default: "circle",
         config: true,
         onChange: s => {}
     });
+    game.settings.register('journal-icon-numbers', "iconColor", {
+        name: "SETTINGS.IconColorN",
+        hint: "SETTINGS.IconColorH",
+        scope: "world",
+        type: String,
+        choices: {
+            white: "White on Black",
+            black: "Black on White",
+        },
+        default: "black",
+        config: true,
+        onChange: s => {}
+    });
+    
+
 }
-
-
