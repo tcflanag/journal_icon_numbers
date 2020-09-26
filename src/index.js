@@ -1,3 +1,10 @@
+
+const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c - LOG -", 'background: #bada55; color: #222','']
+const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c - DEBUG -", 'background: #FF9900; color: #222','']
+const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c - ERROR -", 'background: #bada55; color: #FF0000','']
+
+
+
 var iconTypes = {
             diamond: "Diamond",
             square: "Square",
@@ -11,7 +18,7 @@ async function renderNoteConfig(app, html, data) {
 
     var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
     if (!matches) {
-        console.log("AJIN - No Match")
+        console.debug(...DEBUG_PREFIX,"No Match")
         //return
     }
     
@@ -76,7 +83,7 @@ async function getMakeIcon(flags ) {
     
     var iconFilename = `${foreColor.replace("#","")}_${backColor.replace("#","")}_${iconType}_${u_l}_${iconText}.svg`;
 
-    console.debug("Auto-Journal-Icon",iconText,iconFilename);
+    console.debug(...DEBUG_PREFIX,"Making",iconText,iconFilename);
 
 
     var svgString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
@@ -104,7 +111,7 @@ async function getMakeIcon(flags ) {
     // Unsure, since The Forge does weird things with the path
     let file = new File([svgString], iconFilename, {});
     var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });            
-    console.log("Auto-Journal-Icon - Succesfully uploaded", result);
+    console.log(...LOG_PREFIX,"Succesfully uploaded", result);
 
     return [result.path,iconText];
     
@@ -114,21 +121,13 @@ async function getMakeIcon(flags ) {
 
 
 
-// Added the hook in ready() to ensure it goes after other conflicting modules 
-// Need to figure out a better way to do this
 
 Hooks.on("canvasInit", () => {
     if (game.user.isGM) {
+        makeDirs();
         cleanup_legacy_icons();
     }
 })
-
-Hooks.once("ready", function() {
-    if (game.user.isGM) {
-        makeDirs();
-    }
-    
-});
 
 Hooks.on("renderNoteConfig", renderNoteConfig); 
 Hooks.on("updateNote", updateNote) 
@@ -137,18 +136,17 @@ Hooks.on("preUpdateNote", preUpdateNote)
 
 function preUpdateNote(scene,note,changes) {
 
-    // Not using autoIcon for this icon, so quit
+    // Not using autoIcon for this icon, so skip other checks
     if(! note.flags.autoIcon) {
-        console.debug("AJIN - Off pre");
         return true
     }
     
     if(changes.icon && !('flags' in changes && 'loopDetector' in changes.flags)) {
-        console.debug("AJIN - Icon without Loop")
+        console.debug(...DEBUG_PREFIX,"Icon without Loop")
         delete changes['icon']
     }
     if (Object.keys(changes).length == 1) {
-        console.debug ("AJIN - Nothing Left")
+        console.debug (...DEBUG_PREFIX,"Nothing Left")
         return false
     }
 }
@@ -156,18 +154,18 @@ function preUpdateNote(scene,note,changes) {
 async function updateNote(scene,note,changes) {  
     
     // Not using autoIcon for this icon, so quit
-    if(! note.flags.autoIcon) { console.log("AJIN - Off"); return }
+    if(! note.flags.autoIcon) { console.debug(...DEBUG_PREFIX,"Off"); return }
     
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
     if (changes.icon && changes.flags && 'loopDetector' in changes.flags ){
-        console.debug("%c AJIN - LOOP DETECTOR!!!", 'background: #222; color: #bada55')
+        console.debug(...DEBUG_PREFIX,"LOOP DETECTOR!!!", 'background: #222; color: #bada55')
         return
     }
     
     // Nothing important changed, quit early
     if (!('renderSheet' in changes || 'flags' in changes)) {
-        console.log("AJIN - No changes")
+        console.debug(...DEBUG_PREFIX,"No changes")
         return
     }
     
@@ -182,7 +180,7 @@ async function updateNote(scene,note,changes) {
     // Inverting the value to ensure it changes.
     new_note.flags.loopDetector = ! new_note.flags.loopDetector
     
-    console.debug("%c AJIN - Trigger Update !!", 'background: #bada55; color: #222')
+    console.debug(...DEBUG_PREFIX,"Trigger Update !!", 'background: #bada55; color: #222')
     scene.updateEmbeddedEntity("Note",new_note)      
 
 };
@@ -190,22 +188,22 @@ async function updateNote(scene,note,changes) {
 
 
 async function makeDirs() {
-  console.log("Auto-Journal-Icon - Creating dirs");
+  console.debug(...DEBUG_PREFIX, "Creating dirs");
   
   await FilePicker.createDirectory("data","upload",{}).then((result) => {
-    console.log("Auto-Journal-Icon - Created upload");
+    console.log(...LOG_PREFIX,"Created upload");
   })
   .catch((error) => {
     if (!error.includes("EEXIST")) {
-        console.error("Auto-Journal-Icon - ",error);
+        console.error(...ERROR_PREFIX,error);
     }        
   });
   await FilePicker.createDirectory("data","upload/journal-icon-numbers",{}).then((result) => {
-        console.log("Auto-Journal-Icon - Created upload/journal-icon-numbers");
+        console.log(...LOG_PREFIX,"Created upload/journal-icon-numbers");
     })
     .catch((error) => {
         if (!error.includes("EEXIST")) {
-            console.error("Auto-Journal-Icon - ",error);
+            console.error(...ERROR_PREFIX,error);
         }        
     });
 };
@@ -223,6 +221,7 @@ Hooks.on("init", () => {
 async function cleanup_legacy_icons() {
     // Check for icons using the old style of pre-generated paths
     // Build new icons for them, and update them to the new paths
+    console.debug(...DEBUG_PREFIX,"Legacy Cleanup")
     for (var scene of game.scenes.entities) {
     
         var new_data = [];
@@ -233,10 +232,10 @@ async function cleanup_legacy_icons() {
                 const label_source = (note.text != undefined && note.text.length >=1) ? note.text : game.journal.get(note.entryId).data.name;
                 var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
                 if (!matches) {
-                    console.log("AJIN - No Match")
+                    console.debug(...DEBUG_PREFIX,"No Match")
                     return
                 }
-                flags = {
+                var flags = {
                     autoIcon:true,
                     iconText: matches[0],
                     iconType:game.settings.get('journal-icon-numbers', "iconType"),
@@ -246,7 +245,7 @@ async function cleanup_legacy_icons() {
                 }
                 
                 var [iconFilepath,label] = await getMakeIcon(flags)
-                console.log("Auto-Journal-Icon : Replacing old path " + note.icon + " with " + iconFilepath);
+                console.log(...LOG_PREFIX,"Replacing old path " + note.icon + " with " + iconFilepath);
                 
                 new_note.icon = iconFilepath;
                 
