@@ -1,24 +1,47 @@
-
+var iconTypes = {
+            diamond: "Diamond",
+            square: "Square",
+            circle: "Circle",
+            none: "None",
+        };
 
 async function renderNoteConfig(app, html, data) {
     
     const label_source = (data.object.text != undefined && data.object.text.length >=1) ? data.object.text : data.entryName;
-    var [iconFilepath,label] = await getMakeIcon(label_source);
-    if (iconFilepath === null){
-        return; // Not valid, so keep default icon.
-    }
-    // Fix for Pin Cushion, which uses a file picker instead of the dropdown
-    $('input.icon-path[name="icon"]').val(iconFilepath);
-    //$('input.icon-path[name="icon"]').val("auto.svg");
 
-    // Add item to selector
-    $('select[name="icon"]', html).append(`<option value=${iconFilepath} selected>${label}</option>`);
-    //$('select[name="icon"]', html).append(`<option value=Auto selected>Auto</option>`);
+    var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
+    if (!matches) {
+        console.log("AJIN - No Match")
+        //return
+    }
     
-    //console.log($('section.window-content',html)[0].children)
-    //console.log($('section.window-content',html)[0].children[0])
-    //console.log($('section.window-content',html)[0].children[0][8])
-    //html.find('div.form-group')[6].after("<p> asdf</p>")
+    // Preset the flags if they don't already exist
+    if(!('flags' in data.object)){
+        data.object.flags = {
+            autoIcon:!!matches,
+            iconText: matches?matches[0]:"",
+            iconType:game.settings.get('journal-icon-numbers', "iconType"),
+            foreColor:game.settings.get('journal-icon-numbers', "foreColor"),
+            backColor:game.settings.get('journal-icon-numbers', "backColor"),
+            loopDetector:0
+            }
+    }
+    
+
+    var templateName = "modules/journal-icon-numbers/template_newColor.html"
+    html[0].style.height = "525px";  //Add extra room for 
+    html[0].style.top = "100px";
+    try{window.Ardittristan.ColorSetting.tester} catch {
+        // Fallback code if no colorSettings module
+        templateName = "modules/journal-icon-numbers/template.html"
+        html[0].style.height = "525px";
+    }
+    data.object.flags.loopDetector = ! data.object.flags.loopDetector
+    var new_html = await renderTemplate(templateName,{iconTypes:iconTypes,flags:data.object.flags})
+    
+    html.find('button[name="submit"]').before(new_html);
+    
+       
     
     // TODO Add config for this size override
     $('input[name="iconSize"]').val(Math.round(game.scenes.viewed.data.grid * 0.75));
@@ -39,88 +62,132 @@ function templateText(color,label) {
 }
 
 
-async function getMakeIcon(label_source) {            
+async function getMakeIcon(flags ) {            
     // user-placed map note
-     
-    var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
-    if (matches) {
-        var label = matches[0];
-        var u_l = label.match(/[A-Z]/) ?"upper":"lower"; 
-        
-        const iconType = game.settings.get('journal-icon-numbers', "iconType");
-        const iconColor = game.settings.get('journal-icon-numbers', "iconColor");
-        
-        var iconFilename = `${iconColor}_${iconType}_${u_l}_${label}.svg`;
+    if (!flags.autoIcon) { return [null,null] }
     
-        console.debug("Auto-Journal-Icon",label,iconFilename);
+    const iconType = flags.iconType
+    const foreColor = flags.foreColor
+    const backColor = flags.backColor
+    const iconText = flags.iconText
+    
+    var u_l = iconText.match(/[A-Z]/) ?"u":"l";   // TODO This will get confused if multiple letters on non-case sensitive host OSs
+    
+    
+    var iconFilename = `${foreColor.replace("#","")}_${backColor.replace("#","")}_${iconType}_${u_l}_${iconText}.svg`;
+
+    console.debug("Auto-Journal-Icon",iconText,iconFilename);
 
 
-        var svgString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
-         
-        if (iconColor == "black") {
-            var foreColor = "#FFFFFF";
-            var backColor = "#000000";
-        }
-        else {
-            var foreColor = "#000000";
-            var backColor = "#FFFFFF";
-        }
-        
-        switch (iconType) {
-            case "square":
-                svgString += templateSquare(foreColor,backColor) + templateText(backColor, label);
-                break;
-            case "diamond":
-                svgString += templateDiamond(foreColor,backColor) + templateText(backColor, label);
-                break;
-            case "none":
-                svgString += templateText(backColor,label);
-                break;
-            default:
-                svgString += templateCircle(foreColor,backColor) + templateText(backColor, label);
-                break;
-        }
-        
-        let file = new File([svgString], iconFilename, {});
-        
-        // TODO Add config for save path (And maybe code for s3?)
-        var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });
-            
-        console.log("Auto-Journal-Icon - Succesfully uploaded", result);
-        return [result.path,label];
+    var svgString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
 
+    
+    switch (iconType) {
+        case "square":
+            svgString += templateSquare(backColor,foreColor);
+            break;
+        case "diamond":
+            svgString += templateDiamond(backColor,foreColor);
+            break;
+        case "none":
+            break;
+        default:
+            svgString += templateCircle(backColor,foreColor);
+            break;
     }
-    console.log("Auto-Journal-Icon - No Match found");
-    return [null,null];
+    
+    svgString += templateText(foreColor, iconText);
+    
+    
+    
+    // TODO Add config for save path (And maybe code for s3?)
+    // Unsure, since The Forge does weird things with the path
+    let file = new File([svgString], iconFilename, {});
+    var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });            
+    console.log("Auto-Journal-Icon - Succesfully uploaded", result);
+
+    return [result.path,iconText];
+    
+
+
 }
+
 
 
 // Added the hook in ready() to ensure it goes after other conflicting modules 
 // Need to figure out a better way to do this
 
+Hooks.on("canvasInit", () => {
+    if (game.user.isGM) {
+        cleanup_legacy_icons();
+    }
+})
+
 Hooks.once("ready", function() {
     if (game.user.isGM) {
         makeDirs();
     }
-    Hooks.on("renderNoteConfig", renderNoteConfig); 
+    
 });
 
-//Hooks.on("closeNoteConfig", closeNote)
+Hooks.on("renderNoteConfig", renderNoteConfig); 
+Hooks.on("updateNote", updateNote) 
+Hooks.on("createNote", updateNote) 
+Hooks.on("preUpdateNote", preUpdateNote) 
 
-async function closeNote(c,d) {  
-   // TODO Good spot for generating file after requested
-   console.log("AJIN - closeNoteConfig",c,d); 
-   console.log(c.getData())
-   //c.object.data.icon = "fake.svg"
-   
-   const label_source = (c.object.data.text != undefined && c.object.data.text.length >=1) ? c.object.data.text : c.object.entry.data.name;
-    var [iconFilepath,label] = await getMakeIcon(label_source);
-    if (iconFilepath === null){
-        return;
+function preUpdateNote(scene,note,changes) {
+
+    // Not using autoIcon for this icon, so quit
+    if(! note.flags.autoIcon) {
+        console.debug("AJIN - Off pre");
+        return true
     }
-   
-   console.log(canvas.notes.get(c.object.data._id).update({icon:iconFilepath}))
+    
+    if(changes.icon && !('flags' in changes && 'loopDetector' in changes.flags)) {
+        console.debug("AJIN - Icon without Loop")
+        delete changes['icon']
+    }
+    if (Object.keys(changes).length == 1) {
+        console.debug ("AJIN - Nothing Left")
+        return false
+    }
+}
+
+async function updateNote(scene,note,changes) {  
+    
+    // Not using autoIcon for this icon, so quit
+    if(! note.flags.autoIcon) { console.log("AJIN - Off"); return }
+    
+    // If icon changes, and loopDetector does, that means we're in a loop caused 
+    // by the update at the end of this function
+    if (changes.icon && changes.flags && 'loopDetector' in changes.flags ){
+        console.debug("%c AJIN - LOOP DETECTOR!!!", 'background: #222; color: #bada55')
+        return
+    }
+    
+    // Nothing important changed, quit early
+    if (!('renderSheet' in changes || 'flags' in changes)) {
+        console.log("AJIN - No changes")
+        return
+    }
+    
+    var [iconFilePath,label] = await getMakeIcon(note.flags)
+    
+    var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
+    new_note.icon = iconFilePath
+          
+    // Since getMakeIcon is async (due to block for file upload, we need to explictly call update here
+    // instead of doing this whole thing as a preUpdate block and getting it for free
+    // This does cause potential infinite loops of changes, hence loop detector above
+    // Inverting the value to ensure it changes.
+    new_note.flags.loopDetector = ! new_note.flags.loopDetector
+    
+    console.debug("%c AJIN - Trigger Update !!", 'background: #bada55; color: #222')
+    scene.updateEmbeddedEntity("Note",new_note)      
+
 };
+
+
 
 async function makeDirs() {
   console.log("Auto-Journal-Icon - Creating dirs");
@@ -151,11 +218,7 @@ Hooks.on("init", () => {
 });
 
 
-Hooks.on("canvasInit", () => {
-    if (game.user.isGM) {
-        cleanup_legacy_icons();
-    }
-})
+
 
 async function cleanup_legacy_icons() {
     // Check for icons using the old style of pre-generated paths
@@ -168,7 +231,21 @@ async function cleanup_legacy_icons() {
             if (note.icon.startsWith("modules/journal-icon-numbers")) {
                 
                 const label_source = (note.text != undefined && note.text.length >=1) ? note.text : game.journal.get(note.entryId).data.name;
-                var [iconFilepath,label] = await getMakeIcon(label_source)
+                var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
+                if (!matches) {
+                    console.log("AJIN - No Match")
+                    return
+                }
+                flags = {
+                    autoIcon:true,
+                    iconText: matches[0],
+                    iconType:game.settings.get('journal-icon-numbers', "iconType"),
+                    foreColor:game.settings.get('journal-icon-numbers', "foreColor"),
+                    backColor:game.settings.get('journal-icon-numbers', "backColor"),
+                    loopDetector:0
+                }
+                
+                var [iconFilepath,label] = await getMakeIcon(flags)
                 console.log("Auto-Journal-Icon : Replacing old path " + note.icon + " with " + iconFilepath);
                 
                 new_note.icon = iconFilepath;
@@ -182,7 +259,6 @@ async function cleanup_legacy_icons() {
 
 }
    
-
 function registerSettings() {
 
     game.settings.register('journal-icon-numbers', "iconType", {
@@ -190,29 +266,61 @@ function registerSettings() {
         hint: "SETTINGS.IconStyleH",
         scope: "world",
         type: String,
-        choices: {
-            diamond: "Diamond",
-            square: "Square",
-            circle: "Circle",
-            none: "None",
-        },
+        choices:iconTypes,
         default: "circle",
         config: true,
         onChange: s => {}
     });
-    game.settings.register('journal-icon-numbers', "iconColor", {
-        name: "SETTINGS.IconColorN",
-        hint: "SETTINGS.IconColorH",
-        scope: "world",
-        type: String,
-        choices: {
-            white: "White on Black",
-            black: "Black on White",
-        },
-        default: "black",
-        config: true,
-        onChange: s => {}
-    });
+
+
+    
+    var useColorPicker = true
+    
+    try{window.Ardittristan.ColorSetting.tester} catch { useColorPicker = false}
+        
+    if (useColorPicker){
+        new window.Ardittristan.ColorSetting("journal-icon-numbers", "foreColor", {
+            name: "SETTINGS.foreColorN",      // The name of the setting in the settings menu
+            hint: "SETTINGS.foreColorH",   // A description of the registered setting and its behavior
+            label: "SETTINGS.foreColorL",         // The text label used in the button
+            restricted: true,             // Restrict this setting to gamemaster only?
+            defaultColor: "#000000ff",     // The default color of the setting
+            scope: "world",               // The scope of the setting
+            onChange: (value) => {}        // A callback function which triggers when the setting is changed
+        })
+        
+        new window.Ardittristan.ColorSetting("journal-icon-numbers", "backColor", {
+            name: "SETTINGS.backColorN",      // The name of the setting in the settings menu
+            hint: "SETTINGS.backColorH",   // A description of the registered setting and its behavior
+            label: "SETTINGS.backColorL",         // The text label used in the button
+            restricted: true,             // Restrict this setting to gamemaster only?
+            defaultColor: "#ffffffff",     // The default color of the setting
+            scope: "world",               // The scope of the setting
+            onChange: (value) => {}        // A callback function which triggers when the setting is changed
+        })
+    }
+    else {
+        game.settings.register('journal-icon-numbers', "foreColor", {
+            name: "SETTINGS.foreColorN",
+            hint: "SETTINGS.foreColorH",
+            scope: "world",
+            type: String,
+            default: "#000000",
+            config: true,
+            onChange: s => {}
+        });    
+        
+        
+        game.settings.register('journal-icon-numbers', "backColor", {
+            name: "SETTINGS.backColorN",
+            hint: "SETTINGS.backColorH",
+            scope: "world",
+            type: String,// DirectoryPicker.Directory,
+            default: "#FFFFFF",
+            config: true,
+            onChange: s => {}
+        });    
+    }
     
 
 }

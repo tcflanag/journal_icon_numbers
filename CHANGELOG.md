@@ -1,3 +1,9 @@
+# 1.0.7
+ * Manual specifying of colors as requested in #4. Support for both global defaults, and per-icon values. Using 'lib - Color Settings module', which allows you to specify transparent colors.
+ * Per-icon overiding of default shape.
+ * Overide icon text to any value (max of 3 char recommended, 4 if using 'none' background)
+ * Per-icon enable/disable of the custom icon. If you really don't want a numbered icon, or you want to enable a custom text icon for ANY journal. This should address the use case in #2
+ 
 # 1.0.6
  * Fix second error on clients from makedir.  This would cause error messages to appear in the console
 
@@ -9,7 +15,7 @@
 # 1.0.4
 * Add auto-migrate code to move all notes using pre-built icons to dynamically generated ones.
   * Removed the prebuilt icons to drastically improve install speed.
-* Possible fix for #1 (or at least better debug messages), and hopefully work with The Forge's asset library correctly
+* Fix for #1 (or at least better debug messages), and hopefully work with The Forge's asset library correctly
 
 # 1.0.3
 * Icons are now generated dynamically and stored in uploads/journal-icon-numbers.**It is advised the users of previous versions go through and edit all their icons to migrate to the new location.**

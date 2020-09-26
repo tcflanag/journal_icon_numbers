@@ -1,6 +1,6 @@
-# Automatic journal Icon Numbers
+# Automatic Journal Icon Numbers
 
-This module will automatically apply numbered icons to journal entries that start with a number.  It supports the following numbering formats:
+This module will automatically apply numbered icons (map pins) to journal entries that start with a number.  It supports the following numbering formats:
 * [1-99]
 * [A-Z][1-99]
 * [1-99][A-Z]
@@ -8,15 +8,18 @@ This module will automatically apply numbered icons to journal entries that star
 For the single digit numbers, it support an option '0' padded format as well (i.e "A09", or "A9" )
 
 To use, just drag correctly named journals to your map. The icon will be automatically selected to match the name.
-![](example1.png)
+![](example.png)
 
-The multiple styles seen in the example can be selected from the config menu.  
+You can select a default global style of shape and color in the settings menu, and also override on a per-pin basis.
 
+It is also now possible to manually specify arbitrary text in an icon; though a max of 3 characters is recommended for legibility. You can also disable the mod on specific pins if desired.
 
-**As of 1.0.4, all legacy icons auto migrate to the uploads folder**
+The Backgroundless Pins mod also enhances the appearance, and is highly recommended.
+![](example_backgroundless.png)
 
-
+## Compatiblilty
+* Fully compatible with Pin Cushion
 
 ## Known issues
 
-* If you rename a note using the "Text Label", you need to re-edit it to get the new icon.
+* None
