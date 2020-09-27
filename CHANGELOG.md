@@ -1,3 +1,6 @@
+# 1.0.8 (unreleased)
+ * Added spanish language support, thanks to @lozalojo
+
 # 1.0.7
  * Manual specifying of colors as requested in #4. Support for both global defaults, and per-icon values. Using 'lib - Color Settings module', which allows you to specify transparent colors.
  * Per-icon overiding of default shape.
