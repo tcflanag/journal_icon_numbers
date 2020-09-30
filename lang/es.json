@@ -1,12 +1,12 @@
 {
-    "SETTINGS.IconStyleN": "Seleccione Estilo del Icono",
-    "SETTINGS.IconStyleH": "Seleccione el tipo de icono que desee utilizar",
+    "SETTINGS.AutoJournalIcon.IconStyleN": "Seleccione Estilo del Icono",
+    "SETTINGS.AutoJournalIcon.IconStyleH": "Seleccione el tipo de icono que desee utilizar",
 
-    "SETTINGS.foreColorN": "Seleccione Color de Primer Plano",
-    "SETTINGS.foreColorH": "Seleccione el color de primer plano que desee utilizar",
-    "SETTINGS.foreColorL": "Selector de Color de Primer Plano",
+    "SETTINGS.AutoJournalIcon.foreColorN": "Seleccione Color de Primer Plano",
+    "SETTINGS.AutoJournalIcon.foreColorH": "Seleccione el color de primer plano que desee utilizar",
+    "SETTINGS.AutoJournalIcon.foreColorL": "Selector de Color de Primer Plano",
     
-    "SETTINGS.backColorN": "Seleccione Color de Fondo",
-    "SETTINGS.backColorH": "Seleccione el color de fondo que desee utilizar",
-    "SETTINGS.backColorL": "Selector de Color de Fondo"
+    "SETTINGS.AutoJournalIcon.backColorN": "Seleccione Color de Fondo",
+    "SETTINGS.AutoJournalIcon.backColorH": "Seleccione el color de fondo que desee utilizar",
+    "SETTINGS.AutoJournalIcon.backColorL": "Selector de Color de Fondo"
 }

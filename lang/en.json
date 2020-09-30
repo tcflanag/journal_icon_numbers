@@ -1,12 +1,24 @@
 {
-    "SETTINGS.IconStyleN": "Select Icon Style",
-    "SETTINGS.IconStyleH": "Select the type of icon you want",
+    "SETTINGS.AutoJournalIcon.IconStyleN": "Icon Style",
+    "SETTINGS.AutoJournalIcon.IconStyleH": "Select the type of icon you want",
 
-    "SETTINGS.foreColorN": "Select Foreground Colors",
-    "SETTINGS.foreColorH": "Select the foreground coloring",
-    "SETTINGS.foreColorL": "Foreground Color Picker.",
+    "SETTINGS.AutoJournalIcon.foreColorN": "Foreground Colors",
+    "SETTINGS.AutoJournalIcon.foreColorH": "Select the foreground coloring",
+    "SETTINGS.AutoJournalIcon.foreColorL":  "Foreground Color Picker.",
     
-    "SETTINGS.backColorN": "Select Background Colors",
-    "SETTINGS.backColorH": "Select the background coloring",
-    "SETTINGS.backColorL": "Background Color Picker"
+    "SETTINGS.AutoJournalIcon.backColorN": "Background Colors",
+    "SETTINGS.AutoJournalIcon.backColorH": "Select the background coloring",
+    "SETTINGS.AutoJournalIcon.backColorL": "Background Color Picker",
+    
+    "SETTINGS.AutoJournalIcon.autoIconN": "Use Auto Icon",
+    "SETTINGS.AutoJournalIcon.autoIconH": "Overrides whatever icon is selected above.",
+    
+    "SETTINGS.AutoJournalIcon.iconTextN": "Icon Text",
+    "SETTINGS.AutoJournalIcon.iconTextH": "Recommend max of 3 characters",
+
+
+    "AutoJournalIcon.Diamond": "Diamond",
+    "AutoJournalIcon.Circle": "Circle",
+    "AutoJournalIcon.Square": "Square",
+    "AutoJournalIcon.None": "None"
 }

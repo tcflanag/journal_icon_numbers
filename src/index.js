@@ -4,13 +4,14 @@ const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c - DEBUG -", 'background: #F
 const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c - ERROR -", 'background: #bada55; color: #FF0000','']
 
 
-
-var iconTypes = {
-            diamond: "Diamond",
-            square: "Square",
-            circle: "Circle",
-            none: "None",
+function getIconTypes() {
+    return  {
+            diamond: game.i18n.format("AutoJournalIcon.Diamond"),// "Diamond",
+            square: game.i18n.format("AutoJournalIcon.Square"),
+            circle: game.i18n.format("AutoJournalIcon.Circle"),
+            none: game.i18n.format("AutoJournalIcon.None"),
         };
+    }
 
 async function renderNoteConfig(app, html, data) {
     
@@ -44,7 +45,7 @@ async function renderNoteConfig(app, html, data) {
         html[0].style.height = "525px";
     }
     data.object.flags.loopDetector = ! data.object.flags.loopDetector
-    var new_html = await renderTemplate(templateName,{iconTypes:iconTypes,flags:data.object.flags})
+    var new_html = await renderTemplate(templateName,{iconTypes:getIconTypes(),flags:data.object.flags})
     
     html.find('button[name="submit"]').before(new_html);
     
@@ -67,7 +68,9 @@ function templateDiamond(fill, stroke) {
 function templateText(color,label) {
     return `<text font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' font-size="200" font-weight="400"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
 }
-
+function svgTemplate() {
+    return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
+}
 
 async function getMakeIcon(flags ) {            
     // user-placed map note
@@ -86,7 +89,7 @@ async function getMakeIcon(flags ) {
     console.debug(...DEBUG_PREFIX,"Making",iconText,iconFilename);
 
 
-    var svgString = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="512" height="512"><g>';
+    var svgString = svgTemplate()
 
     
     switch (iconType) {
@@ -137,9 +140,7 @@ Hooks.on("preUpdateNote", preUpdateNote)
 function preUpdateNote(scene,note,changes) {
 
     // Not using autoIcon for this icon, so skip other checks
-    if(! note.flags.autoIcon) {
-        return true
-    }
+    if (! note.flags.autoIcon) return true
     
     if(changes.icon && !('flags' in changes && 'loopDetector' in changes.flags)) {
         console.debug(...DEBUG_PREFIX,"Icon without Loop")
@@ -261,11 +262,11 @@ async function cleanup_legacy_icons() {
 function registerSettings() {
 
     game.settings.register('journal-icon-numbers', "iconType", {
-        name: "SETTINGS.IconStyleN",
-        hint: "SETTINGS.IconStyleH",
+        name: "SETTINGS.AutoJournalIcon.IconStyleN",
+        hint: "SETTINGS.AutoJournalIcon.IconStyleH",
         scope: "world",
         type: String,
-        choices:iconTypes,
+        choices:getIconTypes(),
         default: "circle",
         config: true,
         onChange: s => {}
@@ -279,9 +280,9 @@ function registerSettings() {
         
     if (useColorPicker){
         new window.Ardittristan.ColorSetting("journal-icon-numbers", "foreColor", {
-            name: "SETTINGS.foreColorN",      // The name of the setting in the settings menu
-            hint: "SETTINGS.foreColorH",   // A description of the registered setting and its behavior
-            label: "SETTINGS.foreColorL",         // The text label used in the button
+            name: "SETTINGS.AutoJournalIcon.foreColorN",      // The name of the setting in the settings menu
+            hint: "SETTINGS.AutoJournalIcon.foreColorH",   // A description of the registered setting and its behavior
+            label: "SETTINGS.AutoJournalIcon.foreColorL",         // The text label used in the button
             restricted: true,             // Restrict this setting to gamemaster only?
             defaultColor: "#000000ff",     // The default color of the setting
             scope: "world",               // The scope of the setting
@@ -289,9 +290,9 @@ function registerSettings() {
         })
         
         new window.Ardittristan.ColorSetting("journal-icon-numbers", "backColor", {
-            name: "SETTINGS.backColorN",      // The name of the setting in the settings menu
-            hint: "SETTINGS.backColorH",   // A description of the registered setting and its behavior
-            label: "SETTINGS.backColorL",         // The text label used in the button
+            name: "SETTINGS.AutoJournalIcon.backColorN",      // The name of the setting in the settings menu
+            hint: "SETTINGS.AutoJournalIcon.backColorH",   // A description of the registered setting and its behavior
+            label: "SETTINGS.AutoJournalIcon.backColorL",         // The text label used in the button
             restricted: true,             // Restrict this setting to gamemaster only?
             defaultColor: "#ffffffff",     // The default color of the setting
             scope: "world",               // The scope of the setting
@@ -300,8 +301,8 @@ function registerSettings() {
     }
     else {
         game.settings.register('journal-icon-numbers', "foreColor", {
-            name: "SETTINGS.foreColorN",
-            hint: "SETTINGS.foreColorH",
+            name: "SETTINGS.AutoJournalIcon.foreColorN",
+            hint: "SETTINGS.AutoJournalIcon.foreColorH",
             scope: "world",
             type: String,
             default: "#000000",
@@ -311,8 +312,8 @@ function registerSettings() {
         
         
         game.settings.register('journal-icon-numbers', "backColor", {
-            name: "SETTINGS.backColorN",
-            hint: "SETTINGS.backColorH",
+            name: "SETTINGS.AutoJournalIcon.backColorN",
+            hint: "SETTINGS.AutoJournalIcon.backColorH",
             scope: "world",
             type: String,// DirectoryPicker.Directory,
             default: "#FFFFFF",
