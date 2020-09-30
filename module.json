@@ -3,14 +3,14 @@
   "title": "Automatic Journal Icon Numbers",
   "description": "Automatically pick numbered icons for journal icons added to the map. Supports numbers 1-99, with an option prefix or postfix of a single letter.  Different icon styles can be selected in the config menu.",
   "author": "Chris Flanagan <tiwato@gmail.com>",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion":"0.6.6",
   "esmodules":["src/index.js"],
   "scripts": ["./lib/colorSettingStub.js"],
   "url":"https://gitlab.com/tiwato/journal_icon_numbers",
-  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/v1.0.7/module.json",
-  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.0.7/journal_icon_numbers.zip",
+  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/v1.0.8/module.json",
+  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.0.8/journal_icon_numbers.zip",
   
   "dependencies": [
     {

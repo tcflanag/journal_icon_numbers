@@ -1,4 +1,4 @@
-# 1.0.8 (unreleased)
+# 1.0.8
  * Added partial spanish language support. Thanks to @lozalojo
  * Finished pulling out all strings to en.json, to support future i18n contributions
  * Fixed multiple calls to renderSceneNavigation, and possible infinite loop scenario. Thanks to @BlitzKraig 
