@@ -125,7 +125,7 @@ async function getMakeIcon(flags ) {
 
 
 
-Hooks.on("canvasInit", () => {
+Hooks.once("canvasInit", () => {
     if (game.user.isGM) {
         makeDirs();
         cleanup_legacy_icons();
@@ -253,7 +253,10 @@ async function cleanup_legacy_icons() {
             }
             new_data.push(new_note)
         }
-        scene.update({notes: new_data})
+        // Only trigger scene update if we have changes
+        if(Object.keys(diffObject(new_data, scene.data.notes)).length > 0) {
+            scene.update({notes: new_data})
+        }
     }    
     
 

@@ -1,5 +1,7 @@
 # 1.0.8 (unreleased)
- * Added spanish language support, thanks to @lozalojo
+ * Added partial spanish language support. Thanks to @lozalojo
+ * Finished pulling out all strings to en.json, to support future i18n contributions
+ * Fixed multiple calls to renderSceneNavigation, and possible infinite loop scenario. Thanks to @BlitzKraig 
 
 # 1.0.7
  * Manual specifying of colors as requested in #4. Support for both global defaults, and per-icon values. Using 'lib - Color Settings module', which allows you to specify transparent colors.
