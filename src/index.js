@@ -6,12 +6,23 @@ const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c - ERROR -", 'background: #b
 
 function getIconTypes() {
     return  {
-            diamond: game.i18n.format("AutoJournalIcon.Diamond"),// "Diamond",
+            diamond: game.i18n.format("AutoJournalIcon.Diamond"),
             square: game.i18n.format("AutoJournalIcon.Square"),
             circle: game.i18n.format("AutoJournalIcon.Circle"),
             none: game.i18n.format("AutoJournalIcon.None"),
         };
     }
+
+String.prototype.hashCode = function() {
+    var hash = 4325, i = this.length
+    while(i)
+        hash = (hash * 43) ^ this.charCodeAt(--i)
+    return (hash >>> 0).toString(16);
+    }
+
+function notUndefPicker(a,b){
+    return (a != undefined )? a: b;
+}
 
 async function renderNoteConfig(app, html, data) {
     
@@ -22,48 +33,62 @@ async function renderNoteConfig(app, html, data) {
         console.debug(...DEBUG_PREFIX,"No Match")
         //return
     }
-    
+        
     // Preset the flags if they don't already exist
-    if(!('flags' in data.object)){
-        data.object.flags = {
-            autoIcon:!!matches,
-            iconText: matches?matches[0]:"",
-            iconType:game.settings.get('journal-icon-numbers', "iconType"),
-            foreColor:game.settings.get('journal-icon-numbers', "foreColor"),
-            backColor:game.settings.get('journal-icon-numbers', "backColor"),
+    if(!('flags' in data.object)) {
+        data.object.flags = {}
+    }
+    if(!('autoIconFlags' in data.object.flags)){
+         
+        data.object.flags.autoIconFlags = {
+            
+            autoIcon:notUndefPicker(data.object.flags.autoIcon,!!matches),
+            iconText:notUndefPicker(data.object.flags.iconText, matches?matches[0]:""),
+            iconType:notUndefPicker(data.object.flags.iconType,game.settings.get('journal-icon-numbers', "iconType")),
+            foreColor:notUndefPicker(data.object.flags.foreColor,game.settings.get('journal-icon-numbers', "foreColor")),
+            backColor:notUndefPicker(data.object.flags.backColor,game.settings.get('journal-icon-numbers', "backColor")),
             loopDetector:0
-            }
+        }
+
+        data.object.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
     }
     
 
-    var templateName = "modules/journal-icon-numbers/template_newColor.html"
-    html[0].style.height = "525px";  //Add extra room for 
-    html[0].style.top = "100px";
-    try{window.Ardittristan.ColorSetting.tester} catch {
+    
+    try{
+        window.Ardittristan.ColorSetting.tester
+        var templateName = "modules/journal-icon-numbers/template_newColor.html"
+    } catch {
         // Fallback code if no colorSettings module
-        templateName = "modules/journal-icon-numbers/template.html"
-        html[0].style.height = "525px";
+        var templateName = "modules/journal-icon-numbers/template.html"
     }
-    data.object.flags.loopDetector = ! data.object.flags.loopDetector
+    data.object.flags.autoIconFlags.loopDetector = ! data.object.flags.autoIconFlags.loopDetector
+    
+    html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
+    html[0].style.top = "100px";
+
     var new_html = await renderTemplate(templateName,{iconTypes:getIconTypes(),flags:data.object.flags})
     
     html.find('button[name="submit"]').before(new_html);
     
-       
     
-    // TODO Add config for this size override
-    $('input[name="iconSize"]').val(Math.round(game.scenes.viewed.data.grid * 0.75));
+    // This is a work around for VTTA smashing the iconSize
+    // This will keep it where it is set (since this module loads in after VTTA)
+    
+    $('input[name="iconSize"]').val(data.object.iconSize);
+       
+
 }
 
 
 function templateCircle(fill, stroke) {
-    return `<circle style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" cx="250" cy="250" r="220" />`
+    return `<circle style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" cx="256" cy="256" r="241" />`
 }
 function templateSquare(fill, stroke) {
-    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="31" y="31" height="450" width="450"/>`
+    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="15" y="15" height="482" width="482"/>`
 }
 function templateDiamond(fill, stroke) {
-    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="190" y="-170" height="340" width="340"  transform="rotate(45)" ry="50"/>`
+    return `<rect style="fill:${fill};stroke:${stroke};stroke-width:30;stroke-miterlimit:10;" x="178" y="-182" height="365" width="365"  transform="rotate(45)" ry="50"/>`
 }
 function templateText(color,label) {
     return `<text font-family='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' font-size="200" font-weight="400"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
@@ -80,17 +105,16 @@ async function getMakeIcon(flags ) {
     const foreColor = flags.foreColor
     const backColor = flags.backColor
     const iconText = flags.iconText
-    
-    var u_l = iconText.match(/[A-Z]/) ?"u":"l";   // TODO This will get confused if multiple letters on non-case sensitive host OSs
-    
-    
-    var iconFilename = `${foreColor.replace("#","")}_${backColor.replace("#","")}_${iconType}_${u_l}_${iconText}.svg`;
+       
+    // Shorten the name, as well as cover for non-case sensitive host OS's (like Windows)
+    // Keep iconText in here as well as in the file name for clarity and to (hopefully) minimize collisions.
+    var uniqueBits = `${foreColor}_${backColor}_${iconType}_${iconText}`
+    var iconFilename = `${uniqueBits.hashCode()}_${iconText}.svg`;
 
     console.debug(...DEBUG_PREFIX,"Making",iconText,iconFilename);
 
 
     var svgString = svgTemplate()
-
     
     switch (iconType) {
         case "square":
@@ -110,10 +134,8 @@ async function getMakeIcon(flags ) {
     
     
     
-    // TODO Add config for save path (And maybe code for s3?)
-    // Unsure, since The Forge does weird things with the path
-    let file = new File([svgString], iconFilename, {});
-    var result = await FilePicker.upload("data", "upload/journal-icon-numbers", file, {  });            
+        let file = new File([svgString], iconFilename, {});
+    var result = await FilePicker.upload("data", game.settings.get('journal-icon-numbers', "uploadPath"), file, {  });            
     console.log(...LOG_PREFIX,"Succesfully uploaded", result);
 
     return [result.path,iconText];
@@ -137,12 +159,16 @@ Hooks.on("updateNote", updateNote)
 Hooks.on("createNote", updateNote) 
 Hooks.on("preUpdateNote", preUpdateNote) 
 
+
+Hooks.once("init", registerSettings);
+
+
 function preUpdateNote(scene,note,changes) {
 
     // Not using autoIcon for this icon, so skip other checks
-    if (! note.flags.autoIcon) return true
+    if (!('autoIconFlags' in note.flags) || ! note.flags.autoIconFlags.autoIcon) return true
     
-    if(changes.icon && !('flags' in changes && 'loopDetector' in changes.flags)) {
+    if(changes.icon && !('flags' in changes && 'autoIconFlags' in changes.flags && 'loopDetector' in changes.flags.autoIconFlags)) {
         console.debug(...DEBUG_PREFIX,"Icon without Loop")
         delete changes['icon']
     }
@@ -155,22 +181,23 @@ function preUpdateNote(scene,note,changes) {
 async function updateNote(scene,note,changes) {  
     
     // Not using autoIcon for this icon, so quit
-    if(! note.flags.autoIcon) { console.debug(...DEBUG_PREFIX,"Off"); return }
+    if(!('autoIconFlags' in note.flags)  || ! note.flags.autoIconFlags.autoIcon) { console.debug(...DEBUG_PREFIX,"Off"); return }
     
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
-    if (changes.icon && changes.flags && 'loopDetector' in changes.flags ){
+    if (changes.icon && changes.flags.autoIconFlags && 'loopDetector' in changes.flags.autoIconFlags ){
         console.debug(...DEBUG_PREFIX,"LOOP DETECTOR!!!", 'background: #222; color: #bada55')
         return
     }
     
     // Nothing important changed, quit early
-    if (!('renderSheet' in changes || 'flags' in changes)) {
+    console.log(...DEBUG_PREFIX,changes)
+    if (!('renderSheet' in changes || 'flags' in changes && 'autoIconFlags' in changes.flags)) {
         console.debug(...DEBUG_PREFIX,"No changes")
         return
     }
     
-    var [iconFilePath,label] = await getMakeIcon(note.flags)
+    var [iconFilePath,label] = await getMakeIcon(note.flags.autoIconFlags)
     
     var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
     new_note.icon = iconFilePath
@@ -179,7 +206,7 @@ async function updateNote(scene,note,changes) {
     // instead of doing this whole thing as a preUpdate block and getting it for free
     // This does cause potential infinite loops of changes, hence loop detector above
     // Inverting the value to ensure it changes.
-    new_note.flags.loopDetector = ! new_note.flags.loopDetector
+    new_note.flags.autoIconFlags.loopDetector = ! new_note.flags.autoIconFlags.loopDetector
     
     console.debug(...DEBUG_PREFIX,"Trigger Update !!", 'background: #bada55; color: #222')
     scene.updateEmbeddedEntity("Note",new_note)      
@@ -188,33 +215,23 @@ async function updateNote(scene,note,changes) {
 
 
 
-async function makeDirs() {
-  console.debug(...DEBUG_PREFIX, "Creating dirs");
-  
-  await FilePicker.createDirectory("data","upload",{}).then((result) => {
-    console.log(...LOG_PREFIX,"Created upload");
-  })
-  .catch((error) => {
-    if (!error.includes("EEXIST")) {
-        console.error(...ERROR_PREFIX,error);
-    }        
-  });
-  await FilePicker.createDirectory("data","upload/journal-icon-numbers",{}).then((result) => {
-        console.log(...LOG_PREFIX,"Created upload/journal-icon-numbers");
-    })
-    .catch((error) => {
-        if (!error.includes("EEXIST")) {
-            console.error(...ERROR_PREFIX,error);
-        }        
-    });
+async function makeDirs(full_path) {
+   console.debug(...DEBUG_PREFIX, "Creating dirs");
+   
+   var base_path = ""
+    for (var path of full_path.split("/")) {
+        base_path += path+ "/"
+        await FilePicker.createDirectory("data",base_path,{}).then((result) => {
+            console.log(...LOG_PREFIX,"Created "+base_path);
+        })
+        .catch((error) => {
+            if (!error.includes("EEXIST")) {
+                console.error(...ERROR_PREFIX,error);
+            }        
+        });
+    }
 };
 
-/**
- * Hook on init
- */
-Hooks.on("init", () => {
-    registerSettings();
-});
 
 
 
@@ -237,12 +254,14 @@ async function cleanup_legacy_icons() {
                     return
                 }
                 var flags = {
-                    autoIcon:true,
-                    iconText: matches[0],
-                    iconType:game.settings.get('journal-icon-numbers', "iconType"),
-                    foreColor:game.settings.get('journal-icon-numbers', "foreColor"),
-                    backColor:game.settings.get('journal-icon-numbers', "backColor"),
-                    loopDetector:0
+                    autoIconFlags:{
+                        autoIcon:true,
+                        iconText: matches[0],
+                        iconType:game.settings.get('journal-icon-numbers', "iconType"),
+                        foreColor:game.settings.get('journal-icon-numbers', "foreColor"),
+                        backColor:game.settings.get('journal-icon-numbers', "backColor"),
+                        loopDetector:0
+                    }
                 }
                 
                 var [iconFilepath,label] = await getMakeIcon(flags)
@@ -271,12 +290,29 @@ function registerSettings() {
         type: String,
         choices:getIconTypes(),
         default: "circle",
-        config: true,
-        onChange: s => {}
+        config: true
     });
 
-
+    game.settings.register('journal-icon-numbers', "uploadPath", {
+        name: "SETTINGS.AutoJournalIcon.uploadPathN",
+        hint: "SETTINGS.AutoJournalIcon.uploadPathH",
+        scope: "world",
+        type: String,
+        default: "upload/journal-icon-numbers",
+        onChange: (newPath) =>{ makeDirs(newPath)},
+        config: true
+    });
     
+    game.settings.register('journal-icon-numbers',"iconScale", {
+        name: "SETTINGS.AutoJournalIcon.iconScaleN",
+        hint: "SETTINGS.AutoJournalIcon.iconScaleH",
+        scope: "world",
+        type: Number,
+        default: 0.75,
+        default: "upload/journal-icon-numbers",
+        config: true
+    });
+
     var useColorPicker = true
     
     try{window.Ardittristan.ColorSetting.tester} catch { useColorPicker = false}
@@ -318,7 +354,7 @@ function registerSettings() {
             name: "SETTINGS.AutoJournalIcon.backColorN",
             hint: "SETTINGS.AutoJournalIcon.backColorH",
             scope: "world",
-            type: String,// DirectoryPicker.Directory,
+            type: String,
             default: "#FFFFFF",
             config: true,
             onChange: s => {}

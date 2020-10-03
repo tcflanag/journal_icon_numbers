@@ -2,7 +2,7 @@
 <div class="form-group">
     <label>{{localize "SETTINGS.AutoJournalIcon.autoIconN"}}</label>
     <div class="form-fields">
-    <input type="checkbox" name="flags.autoIcon" data-dtype="Boolean" {{checked flags.autoIcon}}/>
+    <input type="checkbox" name="flags.autoIconFlags.autoIcon" data-dtype="Boolean" {{checked flags.autoIconFlags.autoIcon}}/>
     </div>
     <p class="notes">{{localize "SETTINGS.AutoJournalIcon.autoIconH"}}</p>
 </div>
@@ -10,8 +10,8 @@
 <div class="form-group">
     <label>{{localize "SETTINGS.AutoJournalIcon.IconStyleN"}}</label>
     <div class="form-fields">
-        <select name="flags.iconType" data-dtype="String">
-            {{#select flags.iconType}}
+        <select name="flags.autoIconFlags.iconType" data-dtype="String">
+            {{#select flags.autoIconFlags.iconType}}
             {{#each iconTypes as |v k|}}
             <option value="{{k}}">{{v}}</option>
             {{/each}}
@@ -23,7 +23,7 @@
 <div class="form-group">
     <label>{{localize "SETTINGS.AutoJournalIcon.iconTextN"}}</label>
       <div class="form-fields">
-        <input type="text" name="flags.iconText" value="{{flags.iconText}}"/>
+        <input type="text" name="flags.autoIconFlags.iconText" value="{{flags.autoIconFlags.iconText}}"/>
       </div>
       <p class="notes">{{localize "SETTINGS.AutoJournalIcon.iconTextH"}}</p>
  </div>
@@ -31,15 +31,15 @@
     <div class="form-group">
        <label>{{localize "SETTINGS.AutoJournalIcon.foreColorN"}}</label>
         <div class="form-fields">
-            <input class="color" type="text" name="flags.foreColor" value="{{flags.foreColor}}" is="colorpicker-input" data-responsive-color/>
-            <input type="color" value="{{flags.foreColor}}" data-edit="flags.foreColor"/>
+            <input class="color" type="text" name="flags.autoIconFlags.foreColor" value="{{flags.autoIconFlags.foreColor}}" is="colorpicker-input" data-responsive-color/>
+            <input type="color" value="{{flags.autoIconFlags.foreColor}}" data-edit="flags.autoIconFlags.foreColor"/>
         </div>
     </div>
     
     <div class="form-group">
        <label>{{localize "SETTINGS.AutoJournalIcon.backColorN"}}</label>
         <div class="form-fields">
-            <input class="color" type="text" name="flags.backColor" value="{{flags.backColor}}"/>
-            <input type="color" value="{{flags.backColor}}" data-edit="flags.backColor"/>
+            <input class="color" type="text" name="flags.autoIconFlags.backColor" value="{{flags.autoIconFlags.backColor}}"/>
+            <input type="color" value="{{flags.autoIconFlags.backColor}}" data-edit="flags.autoIconFlags.backColor"/>
         </div>
     </div>

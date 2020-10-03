@@ -1,3 +1,13 @@
+# 1.0.9
+ * Move all localization and settings to module namespace to prevent potential conflicts
+ * Added upload path settings value
+ * Fix issue where user selected icon scale was getting for all icons every time. Now the mod just sets a default value for matching notes the first time it is opened
+ * Added default scale settings value
+ * Cleanup icons to better match the scale value (100% will now take up the whole map cell)
+ * Change note config dialog to auto-resize when color picker is opened
+ * Update file naming to eliminate case insensitivy issues on Windows hosted games.
+
+
 # 1.0.8
  * Added partial spanish language support. Thanks to @lozalojo
  * Finished pulling out all strings to en.json, to support future i18n contributions

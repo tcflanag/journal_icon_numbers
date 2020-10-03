@@ -16,6 +16,11 @@
     "SETTINGS.AutoJournalIcon.iconTextN": "Icon Text",
     "SETTINGS.AutoJournalIcon.iconTextH": "Recommend max of 3 characters",
 
+    "SETTINGS.AutoJournalIcon.iconScaleN": "Icon Scale",
+    "SETTINGS.AutoJournalIcon.iconScaleH": "Initial scale setting for new icons.  1 = one grid square. Only applies on initial creation",
+
+    "SETTINGS.AutoJournalIcon.uploadPathN": "Upload Path",
+    "SETTINGS.AutoJournalIcon.uploadPathH": "Path to store newly created icons in",
 
     "AutoJournalIcon.Diamond": "Diamond",
     "AutoJournalIcon.Circle": "Circle",
