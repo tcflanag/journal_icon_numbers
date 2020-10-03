@@ -186,7 +186,7 @@ async function updateNote(scene,note,changes) {
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
     if (changes.icon && changes.flags.autoIconFlags && 'loopDetector' in changes.flags.autoIconFlags ){
-        console.debug(...DEBUG_PREFIX,"LOOP DETECTOR!!!", 'background: #222; color: #bada55')
+        console.debug(...DEBUG_PREFIX,"LOOP DETECTOR!!!")
         return
     }
     
@@ -208,7 +208,7 @@ async function updateNote(scene,note,changes) {
     // Inverting the value to ensure it changes.
     new_note.flags.autoIconFlags.loopDetector = ! new_note.flags.autoIconFlags.loopDetector
     
-    console.debug(...DEBUG_PREFIX,"Trigger Update !!", 'background: #bada55; color: #222')
+    console.debug(...DEBUG_PREFIX,"Trigger Update !!")
     scene.updateEmbeddedEntity("Note",new_note)      
 
 };
