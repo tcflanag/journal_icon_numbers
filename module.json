@@ -9,7 +9,7 @@
   "esmodules":["src/index.js"],
   "scripts": ["./lib/colorSettingStub.js"],
   "url":"https://gitlab.com/tiwato/journal_icon_numbers",
-  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/v1.0.10/module.json",
+  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/master/module.json",
   "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.0.10/journal_icon_numbers.zip",
   
   "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
