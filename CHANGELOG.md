@@ -1,3 +1,7 @@
+# 1.0.10
+ * Fix infinite looping on 0.7.4 when adding already existing icons.  This also removes the annoying popup about file overwriting on earlier versions.
+ * Fix iconSize setting defaulting to NaN on 0.7.4
+
 # 1.0.9
  * Move all localization and settings to module namespace to prevent potential conflicts
  * Added upload path settings value

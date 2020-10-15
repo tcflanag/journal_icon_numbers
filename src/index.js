@@ -134,13 +134,16 @@ async function getMakeIcon(flags ) {
     
     
     
-        let file = new File([svgString], iconFilename, {});
-    var result = await FilePicker.upload("data", game.settings.get('journal-icon-numbers', "uploadPath"), file, {  });            
-    console.log(...LOG_PREFIX,"Succesfully uploaded", result);
-
-    return [result.path,iconText];
+    let file = new File([svgString], iconFilename, {});
+    var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
+    var full_path = uploadPath + "/" + iconFilename
+    var existing = await FilePicker.browse("data",uploadPath)
+    if (existing.files.includes(full_path)){
+        return full_path
+    }
     
-
+    var result = await FilePicker.upload("data", uploadPath, file, {  });            
+    return result.path;
 
 }
 
@@ -185,22 +188,21 @@ async function updateNote(scene,note,changes) {
     
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
-    if (changes.icon && changes.flags.autoIconFlags && 'loopDetector' in changes.flags.autoIconFlags ){
+    if ('flags' in changes && 'autoIconFlags' in changes.flags && 'loopDetector' in changes.flags.autoIconFlags ){
         console.debug(...DEBUG_PREFIX,"LOOP DETECTOR!!!")
         return
     }
     
     // Nothing important changed, quit early
-    console.log(...DEBUG_PREFIX,changes)
+    console.DEBUG(...DEBUG_PREFIX,changes)
     if (!('renderSheet' in changes || 'flags' in changes && 'autoIconFlags' in changes.flags)) {
         console.debug(...DEBUG_PREFIX,"No changes")
         return
     }
     
-    var [iconFilePath,label] = await getMakeIcon(note.flags.autoIconFlags)
-    
+        
     var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-    new_note.icon = iconFilePath
+    new_note.icon = await getMakeIcon(note.flags.autoIconFlags)
           
     // Since getMakeIcon is async (due to block for file upload, we need to explictly call update here
     // instead of doing this whole thing as a preUpdate block and getting it for free
@@ -264,7 +266,7 @@ async function cleanup_legacy_icons() {
                     }
                 }
                 
-                var [iconFilepath,label] = await getMakeIcon(flags)
+                var iconFilepath = await getMakeIcon(flags)
                 console.log(...LOG_PREFIX,"Replacing old path " + note.icon + " with " + iconFilepath);
                 
                 new_note.icon = iconFilepath;
@@ -309,7 +311,6 @@ function registerSettings() {
         scope: "world",
         type: Number,
         default: 0.75,
-        default: "upload/journal-icon-numbers",
         config: true
     });
 
