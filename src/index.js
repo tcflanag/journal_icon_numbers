@@ -152,7 +152,7 @@ async function getMakeIcon(flags ) {
 
 Hooks.once("canvasInit", () => {
     if (game.user.isGM) {
-        makeDirs();
+    	makeDirs(game.settings.get('journal-icon-numbers', "uploadPath"))
         cleanup_legacy_icons();
     }
 })

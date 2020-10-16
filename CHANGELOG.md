@@ -1,3 +1,6 @@
+# 1.0.12
+* Fix issue with makeDir on initial install
+
 # 1.0.11
 * Fix module breaking typo
 * Update manifest to fix upgrading issue.
