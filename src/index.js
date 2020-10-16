@@ -194,7 +194,7 @@ async function updateNote(scene,note,changes) {
     }
     
     // Nothing important changed, quit early
-    console.DEBUG(...DEBUG_PREFIX,changes)
+    console.debug(...DEBUG_PREFIX,changes)
     if (!('renderSheet' in changes || 'flags' in changes && 'autoIconFlags' in changes.flags)) {
         console.debug(...DEBUG_PREFIX,"No changes")
         return
