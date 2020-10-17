@@ -1,3 +1,6 @@
+# 1.0.13
+* Fix odd issue with non-functionality on The Forge 
+
 # 1.0.12
 * Fix issue with makeDir on initial install
 
