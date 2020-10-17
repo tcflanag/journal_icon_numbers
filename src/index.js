@@ -137,13 +137,15 @@ async function getMakeIcon(flags ) {
     let file = new File([svgString], iconFilename, {});
     var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
     var full_path = uploadPath + "/" + iconFilename
-    var existing = await FilePicker.browse("data",uploadPath)
+
+    var dest = typeof ForgeVTT === "undefined" ?"data":"forgevtt"
+    var existing = await FilePicker.browse(dest,uploadPath)
     console.log(...LOG_PREFIX,existing)
     if (existing.files.includes(full_path)){
         return full_path
     }
     
-    var result = await FilePicker.upload("data", uploadPath, file, {  });            
+    var result = await FilePicker.upload(dest, uploadPath, file, {  });            
     return result.path;
 
 }
@@ -220,11 +222,11 @@ async function updateNote(scene,note,changes) {
 
 async function makeDirs(full_path) {
    console.debug(...DEBUG_PREFIX, "Creating dirs");
-   
+   var dest = typeof ForgeVTT === "undefined" ?"data":"forgevtt"
    var base_path = ""
     for (var path of full_path.split("/")) {
         base_path += path+ "/"
-        await FilePicker.createDirectory("data",base_path,{}).then((result) => {
+        await FilePicker.createDirectory(dest,base_path,{}).then((result) => {
             console.log(...LOG_PREFIX,"Created "+base_path);
         })
         .catch((error) => {
