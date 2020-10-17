@@ -140,7 +140,6 @@ async function getMakeIcon(flags ) {
 
     var dest = typeof ForgeVTT === "undefined" ?"data":"forgevtt"
     var existing = await FilePicker.browse(dest,uploadPath)
-    console.log(...LOG_PREFIX,existing)
     if (existing.files.includes(full_path)){
         return full_path
     }
