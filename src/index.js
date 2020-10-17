@@ -138,6 +138,7 @@ async function getMakeIcon(flags ) {
     var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
     var full_path = uploadPath + "/" + iconFilename
     var existing = await FilePicker.browse("data",uploadPath)
+    console.log(...LOG_PREFIX,existing)
     if (existing.files.includes(full_path)){
         return full_path
     }
