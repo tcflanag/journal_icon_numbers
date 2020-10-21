@@ -1,4 +1,7 @@
 # 1.0.13
+* Update manifest to 0.7.5
+
+# 1.0.13
 * Fix odd issue with non-functionality on The Forge 
 
 # 1.0.12
