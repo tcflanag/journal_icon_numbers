@@ -23,7 +23,7 @@
     "SETTINGS.AutoJournalIcon.uploadPathH": "Path to store newly created icons in",
 
     "SETTINGS.AutoJournalIcon.fontFamilyN": "Font Family",
-    "SETTINGS.AutoJournalIcon.fontFamilyH": "Font family name from fonts.google.com. Leave blank for default",
+    "SETTINGS.AutoJournalIcon.fontFamilyH": "Font family name from fonts.google.com. Leave blank for stock font",
 
     "SETTINGS.AutoJournalIcon.previewIconN": "Icon Preview",
     "SETTINGS.AutoJournalIcon.previewIconH": "Does not include Icon Tint",
