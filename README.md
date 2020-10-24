@@ -22,9 +22,8 @@ You can select a default global style of shape and color in the settings menu, a
 ![Example of assorted pins on a map](example.png)
 
 
+The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packages/backgroundless-pins/) mod which is highly recommended.
 
-The [Backgroundless Pins](https://foundryvtt.com/packages/backgroundless-pins/) mod also enhances the appearance, and is highly recommended.
-![Example of assorted pins on a map, with backgroundless-pins module](example_backgroundless.png)
 
 ## Compatiblilty
 * Fully compatible with Pin Cushion
