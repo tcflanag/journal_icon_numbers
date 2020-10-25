@@ -1,5 +1,6 @@
 # Automatic Journal Icon Numbers
 
+
 This module will automatically apply numbered icons (map pins) to journal entries that start with a number.  It supports the following numbering formats automatically, with both upper and lower cases.
 
 * [0-99]
@@ -21,4 +22,4 @@ The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packa
 
 
 ## Known issues
-* None
+* If you not seeing the new preview feature, or are having bugs with 0.7.5, please uninstall and reinstall the mod.  Versions prior to 1.0.10 had a bad manifest, and hence do not update without uninstalling.

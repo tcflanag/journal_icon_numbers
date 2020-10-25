@@ -1,3 +1,6 @@
+# 1.1.1
+* Portuguese translation provided by  @renato.innocenti 
+
 # 1.1.0
 * New Features 
   * Font selection - Now allows access to over 1000 different fonts
