@@ -1,0 +1,40 @@
+{
+    "SETTINGS.AutoJournalIcon.IconStyleN": "Estilo do Ícone",
+    "SETTINGS.AutoJournalIcon.IconStyleH": "Selecione o tipo de ícone que deseja",
+
+    "SETTINGS.AutoJournalIcon.foreColorN": "Cores de primeiro plano",
+    "SETTINGS.AutoJournalIcon.foreColorH": "Selecione a cor do primeiro plano",
+    "SETTINGS.AutoJournalIcon.foreColorL":  "Seletor de cores de primeiro plano.",
+    
+    "SETTINGS.AutoJournalIcon.backColorN": "Cores de Fundo",
+    "SETTINGS.AutoJournalIcon.backColorH": "Selecione a cor do fundo",
+    "SETTINGS.AutoJournalIcon.backColorL": "Seletor de cores de fundo.",
+    
+    "SETTINGS.AutoJournalIcon.autoIconN": "Use ícones Automáticos",
+    "SETTINGS.AutoJournalIcon.autoIconH": "Substitui qualquer ícone selecionado acima.",
+    
+    "SETTINGS.AutoJournalIcon.iconTextN": "Texto do Ícone",
+    "SETTINGS.AutoJournalIcon.iconTextH": "Recomendado no máximo 3 caracteres",
+
+    "SETTINGS.AutoJournalIcon.iconScaleN": "Escala do Ícone",
+    "SETTINGS.AutoJournalIcon.iconScaleH": "Configuração de escala inicial para novos ícones. 1 = um quadrado de grade. Aplica-se apenas na criação inicial",
+
+    "SETTINGS.AutoJournalIcon.uploadPathN": "Caminho de envio de arquivos",
+    "SETTINGS.AutoJournalIcon.uploadPathH": "Caminho para armazenar ícones recém-criados em",
+
+    "SETTINGS.AutoJournalIcon.fontFamilyN": "Família da Fonte",
+    "SETTINGS.AutoJournalIcon.fontFamilyH": "Nome da família da fonte em fonts.google.com. Deixe em branco para a fonte de padrão",
+
+    "SETTINGS.AutoJournalIcon.previewIconN": "Prévia do Ícone",
+    "SETTINGS.AutoJournalIcon.previewIconH": "Não inclui tonalidade do ícone",
+
+    "SETTINGS.AutoJournalIcon.rebuildN": "Recriar todos os ícones",
+    "SETTINGS.AutoJournalIcon.rebuildH": "Isso procurará todos os ícones de notas do mundo e, se eles estiverem no modo automático, reconstruirá as imagens. Isso pode demorar um pouco se você tiver muitas anotações no mapa. Ele será recarregado automaticamente quando concluído.",
+
+    "AutoJournalIcon.Diamond": "Diamante",
+    "AutoJournalIcon.Circle": "Circulo",
+    "AutoJournalIcon.Square": "Quadrado",
+    "AutoJournalIcon.None": "Nenhum",
+    "AutoJournalIcon.HexagonH": "HexagonH",
+    "AutoJournalIcon.HexagonV": "HexagonV"
+}
