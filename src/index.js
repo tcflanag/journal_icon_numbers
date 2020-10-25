@@ -16,11 +16,12 @@ function getIconTypes() {
             none: game.i18n.format("AutoJournalIcon.None"),
         };
     }
-//https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw
+
 async function getFontNames(){
     let fonts = [""]
-//    let json_fonts = await j.json()
-    
+    let query = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw").catch((e)=>{console.error(e)})
+    if (query === undefined) return ["","ERROR - Failed to query fonts"]
+    let json_fonts = await query.json()  
     json_fonts.items.forEach(x=>{fonts.push(x.family)})
     fonts = fonts.sort()
     return fonts
