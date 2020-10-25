@@ -18,16 +18,12 @@ function getIconTypes() {
     }
 //https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw
 async function getFontNames(){
-    let json_fonts = await(await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw")).json()
     let fonts = [""]
 //    let json_fonts = await j.json()
     
     json_fonts.items.forEach(x=>{fonts.push(x.family)})
     fonts = fonts.sort()
-    console.log(...LOG_PREFIX,fonts)
     return fonts
-    
-    
 }
 
 function setPropertyOnce(object, property, value){
