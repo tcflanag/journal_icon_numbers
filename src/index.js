@@ -48,8 +48,8 @@ function initliazeData(note){
 
 async function renderNoteConfig(app, html, data) {
          
-    if (!hasProperty(data,"_id")) // Only force the size once, so that user can override it.
-        data.object.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
+    if (!hasProperty(data,"object._id")) // Only force the size once, so that user can override it. This checks for item creation
+            data.object.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
     
     initliazeData(data.object) // Set all my flags
             
