@@ -1,9 +1,10 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c - LOG -", 'background: #bada55; color: #222', '']
-const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c - DEBUG -", 'background: #FF9900; color: #222', '']
-const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c - ERROR -", 'background: #bada55; color: #FF0000', '']
+const version = "v1.1.0"
+export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
+export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
+export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
 
 
 function getIconTypes() {

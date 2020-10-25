@@ -1,6 +1,4 @@
-const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c - LOG -", 'background: #bada55; color: #222', '']
-const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c - DEBUG -", 'background: #FF9900; color: #222', '']
-const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c - ERROR -", 'background: #bada55; color: #FF0000', '']
+import {DEBUG_PREFIX, LOG_PREFIX, ERROR_PREFIX} from './index.js'
 
 function commonStyle(fill, stroke, stroke_width) {
   return `style="fill:${fill};stroke:${stroke};stroke-width:${stroke_width};stroke-miterlimit:10;"`
