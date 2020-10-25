@@ -237,8 +237,8 @@ async function registerSettings() {
     })
 
     game.settings.register('journal-icon-numbers', "cleanupLegacy", {
-        name: "Rebuild all icons",
-        hint: "SETTINGS.AutoJournalIcon.iconScaleH",
+        name: "SETTINGS.AutoJournalIcon.rebuildN",
+        hint: "SETTINGS.AutoJournalIcon.rebuildH",
         scope: "world",
         type: Boolean,
         default: false,
