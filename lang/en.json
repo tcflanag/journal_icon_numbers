@@ -22,8 +22,19 @@
     "SETTINGS.AutoJournalIcon.uploadPathN": "Upload Path",
     "SETTINGS.AutoJournalIcon.uploadPathH": "Path to store newly created icons in",
 
+    "SETTINGS.AutoJournalIcon.fontFamilyN": "Font Family",
+    "SETTINGS.AutoJournalIcon.fontFamilyH": "Font family name from fonts.google.com. Leave blank for stock font",
+
+    "SETTINGS.AutoJournalIcon.previewIconN": "Icon Preview",
+    "SETTINGS.AutoJournalIcon.previewIconH": "Does not include Icon Tint",
+
+    "SETTINGS.AutoJournalIcon.rebuildN": "Rebuild all icons",
+    "SETTINGS.AutoJournalIcon.rebuildH": "This will look for all note icons in the world, and if they are in auto mode, rebuild the images.  This can take a while if you have lots of map notes. It will automatically reload when complete.",
+
     "AutoJournalIcon.Diamond": "Diamond",
     "AutoJournalIcon.Circle": "Circle",
     "AutoJournalIcon.Square": "Square",
-    "AutoJournalIcon.None": "None"
+    "AutoJournalIcon.None": "None",
+    "AutoJournalIcon.HexagonH": "HexagonH",
+    "AutoJournalIcon.HexagonV": "HexagonV"
 }

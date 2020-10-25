@@ -1,3 +1,14 @@
+# 1.1.0
+* New Features 
+  * Font selection - Now allows access to over 1000 different fonts
+  * Hexagon icons - Both orientations, to match your hex maps. (Grid snapping is wonky with hex grids, but that is a core issue)
+  * Icons now fully fill grid at 100% 
+  * Thinner borders on icons - The default border was a bit chunky, so I slimmed it down.
+  * Live preview - You can now see the icon as you change settings. Great for font browsing.
+  * Rebuild all icons - Accidentally deleted your icons folder?  Just go click the rebuild button in settings, and all your icons will be regenerated. 
+* Bug Fixes
+  * Cleaned up more corner cases with directory creation
+
 # 1.0.14
 * Update manifest to 0.7.5
 
