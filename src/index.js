@@ -65,10 +65,10 @@ async function renderNoteConfig(app, html, data) {
     svgWrapper(html)
 
     // Add listeners for auto updating icon
-    html.find('input[name="flags.autoIconFlags.iconText"]').each((i, x) => x.addEventListener('input', () => { svgWrapper(html) }))
-    html.find('select[name="flags.autoIconFlags.iconType"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
-    html.find('select[name="flags.autoIconFlags.fontFamily"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
-    html.find('input[name="flags.autoIconFlags.autoIcon"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
+    html.find('[name^="flags.autoIconFlags"]').each((i, x) => x.addEventListener('input', () => { svgWrapper(html) }))
+    html.find('[name^="flags.autoIconFlags"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
+
+    //Hook on standard icon changes to detect that (works with pincushion too)
     html.find('[name="icon"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
 
     // This is a work around for VTTA smashing the iconSize
