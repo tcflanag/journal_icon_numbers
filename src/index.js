@@ -154,10 +154,17 @@ async function cleanup_legacy_icons(value) {
         var new_data = [];
         for (const note of scene.data.notes) {
             var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-            if (value == "full")
+            if (value == "full") 
                 delete new_note.flags['autoIconFlags']
+            
             initliazeData(new_note)
             if (new_note.flags.autoIconFlags.autoIcon) {
+                if (value == "full") {
+                    let new_size = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
+                    if (new_note.iconSize != new_size)
+                        changes = true
+                    new_note.iconSize = new_size
+                }
                 var iconFilePath = await getMakeIcon(new_note.flags.autoIconFlags)
                 if (note.icon !== iconFilePath) {
                     console.log(...LOG_PREFIX, "Replacing old path " + note.icon + " with " + iconFilePath);
