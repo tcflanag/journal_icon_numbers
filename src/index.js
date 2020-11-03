@@ -145,8 +145,8 @@ async function cleanup_legacy_icons(value) {
     // This function only fires onChange, and the setting is always false in game.
     // If this function is passed false, do nothing
     // If true, reset to false, and do the magic
-    if (!value) return
-    game.settings.set('journal-icon-numbers', "cleanupLegacy", false)
+    if (value == "no") return
+    game.settings.set('journal-icon-numbers', "cleanupLegacy", "no")
 
     console.debug(...DEBUG_PREFIX, "Legacy Cleanup")
 
@@ -155,7 +155,8 @@ async function cleanup_legacy_icons(value) {
         var new_data = [];
         for (const note of scene.data.notes) {
             var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-
+            if (value == "full")
+                delete new_note.flags['autoIconFlags']
             initliazeData(new_note)
             if (new_note.flags.autoIconFlags.autoIcon) {
                 var iconFilePath = await getMakeIcon(new_note.flags.autoIconFlags)
@@ -240,8 +241,9 @@ async function registerSettings() {
         name: "SETTINGS.AutoJournalIcon.rebuildN",
         hint: "SETTINGS.AutoJournalIcon.rebuildH",
         scope: "world",
-        type: Boolean,
-        default: false,
+        type: String,
+        default: "no",
+        choices: {no: game.i18n.format("AutoJournalIcon.norebuild"), partial: game.i18n.format("AutoJournalIcon.partialrebuild"), full: game.i18n.format("AutoJournalIcon.fullrebuild")},
         config: true,
         onChange: (value) => { cleanup_legacy_icons(value) }        // A callback function which triggers when the setting is changed
     });

@@ -36,5 +36,11 @@
     "AutoJournalIcon.Square": "Square",
     "AutoJournalIcon.None": "None",
     "AutoJournalIcon.HexagonH": "HexagonH",
-    "AutoJournalIcon.HexagonV": "HexagonV"
+    "AutoJournalIcon.HexagonV": "HexagonV",
+
+
+    "AutoJournalIcon.norebuild": "No rebuild",
+    "AutoJournalIcon.partialrebuild": "Rebuild all icons, keeping their settings",
+    "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values"
+
 }
