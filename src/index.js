@@ -1,7 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-const version = "v1.1.0"
+const version = "v1.1.2"
 export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
 export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
 export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']

@@ -1,3 +1,10 @@
+# 1.1.2
+* New Feature
+  * Enhanced rebuild feature to use either the existing settings for a token, or the global defaults
+* Bug Fix
+  * Fix issue where global fonts weren't working #10
+
+
 # 1.1.1
 * Portuguese translation provided by  @renato.innocenti 
 
