@@ -1,3 +1,8 @@
+# 1.1.3
+* Update to 0.7.6
+* Bug Fix
+  * Add better eror message lib-colorsettings not being activated for #11
+
 # 1.1.2
 * New Feature
   * Enhanced rebuild feature to use either the existing settings for a token, or the global defaults
