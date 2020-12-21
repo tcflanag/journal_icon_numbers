@@ -1,3 +1,10 @@
+# 1.1.5
+* Update to 0.7.9
+* Fix issue with editing notes while non-gm accounts are connected.
+
+# 1.1.4
+* Update to 0.7.7
+
 # 1.1.3
 * Update to 0.7.6
 * Bug Fix
