@@ -13,7 +13,7 @@
   "esmodules":["src/index.js"],
   "url":"https://gitlab.com/tiwato/journal_icon_numbers",
   "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/master/module.json",
-  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.1.4/journal_icon_numbers.zip",
+  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.1.5/journal_icon_numbers.zip",
   
   "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
   "bugs": "https://gitlab.com/tiwato/journal_icon_numbers/-/issues",
