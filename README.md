@@ -22,4 +22,7 @@ The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packa
 
 
 ## Known issues
-* If you not seeing the new preview feature, or are having bugs with 0.7.5, please uninstall and reinstall the mod.  Versions prior to 1.0.10 had a bad manifest, and hence do not update without uninstalling.
+* If you not seeing the new preview feature, or are having bugs with 0.7.X, please uninstall and reinstall the mod.  Versions prior to 1.0.10 had a bad manifest, and hence do not update without uninstalling.
+
+## Questions
+Feel free to contact me on Discord @ChrisF#4895, or by filing an issue on GitLab.
