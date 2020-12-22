@@ -1,7 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-const version = game.modules.get("journal-icon-numbers").data.version
+var version = "" 
 export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
 export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
 export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
@@ -254,6 +254,7 @@ async function registerSettings() {
         onChange: (value) => { cleanup_legacy_icons(value) }        // A callback function which triggers when the setting is changed
     });
 
+    version = game.modules.get("journal-icon-numbers").data.version
     if (game.user.isGM) {
         Hooks.on("renderNoteConfig", renderNoteConfig);
         Hooks.on("updateNote", updateNote)

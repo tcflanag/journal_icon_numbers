@@ -1,3 +1,6 @@
+# 1.1.6
+* Fix simple bug that completely broke the module.
+
 # 1.1.5
 * Update to 0.7.9
 * Fix issue with editing notes while non-gm accounts are connected.
