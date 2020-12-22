@@ -1,7 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-const version = game.modules.get("journal-icon-numbers").data.version
+var version = "v1.1.6" 
 export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
 export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
 export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
@@ -100,6 +100,14 @@ Hooks.once("init", registerSettings);
 Hooks.once('ready', () => {
     try{window.Ardittristan.ColorSetting.tester} catch {
         ui.notifications.notify('Please make sure you have the "lib - ColorSettings" module installed and enabled.', "error");
+    }
+    // console.log("version",version)
+    // version = game.modules.get("journal-icon-numbers").data.version
+    // console.log("version",version)
+    if (game.user.isGM) {
+        Hooks.on("renderNoteConfig", renderNoteConfig);
+        Hooks.on("updateNote", updateNote)
+        Hooks.on("createNote", updateNote)
     }
 });
 
@@ -253,10 +261,4 @@ async function registerSettings() {
         config: true,
         onChange: (value) => { cleanup_legacy_icons(value) }        // A callback function which triggers when the setting is changed
     });
-
-    if (game.user.isGM) {
-        Hooks.on("renderNoteConfig", renderNoteConfig);
-        Hooks.on("updateNote", updateNote)
-        Hooks.on("createNote", updateNote)
-    }
 }
