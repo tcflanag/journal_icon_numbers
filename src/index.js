@@ -1,7 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-var version = "v1.1.6" 
+var version = "v1.2.0" 
 export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
 export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
 export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
@@ -35,9 +35,12 @@ function setPropertyOnce(object, property, value) {
 function initliazeData(note) {
     // Init the data.  This is outside the above block so that I can add new flags easily
     const label_source = (note.text != undefined && note.text.length >= 1) ? note.text : game.journal.get(note.entryId).data.name; // TODO entryName
-    var matches = label_source.match(/^\d{1,2}[a-zA-Z]?|^[a-zA-Z]\d{1,2}/)
+    let folder_id = game.journal.get(note.entryId).data.folder
+    let folder = game.folders.get(folder_id)
+    var matches = label_source.match(/^\d{1,3}[a-zA-Z]|^[a-zA-Z]\d{1,3}|\d{1,4}/)
     setPropertyOnce(note, "flags.autoIconFlags.autoIcon", !!matches)
     setPropertyOnce(note, "flags.autoIconFlags.iconText", matches ? matches[0] : "")
+    setPropertyOnce(note, "flags.autoIconFlags.folder", folder ? folder.data.name: "")
     setPropertyOnce(note, "flags.autoIconFlags.iconType", game.settings.get('journal-icon-numbers', "iconType"))
     setPropertyOnce(note, "flags.autoIconFlags.foreColor", game.settings.get('journal-icon-numbers', "foreColor"))
     setPropertyOnce(note, "flags.autoIconFlags.backColor", game.settings.get('journal-icon-numbers', "backColor"))
@@ -59,6 +62,14 @@ async function renderNoteConfig(app, html, data) {
     var templateName = "modules/journal-icon-numbers/template_newColor.html"
     var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.object.flags })
 
+    if (game.settings.get('journal-icon-numbers', "folderIcon")) {
+        for(var iconFilepath in data.entryIcons) {
+            if  (data.entryIcons[iconFilepath] === getProperty(data.object.flags, 'autoIconFlags.folder')) {
+                $('select[name="icon"]', html).val(iconFilepath)
+                $('input.icon-path[name="icon"]').val(iconFilepath);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
+            }
+        }
+    }
     html.find('button[name="submit"]').before(new_html);
 
     svgWrapper(html)
@@ -230,6 +241,14 @@ async function registerSettings() {
         config: true
     });
 
+    game.settings.register('journal-icon-numbers', "folderIcon", {
+        name: "SETTINGS.AutoJournalIcon.folderIconN",
+        hint: "SETTINGS.AutoJournalIcon.folderIconH",
+        scope: "world",
+        type: Boolean,
+        default: true,
+        config: true
+    });
 
     new window.Ardittristan.ColorSetting("journal-icon-numbers", "foreColor", {
         name: "SETTINGS.AutoJournalIcon.foreColorN",      // The name of the setting in the settings menu

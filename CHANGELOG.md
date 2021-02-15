@@ -1,3 +1,10 @@
+# 1.2.0
+* Add ability to automatically set the icon based on the folder name
+  * For example, a folder named "Village" would have default icons of "Village"
+  * Only works the icons visible in the dropdown
+  * Can be disabled via settings
+* Updated automatic icon matching to support 3 and 4 digit numbers for those really big maps
+
 # 1.1.6
 * Fix simple bug that completely broke the module.
 

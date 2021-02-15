@@ -41,6 +41,9 @@
 
     "AutoJournalIcon.norebuild": "No rebuild",
     "AutoJournalIcon.partialrebuild": "Rebuild all icons, keeping their settings",
-    "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values"
+    "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values",
+
+    "SETTINGS.AutoJournalIcon.folderIconN": "Icons from Folders",
+    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default"
 
 }
