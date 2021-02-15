@@ -3,14 +3,15 @@
 
 This module will automatically apply numbered icons (map pins) to journal entries that start with a number.  It supports the following numbering formats automatically, with both upper and lower cases.
 
-* [0-99]
-* [A-Z][0-99]
-* [0-99][A-Z]
+* [0-9999]
+* [A-Z][0-999]
+* [0-999][A-Z]
 
 ![Example of assorted pins on a map](example.png)
 
 It is also now possible to manually specify arbitrary text in an icon; though a max of 3 characters is recommended for legibility, but 4 may work in some cases. You can also disable the mod on specific pins if you wish to use the stock icons (or anything via Pin Cushion).
 
+Additionally, you can set a default stock icon for a group of journal entries by putting them in a folder named like one of the default icons like "Village", "Temple", "Book".
 
 To use, just drag correctly named journals to your map. The icon will be automatically selected to match the name. Alternatively, you can manually enter the icon text in the Map Note Configuration window.
 

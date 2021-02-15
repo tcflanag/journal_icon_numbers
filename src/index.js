@@ -1,7 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 
 
-var version = "v1.2.0" 
+var version = "v1.2.1" 
 export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
 export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
 export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
@@ -62,7 +62,7 @@ async function renderNoteConfig(app, html, data) {
     var templateName = "modules/journal-icon-numbers/template_newColor.html"
     var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.object.flags })
 
-    if (game.settings.get('journal-icon-numbers', "folderIcon")) {
+    if (!hasProperty(data, "object._id") && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
         for(var iconFilepath in data.entryIcons) {
             if  (data.entryIcons[iconFilepath] === getProperty(data.object.flags, 'autoIconFlags.folder')) {
                 $('select[name="icon"]', html).val(iconFilepath)

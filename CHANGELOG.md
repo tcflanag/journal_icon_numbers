@@ -1,3 +1,6 @@
+# 1.2.1
+* Fixed the auto folder naming so that you can change it later
+
 # 1.2.0
 * Add ability to automatically set the icon based on the folder name
   * For example, a folder named "Village" would have default icons of "Village"
