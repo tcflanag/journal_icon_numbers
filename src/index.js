@@ -1,10 +1,7 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
+import {betterLogger } from "./better_logger.js";
 
 
-var version = "v1.2.1" 
-export const LOG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - LOG -", 'background: #bada55; color: #222', '']
-export const DEBUG_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - DEBUG -", 'background: #FF9900; color: #222', '']
-export const ERROR_PREFIX = ["%cAuto Journal Icon Numbers%c "+version+" - ERROR -", 'background: #bada55; color: #FF0000', '']
 
 
 function getIconTypes() {
@@ -20,7 +17,7 @@ function getIconTypes() {
 
 async function getFontNames() {
     let fonts = {"":""}
-    let query = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw").catch((e) => { console.error(e) })
+    let query = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw").catch((e) => { betterLogger.error(e) })
     if (query === undefined) return ["", "ERROR - Failed to query fonts"]
     let json_fonts = await query.json()
     json_fonts.items.forEach(x => { fonts[x.family] = x.family })
@@ -99,7 +96,7 @@ async function svgWrapper(html) {
 
         }
         getSvgString(flags).then(v => html.find('div[name="sample-icon"]')[0].innerHTML = v)
-        console.debug(...DEBUG_PREFIX, "DONE")
+        betterLogger.debug("DONE")
     }
     else
         html.find('div[name="sample-icon"]')[0].innerHTML = `<img height=128 width=128 style="border: 0;" src="${html.find('[name="icon"]').val()}">`
@@ -112,9 +109,6 @@ Hooks.once('ready', () => {
     try{window.Ardittristan.ColorSetting.tester} catch {
         ui.notifications.notify('Please make sure you have the "lib - ColorSettings" module installed and enabled.', "error");
     }
-    // console.log("version",version)
-    // version = game.modules.get("journal-icon-numbers").data.version
-    // console.log("version",version)
     if (game.user.isGM) {
         Hooks.on("renderNoteConfig", renderNoteConfig);
         Hooks.on("updateNote", updateNote)
@@ -130,14 +124,14 @@ async function updateNote(scene, note, changes) {
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
     if (hasProperty(changes, 'flags.autoIconFlags.loopDetector')) {
-        console.debug(...DEBUG_PREFIX, "LOOP DETECTOR!!!")
+        betterLogger.debug("LOOP DETECTOR!!!")
         return
     }
 
     // Nothing important changed, quit early
-    console.debug(...DEBUG_PREFIX, changes)
+    betterLogger.debug(changes)
     if (!('renderSheet' in changes || hasProperty(changes, 'flags.autoIconFlags'))) {
-        console.debug(...DEBUG_PREFIX, "No changes")
+        betterLogger.debug( "No changes")
         return
     }
 
@@ -151,7 +145,7 @@ async function updateNote(scene, note, changes) {
     // Inverting the value to ensure it changes.
     new_note.flags.autoIconFlags.loopDetector = !new_note.flags.autoIconFlags.loopDetector
 
-    console.debug(...DEBUG_PREFIX, "Trigger Update !!")
+    betterLogger.debug( "Trigger Update !!")
     scene.updateEmbeddedEntity("Note", new_note) //TODO: try 0.7.5 recursive:false here
 };
 
@@ -166,7 +160,7 @@ async function cleanup_legacy_icons(value) {
     if (value == "no") return
     game.settings.set('journal-icon-numbers', "cleanupLegacy", "no")
 
-    console.debug(...DEBUG_PREFIX, "Legacy Cleanup")
+    betterLogger.debug( "Legacy Cleanup")
 
     for (var scene of game.scenes.entities) {
         let changes = false
@@ -186,7 +180,7 @@ async function cleanup_legacy_icons(value) {
                 }
                 var iconFilePath = await getMakeIcon(new_note.flags.autoIconFlags)
                 if (note.icon !== iconFilePath) {
-                    console.log(...LOG_PREFIX, "Replacing old path " + note.icon + " with " + iconFilePath);
+                    betterLogger.log( "Replacing old path " + note.icon + " with " + iconFilePath);
                     new_note.icon = iconFilePath;
                     changes = true
                 }

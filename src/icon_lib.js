@@ -1,4 +1,4 @@
-import {DEBUG_PREFIX, LOG_PREFIX, ERROR_PREFIX} from './index.js'
+import {betterLogger } from "./better_logger.js";
 
 function commonStyle(fill, stroke, stroke_width) {
   return `style="fill:${fill};stroke:${stroke};stroke-width:${stroke_width};stroke-miterlimit:10;"`
@@ -95,7 +95,7 @@ function embedFonts(cssText) {
 
 
 function errorHandler(e) {
-  console.info('ERR', e)
+  betterLogger.info('ERR', e)
 }
 
 async function getEmbeddedFont(fontFamily, label) {
@@ -146,15 +146,15 @@ export async function getMakeIcon(flags) {
   // Keep iconText in here as well as in the file name for clarity and to (hopefully) minimize collisions.
   var iconFilename = `${JSON.stringify(flags).hashCode()}_${flags.iconText}.svg`;
 
-  console.debug(...DEBUG_PREFIX, "Making", flags.iconText, iconFilename);
+  betterLogger.debug("Making", flags.iconText, iconFilename);
 
   let file = new File([svgString], iconFilename, {});
   var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
   var full_path = uploadPath + "/" + iconFilename
 
   var dest = typeof ForgeVTT === "undefined" ? "data" : "forgevtt"
-  var existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) console.error(...ERROR_PREFIX, error) })
-  console.log(existing)
+  var existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
+  betterLogger.debug(existing)
   if (existing == undefined || existing.target != uploadPath) { // Directory not found above
     await makeDirs(dest, uploadPath)
   }
@@ -169,17 +169,17 @@ export async function getMakeIcon(flags) {
 
 
 async function makeDirs(dest, full_path) {
-  console.debug(...DEBUG_PREFIX, "Creating dirs");
+  betterLogger.debug("Creating dirs");
 
   var base_path = ""
   for (var path of full_path.split("/")) {
     base_path += path + "/"
     await FilePicker.createDirectory(dest, base_path, {}).then((result) => {
-      console.log(...LOG_PREFIX, "Created " + base_path);
+      betterLogger.log("Created " + base_path);
     })
       .catch((error) => {
         if (!error.includes("EEXIST")) {
-          console.error(...ERROR_PREFIX, error);
+          betterLogger.error(error);
         }
       });
   }
