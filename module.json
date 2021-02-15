@@ -23,6 +23,16 @@
       "name": "colorsettings"
     }
   ],
+  "media": [
+    {
+      "type": "screenshot",
+      "url": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/example.png"
+    },
+    {
+      "type": "cover",
+      "url": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/cover.png"
+    }
+  ],
 
   "languages": [
   {
