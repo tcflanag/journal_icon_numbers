@@ -48,20 +48,20 @@ function initliazeData(note) {
 
 async function renderNoteConfig(app, html, data) {
 
-    if (!hasProperty(data, "object._id")) // Only force the size once, so that user can override it. This checks for item creation
-        data.object.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
+    if (!hasProperty(data, "data.data._id")) // Only force the size once, so that user can override it. This checks for item creation
+        data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
 
-    initliazeData(data.object) // Set all my flags
+    initliazeData(data.data) // Set all my flags
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
     html[0].style.top = "100px"; // shift the window up to make room
 
     var templateName = "modules/journal-icon-numbers/template_newColor.html"
-    var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.object.flags })
+    var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.data.flags })
 
-    if (!hasProperty(data, "object._id") && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
+    if (!hasProperty(data, "data._id") && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
         for(var iconFilepath in data.entryIcons) {
-            if  (data.entryIcons[iconFilepath] === getProperty(data.object.flags, 'autoIconFlags.folder')) {
+            if  (data.entryIcons[iconFilepath] === getProperty(data.data.flags, 'autoIconFlags.folder')) {
                 $('select[name="icon"]', html).val(iconFilepath)
                 $('input.icon-path[name="icon"]').val(iconFilepath);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
             }
@@ -80,7 +80,7 @@ async function renderNoteConfig(app, html, data) {
 
     // This is a work around for VTTA smashing the iconSize
     // This will keep it where it is set (since this module loads in after VTTA)
-    $('input[name="iconSize"]').val(data.object.iconSize);
+    $('input[name="iconSize"]').val(data.data.iconSize);
 }
 
 async function svgWrapper(html) {
@@ -119,7 +119,7 @@ Hooks.once('ready', () => {
 async function updateNote(scene, note, changes) {
 
     // Not using autoIcon for this icon, so quit
-    if (!getProperty(note.flags, 'autoIconFlags.autoIcon')) return true
+    if (!getProperty(note.data.flags, 'autoIconFlags.autoIcon')) return true
 
     // If icon changes, and loopDetector does, that means we're in a loop caused 
     // by the update at the end of this function
@@ -137,16 +137,9 @@ async function updateNote(scene, note, changes) {
 
 
     var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-    new_note.icon = await getMakeIcon(note.flags.autoIconFlags)
+    var icon = await getMakeIcon(note.data.flags.autoIconFlags)
+    note.update({"icon":icon})
 
-    // Since getMakeIcon is async (due to block for file upload, we need to explictly call update here
-    // instead of doing this whole thing as a preUpdate block and getting it for free
-    // This does cause potential infinite loops of changes, hence loop detector above
-    // Inverting the value to ensure it changes.
-    new_note.flags.autoIconFlags.loopDetector = !new_note.flags.autoIconFlags.loopDetector
-
-    betterLogger.debug( "Trigger Update !!")
-    scene.updateEmbeddedEntity("Note", new_note) //TODO: try 0.7.5 recursive:false here
 };
 
 

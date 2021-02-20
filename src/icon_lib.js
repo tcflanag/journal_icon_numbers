@@ -154,7 +154,7 @@ export async function getMakeIcon(flags) {
 
   var dest = typeof ForgeVTT === "undefined" ? "data" : "forgevtt"
   var existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
-  betterLogger.debug(existing)
+  betterLogger.debug("FilePicker",existing)
   if (existing == undefined || existing.target != uploadPath) { // Directory not found above
     await makeDirs(dest, uploadPath)
   }
@@ -163,7 +163,8 @@ export async function getMakeIcon(flags) {
   }
 
   var result = await FilePicker.upload(dest, uploadPath, file, {});
-  return result.path;
+  betterLogger.debug("GetMake",result)
+  return full_path // TODO Debug the File Picke then return   result.path;
 
 }
 
