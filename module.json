@@ -7,7 +7,7 @@
     "email":"tiwato@gmail.com",
     "discord":"ChrisF#4895"
     }],
-  "version": "v1.2.1",
+  "version": "v1.2.2",
   "minimumCoreVersion": "0.6.0",
   "compatibleCoreVersion":"0.7.9",
   "esmodules":["src/index.js"],
@@ -17,6 +17,7 @@
   
   "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
   "bugs": "https://gitlab.com/tiwato/journal_icon_numbers/-/issues",
+  "allowBugReporter": true,
   "changelog": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/CHANGELOG.md",
   "dependencies": [
     {
