@@ -13,9 +13,9 @@
   "esmodules":["src/index.js"],
   "url":"https://gitlab.com/tiwato/journal_icon_numbers",
   "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/0.8.x_dev/module.json",
-  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.2.3/journal_icon_numbers.zip",
+  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/0.8.x_dev/journal_icon_numbers.zip",
   
-  "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
+  "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/0.8.x_dev/README.md",
   "bugs": "https://gitlab.com/tiwato/journal_icon_numbers/-/issues",
   "allowBugReporter": true,
   "changelog": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/CHANGELOG.md",
