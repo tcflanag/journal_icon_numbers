@@ -21,7 +21,8 @@
   "changelog": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/CHANGELOG.md",
   "dependencies": [
     {
-      "name": "colorsettings"
+      "name": "colorsettings",
+      "type": "module"
     }
   ],
   "media": [
