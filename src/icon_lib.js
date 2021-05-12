@@ -164,7 +164,7 @@ export async function getMakeIcon(flags) {
 
   var result = await FilePicker.upload(dest, uploadPath, file, {});
   betterLogger.debug("GetMake",result)
-  return full_path // TODO Debug the File Picke then return   result.path;
+  return result.path;
 
 }
 

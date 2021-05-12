@@ -1,3 +1,9 @@
+# 1.3.0
+* Support for 0.8.x 
+
+# 1.2.2
+* Add support for Bug Reporter
+
 # 1.2.1
 * Fixed the auto folder naming so that you can change it later
 
