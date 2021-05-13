@@ -44,6 +44,8 @@
     "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values",
 
     "SETTINGS.AutoJournalIcon.folderIconN": "Icons from Folders",
-    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default"
+    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default",
 
+    "SETTINGS.AutoJournalIcon.fontSizeN": "Font Size",
+    "SETTINGS.AutoJournalIcon.fontSizeH": "Default font size for hover-text."
 }
