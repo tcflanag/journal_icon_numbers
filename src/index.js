@@ -54,7 +54,7 @@ async function renderNoteConfig(app, html, data) {
     initliazeData(data.data) // Set all my flags
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
-    html[0].style.top = "100px"; // shift the window up to make room
+    html[0].style.top = ""; // shift the window up to make room
 
     var templateName = "modules/journal-icon-numbers/template_newColor.html"
     var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.data.flags })
