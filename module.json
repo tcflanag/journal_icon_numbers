@@ -7,13 +7,13 @@
     "email":"tiwato@gmail.com",
     "discord":"ChrisF#4895"
     }],
-  "version": "v1.2.4",
-  "minimumCoreVersion": "0.6.0",
-  "compatibleCoreVersion":"0.7.9",
+  "version": "v1.3.0",
+  "minimumCoreVersion": "0.8.0",
+  "compatibleCoreVersion":"0.8.3",
   "esmodules":["src/index.js"],
   "url":"https://gitlab.com/tiwato/journal_icon_numbers",
   "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/master/module.json",
-  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.2.4/journal_icon_numbers.zip",
+  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.3.0/journal_icon_numbers.zip",
   
   "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
   "bugs": "https://gitlab.com/tiwato/journal_icon_numbers/-/issues",
@@ -21,7 +21,8 @@
   "changelog": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/CHANGELOG.md",
   "dependencies": [
     {
-      "name": "colorsettings"
+      "name": "colorsettings",
+      "type": "module"
     }
   ],
   "media": [
