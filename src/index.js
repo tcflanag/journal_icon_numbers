@@ -47,7 +47,7 @@ function initliazeData(note) {
 
 async function renderNoteConfig(app, html, data) {
 
-    if (!hasProperty(data, "object._id")) // Only force the size once, so that user can override it. This checks for item creation
+    if (!hasProperty(data, "data.data._id")) // Only force the size once, so that user can override it. This checks for item creation
         data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
         data.data.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
 
@@ -215,6 +215,15 @@ async function registerSettings() {
         config: true
     });
     
+    game.settings.register('journal-icon-numbers', "fontSize", {
+        name: "SETTINGS.AutoJournalIcon.fontSizeN",
+        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
+        scope: "world",
+        type: Number,
+        default: 48,
+        config: true
+    });
+
     game.settings.register('journal-icon-numbers', "fontSize", {
         name: "SETTINGS.AutoJournalIcon.fontSizeN",
         hint: "SETTINGS.AutoJournalIcon.fontSizeH",
