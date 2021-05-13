@@ -42,7 +42,6 @@ function initliazeData(note) {
     setPropertyOnce(note, "flags.autoIconFlags.foreColor", game.settings.get('journal-icon-numbers', "foreColor"))
     setPropertyOnce(note, "flags.autoIconFlags.backColor", game.settings.get('journal-icon-numbers', "backColor"))
     setPropertyOnce(note, "flags.autoIconFlags.fontFamily", game.settings.get('journal-icon-numbers', "fontFamily"))
-    setPropertyOnce(note, "flags.autoIconFlags.loopDetector", 0)
 
 }
 
@@ -118,30 +117,16 @@ Hooks.once('ready', () => {
     }
 });
 
-async function updateNote(scene, note, changes) {
+async function updateNote(note, changes,id) {
 
-    // Not using autoIcon for this icon, so quit
+    // // Not using autoIcon for this icon, so quit
     if (!getProperty(note.data.flags, 'autoIconFlags.autoIcon')) return true
 
-    // If icon changes, and loopDetector does, that means we're in a loop caused 
-    // by the update at the end of this function
-    if (hasProperty(changes, 'flags.autoIconFlags.loopDetector')) {
-        betterLogger.debug("LOOP DETECTOR!!!")
-        return
-    }
-
-    // Nothing important changed, quit early
-    betterLogger.debug(changes)
-    if (!('renderSheet' in changes || hasProperty(changes, 'flags.autoIconFlags'))) {
-        betterLogger.debug( "No changes")
-        return
-    }
-
-
     var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-    var icon = await getMakeIcon(note.data.flags.autoIconFlags)
-    note.update({"icon":icon})
-
+    
+    new_note.icon = await getMakeIcon(note.data.flags.autoIconFlags)
+    betterLogger.debug( "Trigger Update !!")
+    canvas.scene.updateEmbeddedDocuments("Note",[new_note], {recursive:false})
 };
 
 
@@ -230,6 +215,15 @@ async function registerSettings() {
         config: true
     });
     
+    game.settings.register('journal-icon-numbers', "fontSize", {
+        name: "SETTINGS.AutoJournalIcon.fontSizeN",
+        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
+        scope: "world",
+        type: Number,
+        default: 48,
+        config: true
+    });
+
     game.settings.register('journal-icon-numbers', "fontSize", {
         name: "SETTINGS.AutoJournalIcon.fontSizeN",
         hint: "SETTINGS.AutoJournalIcon.fontSizeH",
