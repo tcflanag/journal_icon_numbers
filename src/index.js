@@ -233,15 +233,6 @@ async function registerSettings() {
         config: true
     });
 
-    game.settings.register('journal-icon-numbers', "fontSize", {
-        name: "SETTINGS.AutoJournalIcon.fontSizeN",
-        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
-        scope: "world",
-        type: Number,
-        default: 48,
-        config: true
-    });
-
     game.settings.register('journal-icon-numbers', "folderIcon", {
         name: "SETTINGS.AutoJournalIcon.folderIconN",
         hint: "SETTINGS.AutoJournalIcon.folderIconH",
