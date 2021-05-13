@@ -50,11 +50,12 @@ async function renderNoteConfig(app, html, data) {
 
     if (!hasProperty(data, "object._id")) // Only force the size once, so that user can override it. This checks for item creation
         data.object.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
+        data.object.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
 
     initliazeData(data.object) // Set all my flags
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
-    html[0].style.top = "100px"; // shift the window up to make room
+    html[0].style.top = ""; // shift the window up to make room
 
     var templateName = "modules/journal-icon-numbers/template_newColor.html"
     var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.object.flags })
@@ -81,6 +82,7 @@ async function renderNoteConfig(app, html, data) {
     // This is a work around for VTTA smashing the iconSize
     // This will keep it where it is set (since this module loads in after VTTA)
     $('input[name="iconSize"]').val(data.object.iconSize);
+    $('input[name="fontSize"]').val(data.object.fontSize);
 }
 
 async function svgWrapper(html) {
@@ -232,6 +234,15 @@ async function registerSettings() {
         scope: "world",
         type: Number,
         default: 0.75,
+        config: true
+    });
+    
+    game.settings.register('journal-icon-numbers', "fontSize", {
+        name: "SETTINGS.AutoJournalIcon.fontSizeN",
+        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
+        scope: "world",
+        type: Number,
+        default: 48,
         config: true
     });
 
