@@ -1,3 +1,7 @@
+# 1.2.4
+* Add ability do set default font size for the standard hover text.
+* Fix issue where window started partly off-screen.
+
 # 1.2.2
 * Add support for Bug Reporter
 
