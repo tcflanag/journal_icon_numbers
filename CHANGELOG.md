@@ -1,3 +1,6 @@
+# 1.3.1
+* Fixed 'may not overwrite non-media files' error when 'Upload Path' ended with '/'
+
 # 1.3.0
 * Support for 0.8.x (not backwards compatible)
 

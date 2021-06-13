@@ -150,7 +150,7 @@ export async function getMakeIcon(flags) {
 
   let file = new File([svgString], iconFilename, {});
   var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
-  var full_path = uploadPath + "/" + iconFilename
+  var full_path=pathJoin(uploadPath,iconFilename)
 
   var dest = typeof ForgeVTT === "undefined" ? "data" : "forgevtt"
   var existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
@@ -185,3 +185,9 @@ async function makeDirs(dest, full_path) {
       });
   }
 };
+
+function pathJoin(...args){
+  const separator = '/';
+  const replace   = new RegExp(separator+'{1,}', 'g');
+  return args.join(separator).replace(replace, separator);
+}
