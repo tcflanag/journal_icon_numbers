@@ -1,3 +1,6 @@
+# 1.3.3
+* Fix error introduced in 1.3.2 per #21
+
 # 1.3.2
 * Fixed issue with users of the Forge getting upload toasts anytime they even move an icon. This might have also appeared as "Quota Exceeded" per #20
 

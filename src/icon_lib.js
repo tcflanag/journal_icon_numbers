@@ -151,6 +151,7 @@ export async function getMakeIcon(flags) {
   let file = new File([svgString], iconFilename, {});
   var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
   uploadPath = uploadPath.replace(/\/*$/,"") // Strip trailing slashes
+  uploadPath = uploadPath.replace(/^\/*/,"") // Strip leading slashes
 
   var full_path=pathJoin(uploadPath,iconFilename)
 
@@ -163,7 +164,7 @@ export async function getMakeIcon(flags) {
   else if (existing.files.includes(full_path)) {
     return full_path
   }
-  else {
+  else if  (typeof ForgeVTT !== "undefined") {
     for (const file of existing.files){
       // TheForge returns full URIs with a random hash at the begining. Strip those for testing
       if (pathJoin(... new URL(file)["pathname"].split('/').splice(2)) == full_path) {
