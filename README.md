@@ -7,7 +7,7 @@ This module will automatically apply numbered icons (map pins) to journal entrie
 * [A-Z][0-999]
 * [0-999][A-Z]
 * [A-Z].
-* [A-Z](space)
+* [A-Z] (space)
 * Custom regex matching
 
 The last three are disabled by default, and they all can be enable/disable in the settings menu
