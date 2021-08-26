@@ -6,6 +6,11 @@ This module will automatically apply numbered icons (map pins) to journal entrie
 * [0-9999]
 * [A-Z][0-999]
 * [0-999][A-Z]
+* [A-Z].
+* [A-Z](space)
+* Custom regex matching
+
+The last three are disabled by default, and they all can be enable/disable in the settings menu
 
 ![Example of assorted pins on a map](example.png)
 
@@ -16,14 +21,10 @@ Additionally, you can set a default stock icon for a group of journal entries by
 To use, just drag correctly named journals to your map. The icon will be automatically selected to match the name. Alternatively, you can manually enter the icon text in the Map Note Configuration window.
 
 
-
 You can select a default global style of shape, color and font in the settings menu, and also override all of thm on a per-pin basis.
 
 The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packages/backgroundless-pins/) mod which is highly recommended.
 
-
-## Known issues
-* If you not seeing the new preview feature, or are having bugs with 0.7.X, please uninstall and reinstall the mod.  Versions prior to 1.0.10 had a bad manifest, and hence do not update without uninstalling.
 
 ## Questions
 Feel free to contact me on Discord @ChrisF#4895, by filing an issue on GitLab, or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).

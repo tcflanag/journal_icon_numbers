@@ -29,12 +29,43 @@ function setPropertyOnce(object, property, value) {
     setProperty(object, property, value)
 }
 
-function initliazeData(note) {
+function initializeData(note) {
     // Init the data.  This is outside the above block so that I can add new flags easily
     const label_source = (note.text != undefined && note.text.length >= 1) ? note.text : game.journal.get(note.entryId).data.name; // TODO entryName
     let folder_id = game.journal.get(note.entryId).data.folder
     let folder = game.folders.get(folder_id)
-    var matches = label_source.match(/^\d{1,3}[a-zA-Z]|^[a-zA-Z]\d{1,3}|\d{1,4}/)
+    
+    var reg_list = []
+
+    if (game.settings.get('journal-icon-numbers', "reg_num_alpha")){
+        reg_list.push("^\\d{1,3}[a-zA-Z]")
+    }
+    
+    if (game.settings.get('journal-icon-numbers', "reg_alpha_num")){
+        reg_list.push("^[a-zA-Z]\\d{1,3}")
+    }
+    
+    if (game.settings.get('journal-icon-numbers', "reg_num")){
+        reg_list.push("^\\d{1,4}")
+    }
+    
+    if (game.settings.get('journal-icon-numbers', "reg_alpha_space")){
+        reg_list.push("^[a-zA-Z] ")
+    }
+    if (game.settings.get('journal-icon-numbers', "reg_alpha_dot")){
+        reg_list.push("^[a-zA-Z].")
+    }
+    if (game.settings.get('journal-icon-numbers', "reg_custom")){
+        reg_list.push(game.settings.get('journal-icon-numbers', "reg_custom"))
+    }
+    
+    var total_reg = RegExp(reg_list.join('|'))
+    betterLogger.debug("Full Regex",total_reg)
+
+    var matches = label_source.match(total_reg)
+    betterLogger.debug("Label to test",label_source)
+    betterLogger.debug("Result",matches ? matches[0] : "",matches)
+
     setPropertyOnce(note, "flags.autoIconFlags.autoIcon", !!matches)
     setPropertyOnce(note, "flags.autoIconFlags.iconText", matches ? matches[0] : "")
     setPropertyOnce(note, "flags.autoIconFlags.folder", folder ? folder.data.name: "")
@@ -51,7 +82,7 @@ async function renderNoteConfig(app, html, data) {
         data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
         data.data.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
 
-    initliazeData(data.data) // Set all my flags
+    initializeData(data.data) // Set all my flags
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
     html[0].style.top = ""; // shift the window up to make room
@@ -150,7 +181,7 @@ async function cleanup_legacy_icons(value) {
             if (value == "full") 
                 delete new_note.flags['autoIconFlags']
             
-            initliazeData(new_note)
+            initializeData(new_note)
             if (new_note.flags.autoIconFlags.autoIcon) {
                 if (value == "full") {
                     let new_size = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
@@ -241,6 +272,13 @@ async function registerSettings() {
         default: true,
         config: true
     });
+
+    game.settings.register('journal-icon-numbers', "reg_alpha_num", {name: "SETTINGS.AutoJournalIcon.reg_alpha_num",hint: "",scope: "world",type: Boolean,default: true,config: true});
+    game.settings.register('journal-icon-numbers', "reg_num_alpha", {name: "SETTINGS.AutoJournalIcon.reg_num_alpha",hint: "",scope: "world",type: Boolean,default: true,config: true});
+    game.settings.register('journal-icon-numbers', "reg_num", {name: "SETTINGS.AutoJournalIcon.reg_num",hint: "",scope: "world",type: Boolean,default: true,config: true});
+    game.settings.register('journal-icon-numbers', "reg_alpha_space", {name: "SETTINGS.AutoJournalIcon.reg_alpha_space",hint: "",scope: "world",type: Boolean,default: false,config: true});
+    game.settings.register('journal-icon-numbers', "reg_alpha_dot", {name: "SETTINGS.AutoJournalIcon.reg_alpha_dot",hint: "",scope: "world",type: Boolean,default: false,config: true});
+    game.settings.register('journal-icon-numbers', "reg_custom", {name: "SETTINGS.AutoJournalIcon.reg_custom",hint: "SETTINGS.AutoJournalIcon.reg_custom_hint",scope: "world",type: String,default: "",config: true});
 
     new window.Ardittristan.ColorSetting("journal-icon-numbers", "foreColor", {
         name: "SETTINGS.AutoJournalIcon.foreColorN",      // The name of the setting in the settings menu

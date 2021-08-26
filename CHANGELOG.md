@@ -1,3 +1,6 @@
+# 1.4.0
+* Add several new matching patterns, along with user defined (regex) based matching.
+
 # 1.3.3
 * Fix error introduced in 1.3.2 per #21
 
