@@ -25,6 +25,22 @@ You can select a default global style of shape, color and font in the settings m
 
 The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packages/backgroundless-pins/) mod which is highly recommended.
 
+## Matching and RegEx details
+* All matching is done in the order seen in the settings page
+* Built in regexs
+    * `/^\d{1,3}[a-zA-Z]/`
+    * `/^[a-zA-Z]\d{1,3}/`
+    * `/^\d{1,4}/`
+    * `/^([a-zA-Z]) /`
+    * `/^([a-zA-Z])\./`
+* Custom Regex
+    * No need for leading or trailing /. 
+    * You should start with ^ to match off the first character of the jounal title 
+    * The last matchgroup used will be returned
+    * Multiple values can be separated | separated. 
+        * e.g. `^\d:\d|^[a-zA-Z]\.\d{1,2}`
+    * Use `CONFIG.debug.journal_icon_numbers = true` in the console for debugging
+
 
 ## Questions
 Feel free to contact me on Discord @ChrisF#4895, by filing an issue on GitLab, or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).

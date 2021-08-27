@@ -38,42 +38,51 @@ function initializeData(note) {
     var reg_list = []
 
     if (game.settings.get('journal-icon-numbers', "reg_num_alpha")){
-        reg_list.push("^\\d{1,3}[a-zA-Z]")
+        reg_list.push(/^\d{1,3}[a-zA-Z]/)
     }
     
     if (game.settings.get('journal-icon-numbers', "reg_alpha_num")){
-        reg_list.push("^[a-zA-Z]\\d{1,3}")
+        reg_list.push(/^[a-zA-Z]\d{1,3}/)
     }
     
     if (game.settings.get('journal-icon-numbers', "reg_num")){
-        reg_list.push("^\\d{1,4}")
+        reg_list.push(/^\d{1,4}/)
     }
     
     if (game.settings.get('journal-icon-numbers', "reg_alpha_space")){
-        reg_list.push("^[a-zA-Z] ")
+        reg_list.push(/^([a-zA-Z]) /)
     }
     if (game.settings.get('journal-icon-numbers', "reg_alpha_dot")){
-        reg_list.push("^[a-zA-Z].")
+        reg_list.push(/^([a-zA-Z])\./)
     }
     if (game.settings.get('journal-icon-numbers', "reg_custom")){
-        reg_list.push(game.settings.get('journal-icon-numbers', "reg_custom"))
+        reg_list.push(RegExp(game.settings.get('journal-icon-numbers', "reg_custom")))
     }
     
-    var total_reg = RegExp(reg_list.join('|'))
-    betterLogger.debug("Full Regex",total_reg)
-
-    var matches = label_source.match(total_reg)
     betterLogger.debug("Label to test",label_source)
-    betterLogger.debug("Result",matches ? matches[0] : "",matches)
+    var result = regTester(label_source,reg_list)
+    betterLogger.debug("Result",result)
 
-    setPropertyOnce(note, "flags.autoIconFlags.autoIcon", !!matches)
-    setPropertyOnce(note, "flags.autoIconFlags.iconText", matches ? matches[0] : "")
+    setPropertyOnce(note, "flags.autoIconFlags.autoIcon", !!result)
+    setPropertyOnce(note, "flags.autoIconFlags.iconText", result )
     setPropertyOnce(note, "flags.autoIconFlags.folder", folder ? folder.data.name: "")
     setPropertyOnce(note, "flags.autoIconFlags.iconType", game.settings.get('journal-icon-numbers', "iconType"))
     setPropertyOnce(note, "flags.autoIconFlags.foreColor", game.settings.get('journal-icon-numbers', "foreColor"))
     setPropertyOnce(note, "flags.autoIconFlags.backColor", game.settings.get('journal-icon-numbers', "backColor"))
     setPropertyOnce(note, "flags.autoIconFlags.fontFamily", game.settings.get('journal-icon-numbers', "fontFamily"))
 
+}
+
+function regTester(label_source,reg_list){
+    for( var reg of reg_list) {
+        betterLogger.debug("Testing Regex",reg)
+        var matches = label_source.match(reg)
+        if (matches){
+            betterLogger.debug("Matches",matches)
+            for (var match of matches.reverse())
+            if (match) return match         
+        }
+    }
 }
 
 async function renderNoteConfig(app, html, data) {

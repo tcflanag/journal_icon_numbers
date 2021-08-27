@@ -1,3 +1,7 @@
+# 1.4.1
+* Drop the trailing '.' and ' ' from the new matching patterns
+* Expand custom regex support (see readme for details)
+
 # 1.4.0
 * Add several new matching patterns, along with user defined (regex) based matching.
 

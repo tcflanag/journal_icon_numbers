@@ -55,7 +55,7 @@
     "SETTINGS.AutoJournalIcon.reg_alpha_space": "A letter followed by a space (Q )",
     "SETTINGS.AutoJournalIcon.reg_alpha_dot": "A letter followed by a period (Z.)",
     "SETTINGS.AutoJournalIcon.reg_custom": "Custom RegEx (blank to disable)",
-    "SETTINGS.AutoJournalIcon.reg_custom_hint": "* No need for leading or trailing /. * Start with ^ to match off the first character of the jounal title * Can have multiple values | separated. * ^\\d.\\d|^[a-zA-Z].\\d{1,2}"
+    "SETTINGS.AutoJournalIcon.reg_custom_hint": "See README.md for more details"
     
 
 
