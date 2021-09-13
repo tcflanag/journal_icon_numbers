@@ -103,7 +103,7 @@ async function getEmbeddedFont(fontFamily, label) {
   if (fontFamily === "") return ""
   let fontCSS = '<defs><style type="text/css">'
   // Get just the characters needed to save space
-  fontCSS += await fetchCSS(`https://fonts.googleapis.com/icon?family=${fontFamily}&text=${label}`).then(embedFonts).catch(errorHandler)
+  fontCSS += await fetchCSS(`https://fonts.googleapis.com/css2?family=${fontFamily}&text=${label}`).then(embedFonts).catch(errorHandler)
   fontCSS += '</style></defs>'
   return fontCSS
 }
@@ -120,7 +120,20 @@ export async function getSvgString(flags) {
 
   var svgString = svgTemplate()
 
-  svgString += await getEmbeddedFont(flags.fontFamily, flags.iconText)
+
+  var fontFamily = flags.fontFamily
+  
+  if (flags.fontItalics && flags.fontBold){
+    fontFamily += ":ital,wght@1,700"
+  }
+  else if (flags.fontItalics){
+    fontFamily += ":ital@1"
+  }
+  else if (flags.fontBold){
+    fontFamily += ":wght@700"
+  }
+  
+  svgString += await getEmbeddedFont(fontFamily, flags.iconText)
 
   let backFunction = () => { }  // Default case
 

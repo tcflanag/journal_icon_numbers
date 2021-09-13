@@ -1,10 +1,13 @@
 import { getMakeIcon, getSvgString } from './icon_lib.js';
 import {betterLogger } from "./better_logger.js";
+import {MySubmenuApplicationClass,regexSettingsMenu,get_all_settings} from "./settings_menu.js";
+
+
+//CONFIG.debug.journal_icon_numbers = true // TODO REMOVE BEFORE TAKE-OFF
 
 
 
-
-function getIconTypes() {
+export function getIconTypes() {
     return {
         hexh: game.i18n.format("AutoJournalIcon.HexagonH"),
         hexv: game.i18n.format("AutoJournalIcon.HexagonV"),
@@ -15,14 +18,17 @@ function getIconTypes() {
     };
 }
 
-async function getFontNames() {
+
+export async function getFontData() {
     let fonts = {"":""}
     let query = await fetch("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAPWX7UhP6KfUIdFl7nF71Wg5PIjl64ycw").catch((e) => { betterLogger.error(e) })
     if (query === undefined) return ["", "ERROR - Failed to query fonts"]
     let json_fonts = await query.json()
-    json_fonts.items.forEach(x => { fonts[x.family] = x.family })
+    json_fonts.items.forEach(x => { fonts[x.family] = x.variants })
     return fonts
 }
+
+export var fontData = {}
 
 function setPropertyOnce(object, property, value) {
     if (hasProperty(object, property)) return
@@ -34,29 +40,33 @@ function initializeData(note) {
     const label_source = (note.text != undefined && note.text.length >= 1) ? note.text : game.journal.get(note.entryId).data.name; // TODO entryName
     let folder_id = game.journal.get(note.entryId).data.folder
     let folder = game.folders.get(folder_id)
-    
-    var reg_list = []
 
-    if (game.settings.get('journal-icon-numbers', "reg_num_alpha")){
+    var reg_list = []
+    var settings = get_all_settings()
+    
+
+    if (settings.reg_num_alpha){
         reg_list.push(/^\d{1,3}[a-zA-Z]/)
     }
     
-    if (game.settings.get('journal-icon-numbers', "reg_alpha_num")){
+    if (settings.reg_alpha_num){
         reg_list.push(/^[a-zA-Z]\d{1,3}/)
     }
     
-    if (game.settings.get('journal-icon-numbers', "reg_num")){
+    if (settings.reg_num){
         reg_list.push(/^\d{1,4}/)
     }
     
-    if (game.settings.get('journal-icon-numbers', "reg_alpha_space")){
+    if (settings.reg_alpha_space){
         reg_list.push(/^([a-zA-Z]) /)
     }
-    if (game.settings.get('journal-icon-numbers', "reg_alpha_dot")){
+
+    if (settings.reg_alpha_dot){
         reg_list.push(/^([a-zA-Z])\./)
     }
-    if (game.settings.get('journal-icon-numbers', "reg_custom")){
-        reg_list.push(RegExp(game.settings.get('journal-icon-numbers', "reg_custom")))
+    
+    if (settings.reg_custom){
+        reg_list.push(RegExp(settings.reg_custom))
     }
     
     betterLogger.debug("Label to test",label_source)
@@ -66,14 +76,18 @@ function initializeData(note) {
     setPropertyOnce(note, "flags.autoIconFlags.autoIcon", !!result)
     setPropertyOnce(note, "flags.autoIconFlags.iconText", result )
     setPropertyOnce(note, "flags.autoIconFlags.folder", folder ? folder.data.name: "")
-    setPropertyOnce(note, "flags.autoIconFlags.iconType", game.settings.get('journal-icon-numbers', "iconType"))
-    setPropertyOnce(note, "flags.autoIconFlags.foreColor", game.settings.get('journal-icon-numbers', "foreColor"))
-    setPropertyOnce(note, "flags.autoIconFlags.backColor", game.settings.get('journal-icon-numbers', "backColor"))
-    setPropertyOnce(note, "flags.autoIconFlags.fontFamily", game.settings.get('journal-icon-numbers', "fontFamily"))
+    setPropertyOnce(note, "flags.autoIconFlags.iconType", settings.iconType)
+    setPropertyOnce(note, "flags.autoIconFlags.foreColor", settings.foreColor)
+    setPropertyOnce(note, "flags.autoIconFlags.backColor", settings.backColor)
+    setPropertyOnce(note, "flags.autoIconFlags.fontFamily", settings.fontFamily)
+    setPropertyOnce(note, "flags.autoIconFlags.fontBold", settings.fontBold)
+    setPropertyOnce(note, "flags.autoIconFlags.fontItalics", settings.fontItalics)
+    setPropertyOnce(note, "flags.autoIconFlags.strokeWidth", settings.strokeWidth)
+    betterLogger.debug("Initial Flags",note)
 
 }
 
-function regTester(label_source,reg_list){
+export function regTester(label_source,reg_list){
     for( var reg of reg_list) {
         betterLogger.debug("Testing Regex",reg)
         var matches = label_source.match(reg)
@@ -96,12 +110,14 @@ async function renderNoteConfig(app, html, data) {
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
     html[0].style.top = ""; // shift the window up to make room
 
-    var templateName = "modules/journal-icon-numbers/template_newColor.html"
-    var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: await getFontNames(), flags: data.data.flags })
-
-    if (!hasProperty(data, "data._id") && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
-        for(var iconFilepath in data.entryIcons) {
-            if  (data.entryIcons[iconFilepath] === getProperty(data.data.flags, 'autoIconFlags.folder')) {
+    var templateName = "modules/journal-icon-numbers/templates/template_notesPage.html"
+    var fontData = await getFontData()
+    betterLogger.debug("Render Flags",data.data.flags)
+    var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: data.data.flags })
+    betterLogger.debug("Rendered result",data)
+    if ((!hasProperty(data, "data._id") || data.data._id == null ) && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
+        for (const [iconName, iconFilepath] of Object.entries(data.icons)){
+            if  (iconName === getProperty(data.data.flags, 'autoIconFlags.folder')) {
                 $('select[name="icon"]', html).val(iconFilepath)
                 $('input.icon-path[name="icon"]').val(iconFilepath);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
             }
@@ -124,8 +140,8 @@ async function renderNoteConfig(app, html, data) {
     $('input[name="fontSize"]').val(data.data.fontSize);
 }
 
-async function svgWrapper(html) {
-
+export async function svgWrapper(html) {
+    var fontData = await getFontData()
     if (html.find('input[name="flags.autoIconFlags.autoIcon"]')[0].checked) {
         const flags = {
             autoIcon: html.find('input[name="flags.autoIconFlags.autoIcon"]')[0].checked,
@@ -133,10 +149,33 @@ async function svgWrapper(html) {
             iconText: html.find('input[name="flags.autoIconFlags.iconText"]').val(),
             foreColor: html.find('input[name="flags.autoIconFlags.foreColor"]').val(),
             backColor: html.find('input[name="flags.autoIconFlags.backColor"]').val(),
-            fontFamily: html.find('select[name="flags.autoIconFlags.fontFamily"]').val()
+            fontFamily: html.find('select[name="flags.autoIconFlags.fontFamily"]').val(),
+            strokeWidth: html.find('input[name="flags.autoIconFlags.strokeWidth"]').val(),
+            fontBold: html.find('input[name="flags.autoIconFlags.fontBold"]')[0].checked,
+            fontItalics: html.find('input[name="flags.autoIconFlags.fontItalics"]')[0].checked,
 
         }
         getSvgString(flags).then(v => html.find('div[name="sample-icon"]')[0].innerHTML = v)
+        
+        var fontName = html.find('select[name="flags.autoIconFlags.fontFamily"]').val()
+        betterLogger.debug(fontName,fontData[fontName])
+
+        if (fontData[fontName].includes('700')){
+            html.find('input[name="flags.autoIconFlags.fontBold"]')[0].disabled = false
+        }
+        else {
+            html.find('input[name="flags.autoIconFlags.fontBold"]')[0].disabled = true
+            html.find('input[name="flags.autoIconFlags.fontBold"]')[0].checked = false
+        }
+        
+        if (fontData[fontName].includes('italic')){
+            html.find('input[name="flags.autoIconFlags.fontItalics"]')[0].disabled = false
+        }
+        else {
+            html.find('input[name="flags.autoIconFlags.fontItalics"]')[0].disabled = true
+            html.find('input[name="flags.autoIconFlags.fontItalics"]')[0].checked = false
+        }
+
         betterLogger.debug("DONE")
     }
     else
@@ -215,25 +254,38 @@ async function cleanup_legacy_icons(value) {
 }
 
 
+function settingsWrapper(key,type,def){
+    game.settings.register('journal-icon-numbers', key, type,def);
+}
 
 async function registerSettings() {
 
-    game.settings.register('journal-icon-numbers', "fontFamily", {
-        name: "SETTINGS.AutoJournalIcon.fontFamilyN",
-        hint: "SETTINGS.AutoJournalIcon.fontFamilyH",
+    fontData = await getFontData()
+
+    game.settings.registerMenu("journal-icon-numbers", "mySettingsMenu", {
+        name: "SETTINGS.AutoJournalIcon.iconSettingsN",
+        label: "SETTINGS.AutoJournalIcon.iconSettingsL",      // The text label used in the button
+        hint: "SETTINGS.AutoJournalIcon.iconSettingsH",
+        icon: "fas fa-bars",               // A Font Awesome icon used in the submenu button
+        type: MySubmenuApplicationClass,   // A FormApplication subclass
+        restricted: true                   // Restrict this submenu to gamemaster only?
+      });
+
+      game.settings.registerMenu("journal-icon-numbers", "myRegexSettingsMenu", {
+        name: "SETTINGS.AutoJournalIcon.regexSettingsN",
+        label: "SETTINGS.AutoJournalIcon.regexSettingsL",      // The text label used in the button
+        hint: "SETTINGS.AutoJournalIcon.regexSettingsH",
+        icon: "fas fa-bars",               // A Font Awesome icon used in the submenu button
+        type: regexSettingsMenu,   // A FormApplication subclass
+        restricted: true                   // Restrict this submenu to gamemaster only?
+      });
+
+      game.settings.register('journal-icon-numbers', "folderIcon", {
+        name: "SETTINGS.AutoJournalIcon.folderIconN",
+        hint: "SETTINGS.AutoJournalIcon.folderIconH",
         scope: "world",
-        type: String,
-        choices: await getFontNames(),
-        default: "",
-        config: true
-    });
-    game.settings.register('journal-icon-numbers', "iconType", {
-        name: "SETTINGS.AutoJournalIcon.IconStyleN",
-        hint: "SETTINGS.AutoJournalIcon.IconStyleH",
-        scope: "world",
-        type: String,
-        choices: getIconTypes(),
-        default: "circle",
+        type: Boolean,
+        default: true,
         config: true
     });
 
@@ -243,71 +295,26 @@ async function registerSettings() {
         scope: "world",
         type: String,
         default: "upload/journal-icon-numbers",
-        config: true
+        config: true,
     });
 
-    game.settings.register('journal-icon-numbers', "iconScale", {
-        name: "SETTINGS.AutoJournalIcon.iconScaleN",
-        hint: "SETTINGS.AutoJournalIcon.iconScaleH",
-        scope: "world",
-        type: Number,
-        default: 0.75,
-        config: true
-    });
+    settingsWrapper("fontFamily", String,"");
     
-    game.settings.register('journal-icon-numbers', "fontSize", {
-        name: "SETTINGS.AutoJournalIcon.fontSizeN",
-        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
-        scope: "world",
-        type: Number,
-        default: 48,
-        config: true
-    });
+    settingsWrapper( "fontBold", Boolean,false);
+    settingsWrapper("fontItalics", Boolean,false);
+    settingsWrapper( "iconType", String,"circle");
+    settingsWrapper("iconScale", Number,0.75);    
+    settingsWrapper("strokeWidth", Number,10);
+    settingsWrapper("fontSize", Number,48);
+    settingsWrapper("reg_alpha_num",Boolean,true);
+    settingsWrapper("reg_num_alpha", Boolean,true);
+    settingsWrapper("reg_num",Boolean,true);
+    settingsWrapper("reg_alpha_space", Boolean,false);
+    settingsWrapper("reg_alpha_dot", Boolean,false);
+    settingsWrapper("reg_custom", String, "");
 
-    game.settings.register('journal-icon-numbers', "fontSize", {
-        name: "SETTINGS.AutoJournalIcon.fontSizeN",
-        hint: "SETTINGS.AutoJournalIcon.fontSizeH",
-        scope: "world",
-        type: Number,
-        default: 48,
-        config: true
-    });
-
-    game.settings.register('journal-icon-numbers', "folderIcon", {
-        name: "SETTINGS.AutoJournalIcon.folderIconN",
-        hint: "SETTINGS.AutoJournalIcon.folderIconH",
-        scope: "world",
-        type: Boolean,
-        default: true,
-        config: true
-    });
-
-    game.settings.register('journal-icon-numbers', "reg_alpha_num", {name: "SETTINGS.AutoJournalIcon.reg_alpha_num",hint: "",scope: "world",type: Boolean,default: true,config: true});
-    game.settings.register('journal-icon-numbers', "reg_num_alpha", {name: "SETTINGS.AutoJournalIcon.reg_num_alpha",hint: "",scope: "world",type: Boolean,default: true,config: true});
-    game.settings.register('journal-icon-numbers', "reg_num", {name: "SETTINGS.AutoJournalIcon.reg_num",hint: "",scope: "world",type: Boolean,default: true,config: true});
-    game.settings.register('journal-icon-numbers', "reg_alpha_space", {name: "SETTINGS.AutoJournalIcon.reg_alpha_space",hint: "",scope: "world",type: Boolean,default: false,config: true});
-    game.settings.register('journal-icon-numbers', "reg_alpha_dot", {name: "SETTINGS.AutoJournalIcon.reg_alpha_dot",hint: "",scope: "world",type: Boolean,default: false,config: true});
-    game.settings.register('journal-icon-numbers', "reg_custom", {name: "SETTINGS.AutoJournalIcon.reg_custom",hint: "SETTINGS.AutoJournalIcon.reg_custom_hint",scope: "world",type: String,default: "",config: true});
-
-    new window.Ardittristan.ColorSetting("journal-icon-numbers", "foreColor", {
-        name: "SETTINGS.AutoJournalIcon.foreColorN",      // The name of the setting in the settings menu
-        hint: "SETTINGS.AutoJournalIcon.foreColorH",   // A description of the registered setting and its behavior
-        label: "SETTINGS.AutoJournalIcon.foreColorL",         // The text label used in the button
-        restricted: true,             // Restrict this setting to gamemaster only?
-        defaultColor: "#000000ff",     // The default color of the setting
-        scope: "world",               // The scope of the setting
-        onChange: (value) => { }        // A callback function which triggers when the setting is changed
-    })
-
-    new window.Ardittristan.ColorSetting("journal-icon-numbers", "backColor", {
-        name: "SETTINGS.AutoJournalIcon.backColorN",      // The name of the setting in the settings menu
-        hint: "SETTINGS.AutoJournalIcon.backColorH",   // A description of the registered setting and its behavior
-        label: "SETTINGS.AutoJournalIcon.backColorL",         // The text label used in the button
-        restricted: true,             // Restrict this setting to gamemaster only?
-        defaultColor: "#ffffff6f",     // The default color of the setting
-        scope: "world",               // The scope of the setting
-        onChange: (value) => { }        // A callback function which triggers when the setting is changed
-    })
+    settingsWrapper("foreColor", String,"#000000ff")
+    settingsWrapper("backColor", String,"#000000ff")
 
     game.settings.register('journal-icon-numbers', "cleanupLegacy", {
         name: "SETTINGS.AutoJournalIcon.rebuildN",
@@ -320,3 +327,4 @@ async function registerSettings() {
         onChange: (value) => { cleanup_legacy_icons(value) }        // A callback function which triggers when the setting is changed
     });
 }
+

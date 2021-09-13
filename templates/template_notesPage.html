@@ -34,6 +34,28 @@
           <p class="notes">{{localize "SETTINGS.AutoJournalIcon.fontFamilyH"}}</p>
      </div>
 
+
+    <div class="form-group">
+        <label>{{localize "SETTINGS.AutoJournalIcon.fontStyleBold"}}</label>
+          <div class="form-fields">
+            <input type="checkbox" name="flags.autoIconFlags.fontBold" data-dtype="Boolean"  {{checked flags.autoIconFlags.fontBold}}/>
+          </div>
+     </div>
+    
+     <div class="form-group">
+        <label>{{localize "SETTINGS.AutoJournalIcon.fontStyleItalics"}}</label>
+          <div class="form-fields">
+            <input type="checkbox" name="flags.autoIconFlags.fontItalics" data-dtype="Boolean"  {{checked flags.autoIconFlags.fontItalics}}/>
+          </div>
+     </div>
+
+     <div class="form-group">
+        <label>{{localize "SETTINGS.AutoJournalIcon.strokeWidth"}}</label>
+         <div class="form-fields">
+             <input type="text" name="flags.autoIconFlags.strokeWidth" value="{{flags.autoIconFlags.strokeWidth}}" />
+         </div>
+     </div>
+
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.iconTextN"}}</label>
           <div class="form-fields">

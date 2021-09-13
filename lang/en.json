@@ -44,9 +44,9 @@
     "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values",
 
     "SETTINGS.AutoJournalIcon.folderIconN": "Icons from Folders",
-    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default",
+    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default. Journal name matchign has priority over folder name.",
 
-    "SETTINGS.AutoJournalIcon.fontSizeN": "Font Size",
+    "SETTINGS.AutoJournalIcon.fontSizeN": "Mouse-over Font Size",
     "SETTINGS.AutoJournalIcon.fontSizeH": "Default font size for hover-text.",
 
     "SETTINGS.AutoJournalIcon.reg_alpha_num": "A letter + numbers (A24)",
@@ -54,9 +54,21 @@
     "SETTINGS.AutoJournalIcon.reg_num": "Just numbers (123)",
     "SETTINGS.AutoJournalIcon.reg_alpha_space": "A letter followed by a space (Q )",
     "SETTINGS.AutoJournalIcon.reg_alpha_dot": "A letter followed by a period (Z.)",
-    "SETTINGS.AutoJournalIcon.reg_custom": "Custom RegEx (blank to disable)",
-    "SETTINGS.AutoJournalIcon.reg_custom_hint": "See README.md for more details"
-    
+    "SETTINGS.AutoJournalIcon.reg_custom": "Custom RegEx",
+    "SETTINGS.AutoJournalIcon.reg_custom_hint": "Leave blank to disable. See README.md for more details",
+    "SETTINGS.AutoJournalIcon.fontStyleBold":"Bold",
+    "SETTINGS.AutoJournalIcon.fontStyleItalics":"Italics",
+    "SETTINGS.AutoJournalIcon.strokeWidth":"Border Width",
 
+    "SETTINGS.AutoJournalIcon.iconSampleTextN": "Text for sample icon below",
+    "SETTINGS.AutoJournalIcon.iconSampleTextH": "Icon will be an Anchor if the text doesn't match any of the matching criteria",
 
+    "SETTINGS.AutoJournalIcon.iconSettingsN": "Default Icon Style",
+    "SETTINGS.AutoJournalIcon.iconSettingsL": "Default Icon Style",
+    "SETTINGS.AutoJournalIcon.iconSettingsH": "Configure the default icon style. All choices can be overriden on a per-icon basis.",
+
+    "SETTINGS.AutoJournalIcon.regexSettingsN": "Name matching algorithm",
+    "SETTINGS.AutoJournalIcon.regexSettingsL": "Name matching algorithm",
+    "SETTINGS.AutoJournalIcon.regexSettingsH": "Configure what types of journal names to auto apply to"
 }
+

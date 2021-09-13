@@ -1,3 +1,9 @@
+# 1.5.0
+* Add ability to control the border width
+* Add ability to control bold/italics on fonts
+* Reworked the global settings page to give a preview icon
+* Fixed default icon based on folder name feature
+
 # 1.4.1
 * Drop the trailing '.' and ' ' from the new matching patterns
 * Expand custom regex support (see readme for details)
