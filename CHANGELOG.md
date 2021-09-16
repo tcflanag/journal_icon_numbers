@@ -1,3 +1,6 @@
+# 1.5.1
+* Fixed issue with default fontsize/iconsize appying when it shouldn't.
+
 # 1.5.0
 * Add ability to control the border width
 * Add ability to control bold/italics on fonts

@@ -101,10 +101,11 @@ export function regTester(label_source,reg_list){
 
 async function renderNoteConfig(app, html, data) {
 
-    if (!hasProperty(data, "data.data._id")) // Only force the size once, so that user can override it. This checks for item creation
+    console.log(data.data._id)
+    if (!hasProperty(data, "data._id") || data.data._id == null) {// Only force the size once, so that user can override it. This checks for item creation
         data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
         data.data.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
-
+    }
     initializeData(data.data) // Set all my flags
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
