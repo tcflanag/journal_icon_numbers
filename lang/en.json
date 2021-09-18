@@ -10,6 +10,8 @@
     "SETTINGS.AutoJournalIcon.backColorH": "Select the background coloring",
     "SETTINGS.AutoJournalIcon.backColorL": "Background Color Picker",
     
+    "SETTINGS.AutoJournalIcon.colorH": "This accepts both RBG and RBGA (transparency) color codes",
+    
     "SETTINGS.AutoJournalIcon.autoIconN": "Use Auto Icon",
     "SETTINGS.AutoJournalIcon.autoIconH": "Overrides whatever icon is selected above.",
     
@@ -69,6 +71,7 @@
 
     "SETTINGS.AutoJournalIcon.regexSettingsN": "Name matching algorithm",
     "SETTINGS.AutoJournalIcon.regexSettingsL": "Name matching algorithm",
-    "SETTINGS.AutoJournalIcon.regexSettingsH": "Configure what types of journal names to auto apply to"
+    "SETTINGS.AutoJournalIcon.regexSettingsH": "Configure what types of journal names to auto apply to",
+    "SETTINGS.AutoJournalIcon.save": "Save"
 }
 

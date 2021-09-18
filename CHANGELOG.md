@@ -1,3 +1,8 @@
+# 1.5.2
+* Fixed global settings not working on new worlds
+* Fixed bad localization on Save button
+* Re-enabled bug-reporter support
+
 # 1.5.1
 * Fixed issue with default fontsize/iconsize appying when it shouldn't.
 

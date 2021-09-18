@@ -256,7 +256,7 @@ async function cleanup_legacy_icons(value) {
 
 
 function settingsWrapper(key,type,def){
-    game.settings.register('journal-icon-numbers', key, type,def);
+    game.settings.register('journal-icon-numbers', key, {type:type,default: def,scope:"world"});
 }
 
 async function registerSettings() {
@@ -315,7 +315,7 @@ async function registerSettings() {
     settingsWrapper("reg_custom", String, "");
 
     settingsWrapper("foreColor", String,"#000000ff")
-    settingsWrapper("backColor", String,"#000000ff")
+    settingsWrapper("backColor", String,"##ffffff56")
 
     game.settings.register('journal-icon-numbers', "cleanupLegacy", {
         name: "SETTINGS.AutoJournalIcon.rebuildN",
