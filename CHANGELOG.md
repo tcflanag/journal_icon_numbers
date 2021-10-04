@@ -1,3 +1,6 @@
+# 1.5.3
+* Fixed issue in default global settings.
+
 # 1.5.2
 * Fixed global settings not working on new worlds
 * Fixed bad localization on Save button

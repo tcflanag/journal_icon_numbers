@@ -314,8 +314,8 @@ async function registerSettings() {
     settingsWrapper("reg_alpha_dot", Boolean,false);
     settingsWrapper("reg_custom", String, "");
 
-    settingsWrapper("foreColor", String,"#000000ff")
-    settingsWrapper("backColor", String,"##ffffff56")
+    settingsWrapper("foreColor", String, "#000000ff")
+    settingsWrapper("backColor", String, "#ffffff56")
 
     game.settings.register('journal-icon-numbers', "cleanupLegacy", {
         name: "SETTINGS.AutoJournalIcon.rebuildN",
