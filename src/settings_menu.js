@@ -131,7 +131,7 @@ export class MySubmenuApplicationClass extends FormApplication {
     }
   }
 
-var settings = ["reg_custom","reg_alpha_dot","reg_alpha_space","reg_num","reg_num_alpha","reg_alpha_num","iconScale","fontSize","fontItalics","fontBold","fontFamily","backColor","foreColor","iconType","strokeWidth"]
+var settings = ["reg_custom","reg_alpha_dot","reg_alpha_space","reg_num","reg_num_alpha","reg_alpha_num","iconScale","iconFontSize","fontSize","fontItalics","fontBold","fontFamily","backColor","foreColor","iconType","strokeWidth"]
 export function set_settings(data) {
     
     for (const [key, value] of Object.entries(data)) {

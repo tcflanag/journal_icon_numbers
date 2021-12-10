@@ -83,6 +83,7 @@ function initializeData(note) {
     setPropertyOnce(note, "flags.autoIconFlags.fontBold", settings.fontBold)
     setPropertyOnce(note, "flags.autoIconFlags.fontItalics", settings.fontItalics)
     setPropertyOnce(note, "flags.autoIconFlags.strokeWidth", settings.strokeWidth)
+    setPropertyOnce(note, "flags.autoIconFlags.iconFontSize", settings.iconFontSize)
     betterLogger.debug("Initial Flags",note)
 
 }
@@ -152,6 +153,7 @@ export async function svgWrapper(html) {
             backColor: html.find('input[name="flags.autoIconFlags.backColor"]').val(),
             fontFamily: html.find('select[name="flags.autoIconFlags.fontFamily"]').val(),
             strokeWidth: html.find('input[name="flags.autoIconFlags.strokeWidth"]').val(),
+            iconFontSize: html.find('input[name="flags.autoIconFlags.iconFontSize"]').val(),
             fontBold: html.find('input[name="flags.autoIconFlags.fontBold"]')[0].checked,
             fontItalics: html.find('input[name="flags.autoIconFlags.fontItalics"]')[0].checked,
 
@@ -306,6 +308,7 @@ async function registerSettings() {
     settingsWrapper( "iconType", String,"circle");
     settingsWrapper("iconScale", Number,0.75);    
     settingsWrapper("strokeWidth", Number,10);
+    settingsWrapper("iconFontSize", Number,200);
     settingsWrapper("fontSize", Number,48);
     settingsWrapper("reg_alpha_num",Boolean,true);
     settingsWrapper("reg_num_alpha", Boolean,true);

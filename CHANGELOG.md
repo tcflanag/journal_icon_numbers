@@ -1,3 +1,6 @@
+# 1.6.0
+* Add the ability to change the font size in the icon
+
 # 1.5.3
 * Fixed issue in default global settings.
 

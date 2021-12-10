@@ -55,9 +55,9 @@ function templateHexV(fill, stroke, stroke_width = 10) {
 }
 
 const stock_font = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
-function templateText(color, label, fontFamily) {
+function templateText(color, label, fontFamily, iconFontSize) {
   if (fontFamily === "") fontFamily = stock_font
-  return `<text font-family='${fontFamily}' font-size="200" font-weight="400"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
+  return `<text font-family='${fontFamily}' font-size="${iconFontSize}" font-weight="${iconFontSize}"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
 }
 function svgTemplate() {
   return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="128" height="128"><g>';
@@ -144,7 +144,7 @@ export async function getSvgString(flags) {
   if (flags.iconType == "hexv") backFunction = templateHexV
 
   svgString += backFunction(flags.backColor, flags.foreColor, flags.strokeWidth)
-  svgString += templateText(flags.foreColor, flags.iconText, flags.fontFamily);
+  svgString += templateText(flags.foreColor, flags.iconText, flags.fontFamily, flags.iconFontSize);
   return svgString
 }
 

@@ -72,6 +72,9 @@
     "SETTINGS.AutoJournalIcon.regexSettingsN": "Name matching algorithm",
     "SETTINGS.AutoJournalIcon.regexSettingsL": "Name matching algorithm",
     "SETTINGS.AutoJournalIcon.regexSettingsH": "Configure what types of journal names to auto apply to",
-    "SETTINGS.AutoJournalIcon.save": "Save"
+    "SETTINGS.AutoJournalIcon.save": "Save",
+    
+    "SETTINGS.AutoJournalIcon.iconFontSizeN": "Icon Font Size",
+    "SETTINGS.AutoJournalIcon.iconFontSizeH": "Default font size for the icon"
 }
 
