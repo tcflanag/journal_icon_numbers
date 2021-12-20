@@ -103,11 +103,18 @@ export function regTester(label_source,reg_list){
 async function renderNoteConfig(app, html, data) {
 
     console.log(data.data._id)
+    initializeData(data.data) // Set all my flags
+    var new_html = ""
+
     if (!hasProperty(data, "data._id") || data.data._id == null) {// Only force the size once, so that user can override it. This checks for item creation
         data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
         data.data.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
+        if (game.settings.get('journal-icon-numbers', "autoClose") && data.data.flags.autoIconFlags.autoIcon )
+            new_html += "<script> document.getElementsByName('submit')[0].click()</script>" 
     }
-    initializeData(data.data) // Set all my flags
+  
+    $('input[name="iconSize"]').val(data.data.iconSize);
+    $('input[name="fontSize"]').val(data.data.fontSize);
 
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
     html[0].style.top = ""; // shift the window up to make room
@@ -115,7 +122,7 @@ async function renderNoteConfig(app, html, data) {
     var templateName = "modules/journal-icon-numbers/templates/template_notesPage.html"
     var fontData = await getFontData()
     betterLogger.debug("Render Flags",data.data.flags)
-    var new_html = await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: data.data.flags })
+    new_html += await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: data.data.flags })
     betterLogger.debug("Rendered result",data)
     if ((!hasProperty(data, "data._id") || data.data._id == null ) && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
         for (const [iconName, iconFilepath] of Object.entries(data.icons)){
@@ -125,6 +132,7 @@ async function renderNoteConfig(app, html, data) {
             }
         }
     }
+    // Need to keep anything critical for quick mode above here
     html.find('button[name="submit"]').before(new_html);
 
     svgWrapper(html)
@@ -136,10 +144,6 @@ async function renderNoteConfig(app, html, data) {
     //Hook on standard icon changes to detect that (works with pincushion too)
     html.find('[name="icon"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html) }))
 
-    // This is a work around for VTTA smashing the iconSize
-    // This will keep it where it is set (since this module loads in after VTTA)
-    $('input[name="iconSize"]').val(data.data.iconSize);
-    $('input[name="fontSize"]').val(data.data.fontSize);
 }
 
 export async function svgWrapper(html) {
@@ -289,6 +293,16 @@ async function registerSettings() {
         scope: "world",
         type: Boolean,
         default: true,
+        config: true
+    });
+
+
+    game.settings.register('journal-icon-numbers', "autoClose", {
+        name: "SETTINGS.AutoJournalIcon.autoCloseN",
+        hint: "SETTINGS.AutoJournalIcon.autoCloseH",
+        scope: "world",
+        type: Boolean,
+        default: false,
         config: true
     });
 

@@ -1,5 +1,8 @@
+# 1.7.0
+* Add Quick Add Mode for users who have lots of icons to add
+
 # 1.6.0
-* Add the ability to change the font size in the icon
+* Add the ability to change the font size of an icon.
 
 # 1.5.3
 * Fixed issue in default global settings.

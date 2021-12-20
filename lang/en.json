@@ -75,6 +75,9 @@
     "SETTINGS.AutoJournalIcon.save": "Save",
     
     "SETTINGS.AutoJournalIcon.iconFontSizeN": "Icon Font Size",
-    "SETTINGS.AutoJournalIcon.iconFontSizeH": "Default font size for the icon"
+    "SETTINGS.AutoJournalIcon.iconFontSizeH": "Default font size for the icon",
+
+    "SETTINGS.AutoJournalIcon.autoCloseN": "Quick Add Mode",
+    "SETTINGS.AutoJournalIcon.autoCloseH": "Automatically close the icon creation window for new icons that match the auto icon criteria."
 }
 
