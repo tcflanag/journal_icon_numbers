@@ -43,4 +43,4 @@ The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packa
 
 
 ## Questions
-Feel free to contact me on Discord @ChrisF#4895, by filing an issue on GitLab, or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
+Feel free to contact me on Discord \@ChrisF#4895, by filing an issue on GitLab, or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
