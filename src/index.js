@@ -228,7 +228,8 @@ async function cleanup_legacy_icons(value) {
 
     betterLogger.debug( "Legacy Cleanup")
 
-    for (var scene of game.scenes.entities) {
+    const newerVersion = isNewerVersion((game?.version ?? game.data.version), "9.00");
+    for (var scene of newerVersion ? game.scenes.contents : game.scenes.entities) {
         let changes = false
         var new_data = [];
         for (const note of scene.data.notes) {
