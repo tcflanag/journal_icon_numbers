@@ -1,3 +1,6 @@
+# 1.7.1
+* Fix issue with icon rebuilder.  Thanks to @xdy
+
 # 1.7.0
 * Add Quick Add Mode for users who have lots of icons to add
 
