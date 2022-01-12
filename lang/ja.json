@@ -1,0 +1,83 @@
+{
+    "SETTINGS.AutoJournalIcon.IconStyleN": "アイコンのスタイル",
+    "SETTINGS.AutoJournalIcon.IconStyleH": "アイコンの種類を選択してください。",
+
+    "SETTINGS.AutoJournalIcon.foreColorN": "前景色",
+    "SETTINGS.AutoJournalIcon.foreColorH": "前景色を選択します。",
+    "SETTINGS.AutoJournalIcon.foreColorL":  "前景色選択",
+    
+    "SETTINGS.AutoJournalIcon.backColorN": "背景色",
+    "SETTINGS.AutoJournalIcon.backColorH": "背景色を選択します。",
+    "SETTINGS.AutoJournalIcon.backColorL": "背景色選択",
+    
+    "SETTINGS.AutoJournalIcon.colorH": "RBGとRBGA（アルファ＝透明度）の両方のカラーコードを受け付けます。",
+    
+    "SETTINGS.AutoJournalIcon.autoIconN": "自動アイコン",
+    "SETTINGS.AutoJournalIcon.autoIconH": "上で選択されたアイコンを上書きします。",
+    
+    "SETTINGS.AutoJournalIcon.iconTextN": "アイコンテキスト",
+    "SETTINGS.AutoJournalIcon.iconTextH": "半角3文字、全角1~2文字推薦",
+
+    "SETTINGS.AutoJournalIcon.iconScaleN": "アイコンサイズ",
+    "SETTINGS.AutoJournalIcon.iconScaleH": "新しいアイコンの初期サイズ設定です。マス目を単位とします。初回作成時のみ適用されます",
+
+    "SETTINGS.AutoJournalIcon.uploadPathN": "アップロード場所",
+    "SETTINGS.AutoJournalIcon.uploadPathH": "このModによって自動的に生成されたアイコンの画像を保存するパスです。削除しないでください。",
+
+    "SETTINGS.AutoJournalIcon.fontFamilyN": "フォントファミリー",
+    "SETTINGS.AutoJournalIcon.fontFamilyH": "fonts.google.comにあるフォントを利用できます。デフォルトを使用する場合は空にしてください。",
+
+    "SETTINGS.AutoJournalIcon.previewIconN": "アイコンプレビュー",
+    "SETTINGS.AutoJournalIcon.previewIconH": "アイコンの後から適用される着色は表示されません。",
+
+    "SETTINGS.AutoJournalIcon.rebuildN": "アイコン作り直し",
+    "SETTINGS.AutoJournalIcon.rebuildH": "ワールドをすべて走査し、自動モードになっているすべての地点メモの画像を作り直します。地点メモが多いワールドの場合は時間がかかります。完了した時自動的にワールドが再起動します。",
+
+    "AutoJournalIcon.Diamond": "ダイヤ形",
+    "AutoJournalIcon.Circle": "円形",
+    "AutoJournalIcon.Square": "正方形",
+    "AutoJournalIcon.None": "なし",
+    "AutoJournalIcon.HexagonH": "ヘクスH",
+    "AutoJournalIcon.HexagonV": "ヘクスV",
+
+
+    "AutoJournalIcon.norebuild": "作り直し無効化",
+    "AutoJournalIcon.partialrebuild": "設定を保持したまま作り直す",
+    "AutoJournalIcon.fullrebuild": "設定をデフォルトに戻しながら作り直す",
+
+    "SETTINGS.AutoJournalIcon.folderIconN": "フォルダからアイコン名作成",
+    "SETTINGS.AutoJournalIcon.folderIconH": "アイコンの名前をフォルダ名から引き継ぎます。例えば「Village」というフォルダに入っている資料は「Village」というアイコンが適用されます。資料名で一致した場合は、フォルダ名より優先されます。アイコンの名前は地点メモ設定の「地点アイコン」よりご確認ください。",
+
+    "SETTINGS.AutoJournalIcon.fontSizeN": "ホバー時のフォントサイズ",
+    "SETTINGS.AutoJournalIcon.fontSizeH": "地点メモをホバーしたときのフォントサイズを設定します。",
+
+    "SETTINGS.AutoJournalIcon.reg_alpha_num": "1文字+数字 (A24)",
+    "SETTINGS.AutoJournalIcon.reg_num_alpha": "数字+1文字 (23G)",
+    "SETTINGS.AutoJournalIcon.reg_num": "数字のみ (123)",
+    "SETTINGS.AutoJournalIcon.reg_alpha_space": "1文字の後に空白 (Q )",
+    "SETTINGS.AutoJournalIcon.reg_alpha_dot": "1文字の後にピリオド (Z.)",
+    "SETTINGS.AutoJournalIcon.reg_custom": "カスタム正規表現",
+    "SETTINGS.AutoJournalIcon.reg_custom_hint": "空白で無効化されます。詳しくはREADME.mdを参照してください。",
+    "SETTINGS.AutoJournalIcon.fontStyleBold":"太字",
+    "SETTINGS.AutoJournalIcon.fontStyleItalics":"斜体",
+    "SETTINGS.AutoJournalIcon.strokeWidth":"字の太さ",
+
+    "SETTINGS.AutoJournalIcon.iconSampleTextN": "下のサンプルアイコン用のテキスト",
+    "SETTINGS.AutoJournalIcon.iconSampleTextH": "テキストがマッチング条件に一致しない場合はアンカーになります",
+
+    "SETTINGS.AutoJournalIcon.iconSettingsN": "アイコンのデフォルトスタイル",
+    "SETTINGS.AutoJournalIcon.iconSettingsL": "アイコンのデフォルトスタイル",
+    "SETTINGS.AutoJournalIcon.iconSettingsH": "アイコンのデフォルトスタイルを設定します。この設定は個別の地点メモ設定で上書きできます。",
+
+    "SETTINGS.AutoJournalIcon.regexSettingsN": "名前一致アルゴリズム",
+    "SETTINGS.AutoJournalIcon.regexSettingsL": "名前一致アルゴリズム",
+    "SETTINGS.AutoJournalIcon.regexSettingsH": "地点メモに自動的に適用する名前を設定します",
+    "SETTINGS.AutoJournalIcon.save": "保存",
+    
+    "SETTINGS.AutoJournalIcon.iconFontSizeN": "アイコンのフォントサイズ",
+    "SETTINGS.AutoJournalIcon.iconFontSizeH": "アイコンのデフォルトの文字サイズ",
+
+    "SETTINGS.AutoJournalIcon.autoCloseN": "高速追加モード",
+    "SETTINGS.AutoJournalIcon.autoCloseH": "地点メモを配置したとき、自動モードで一致するアイコンは設定を自動的に適用して初期設定ウィンドウを閉じます。"
+}
+
