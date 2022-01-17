@@ -1,3 +1,6 @@
+# 1.7.2
+* Added Japanese localization. Thanks to @besardida
+
 # 1.7.1
 * Fix issue with icon rebuilder.  Thanks to @xdy
 
