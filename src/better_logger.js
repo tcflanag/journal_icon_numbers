@@ -6,8 +6,8 @@ function setLogger() {
   let version = ""
   let title = name
   if (hasProperty(game, 'modules')) {
-    version = game.modules.get(name).data.version
-    title = game.modules.get(name).data.title
+    version = game.modules.get(name).version??game.modules.get(name).data.version
+    title = game.modules.get(name).title??game.modules.get(name).data.title
     
   }
   const LOG_PREFIX = ["%c" + title + "%c " + version + " - LOG -", 'background: #bada55; color: #222', '']

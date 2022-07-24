@@ -1,3 +1,7 @@
+# 1.7.3 
+* v10 support
+  * Feedback Wanted - v10 adds support for linking to sub-pages.  Do people want the auto icons to look at the pagename? 
+
 # 1.7.2
 * Added Japanese localization. Thanks to @besardida
 

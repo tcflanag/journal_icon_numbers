@@ -37,8 +37,15 @@ function setPropertyOnce(object, property, value) {
 
 function initializeData(note) {
     // Init the data.  This is outside the above block so that I can add new flags easily
-    const label_source = (note.text != undefined && note.text.length >= 1) ? note.text : game.journal.get(note.entryId).data.name; // TODO entryName
-    let folder_id = game.journal.get(note.entryId).data.folder
+    let label_source
+    let folder_id
+    if (game.release.generation === 9) {
+        label_source = (note.text !== undefined && note.text.length >= 1) ? note.text : game.journal.get(note.entryId).data.name; // TODO entryName
+        folder_id = game.journal.get(note.entryId).data.folder
+    } else {
+        label_source = (note.text !== undefined && note.text.length >= 1) ? note.text : note.entry.name; // TODO entryName
+        folder_id = note.entry.folder
+    }
     let folder = game.folders.get(folder_id)
 
     var reg_list = []
@@ -102,31 +109,43 @@ export function regTester(label_source,reg_list){
 
 async function renderNoteConfig(app, html, data) {
 
-    console.log(data.data._id)
-    initializeData(data.data) // Set all my flags
+    // TODO data vs data.data
+    if (game.release.generation === 9) {
+        const icons = data.icons
+        data = data.data
+        data.icons = icons
+    }
+
+    initializeData(data) // Set all my flags
     var new_html = ""
 
+    // TODO Don't use data._id
     if (!hasProperty(data, "data._id") || data.data._id == null) {// Only force the size once, so that user can override it. This checks for item creation
-        data.data.iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
-        data.data.fontSize = game.settings.get('journal-icon-numbers', "fontSize");
-        if (game.settings.get('journal-icon-numbers', "autoClose") && data.data.flags.autoIconFlags.autoIcon )
+        let iconSize
+        if (game.release.generation === 9) {
+            iconSize = Math.round(game.scenes.viewed.data.grid * game.settings.get('journal-icon-numbers', "iconScale"));
+        }
+        else {
+            iconSize = Math.round(game.scenes.viewed?.grid.size??game.scenes.viewed.data.grid.size * game.settings.get('journal-icon-numbers', "iconScale"));
+        }
+        var fontSize = game.settings.get('journal-icon-numbers', "fontSize");
+        if (game.settings.get('journal-icon-numbers', "autoClose") && data.flags.autoIconFlags.autoIcon )
             new_html += "<script> document.getElementsByName('submit')[0].click()</script>" 
-    }
-  
-    $('input[name="iconSize"]').val(data.data.iconSize);
-    $('input[name="fontSize"]').val(data.data.fontSize);
 
+        $('input[name="iconSize"]').val(iconSize);
+        $('input[name="fontSize"]').val(fontSize);
+    }
     html[0].style.height = "" //Dynamic height. Especially usefull for the new color picker
     html[0].style.top = ""; // shift the window up to make room
 
     var templateName = "modules/journal-icon-numbers/templates/template_notesPage.html"
     var fontData = await getFontData()
-    betterLogger.debug("Render Flags",data.data.flags)
-    new_html += await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: data.data.flags })
+    betterLogger.debug("Render Flags",data.flags)
+    new_html += await renderTemplate(templateName, { iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: data.flags })
     betterLogger.debug("Rendered result",data)
-    if ((!hasProperty(data, "data._id") || data.data._id == null ) && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
+    if ((!hasProperty(data, "data._id") || data._id == null ) && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
         for (const [iconName, iconFilepath] of Object.entries(data.icons)){
-            if  (iconName === getProperty(data.data.flags, 'autoIconFlags.folder')) {
+            if  (iconName === getProperty(data.flags, 'autoIconFlags.folder')) {
                 $('select[name="icon"]', html).val(iconFilepath)
                 $('input.icon-path[name="icon"]').val(iconFilepath);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
             }
@@ -206,14 +225,18 @@ Hooks.once('ready', () => {
 async function updateNote(note, changes,id) {
 
     // // Not using autoIcon for this icon, so quit
-    if (!getProperty(note.data.flags, 'autoIconFlags.autoIcon')) return true
+    if (!getProperty(note?.flags ?? note.data.flags, 'autoIconFlags.autoIcon')) return true
 
     var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-    
-    new_note.icon = await getMakeIcon(note.data.flags.autoIconFlags)
+
+    if (game.release.generation === 9) {
+        new_note.icon = await getMakeIcon(note.data.flags.autoIconFlags)
+    } else {
+        new_note.texture.src = await getMakeIcon(note.flags.autoIconFlags)
+    }
     betterLogger.debug( "Trigger Update !!")
     canvas.scene.updateEmbeddedDocuments("Note",[new_note], {recursive:false})
-};
+}
 
 
 async function cleanup_legacy_icons(value) {
@@ -234,7 +257,7 @@ async function cleanup_legacy_icons(value) {
         var new_data = [];
         for (const note of scene.data.notes) {
             var new_note = JSON.parse(JSON.stringify(note));  // Ugly way of cloning
-            if (value == "full") 
+            if (value == "full")
                 delete new_note.flags['autoIconFlags']
             
             initializeData(new_note)
@@ -246,10 +269,18 @@ async function cleanup_legacy_icons(value) {
                     new_note.iconSize = new_size
                 }
                 var iconFilePath = await getMakeIcon(new_note.flags.autoIconFlags)
-                if (note.icon !== iconFilePath) {
-                    betterLogger.log( "Replacing old path " + note.icon + " with " + iconFilePath);
-                    new_note.icon = iconFilePath;
-                    changes = true
+                if (game.release.generation === 9) {
+                    if (note.icon !== iconFilePath) {
+                        betterLogger.log( "Replacing old path " + note.icon + " with " + iconFilePath);
+                        new_note.icon = iconFilePath;
+                        changes = true
+                    }
+                } else {
+                    if (note.texture.src !== iconFilePath) {
+                        betterLogger.log("Replacing old path " + note.texture.src + " with " + iconFilePath);
+                        new_note.texture.src = iconFilePath;
+                        changes = true
+                    }
                 }
             }
             new_data.push(new_note)
