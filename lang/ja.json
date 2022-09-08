@@ -10,7 +10,7 @@
     "SETTINGS.AutoJournalIcon.backColorH": "背景色を選択します。",
     "SETTINGS.AutoJournalIcon.backColorL": "背景色選択",
     
-    "SETTINGS.AutoJournalIcon.colorH": "RBGとRBGA（アルファ＝透明度）の両方のカラーコードを受け付けます。",
+    "SETTINGS.AutoJournalIcon.colorH": "RGBとRGBA（アルファ＝透明度）の両方のカラーコードを受け付けます。",
     
     "SETTINGS.AutoJournalIcon.autoIconN": "自動アイコン",
     "SETTINGS.AutoJournalIcon.autoIconH": "上で選択されたアイコンを上書きします。",
@@ -41,9 +41,9 @@
     "AutoJournalIcon.HexagonV": "ヘクスV",
 
 
-    "AutoJournalIcon.norebuild": "作り直し無効化",
-    "AutoJournalIcon.partialrebuild": "設定を保持したまま作り直す",
-    "AutoJournalIcon.fullrebuild": "設定をデフォルトに戻しながら作り直す",
+    "AutoJournalIcon.no_rebuild": "作り直し無効化",
+    "AutoJournalIcon.partial_rebuild": "設定を保持したまま作り直す",
+    "AutoJournalIcon.full_rebuild": "設定をデフォルトに戻しながら作り直す",
 
     "SETTINGS.AutoJournalIcon.folderIconN": "フォルダからアイコン名作成",
     "SETTINGS.AutoJournalIcon.folderIconH": "アイコンの名前をフォルダ名から引き継ぎます。例えば「Village」というフォルダに入っている資料は「Village」というアイコンが適用されます。資料名で一致した場合は、フォルダ名より優先されます。アイコンの名前は地点メモ設定の「地点アイコン」よりご確認ください。",

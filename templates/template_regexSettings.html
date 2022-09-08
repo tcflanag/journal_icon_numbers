@@ -1,10 +1,11 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <form autocomplete="off" onsubmit="event.preventDefault()">
 
     
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.iconSampleTextN"}}</label>
         <div class="form-fields">
-            <input type="text" name="flags.autoIconFlags.sampleText" value="42a"/>
+            <input type="text" name="flags.journal-icon-numbers.sampleText" value="42a"/>
         </div>
         <p class="notes">{{localize "SETTINGS.AutoJournalIcon.iconSampleTextH"}}</p>
     </div>
@@ -12,37 +13,37 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_alpha_num"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.reg_alpha_num" data-dtype="Boolean"  {{checked reg_alpha_num}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.reg_alpha_num" data-dtype="Boolean"  {{checked reg_alpha_num}}/>
           </div>
      </div>
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_num_alpha"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.reg_num_alpha" data-dtype="Boolean"  {{checked reg_num_alpha}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.reg_num_alpha" data-dtype="Boolean"  {{checked reg_num_alpha}}/>
           </div>
      </div>
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_num"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.reg_num" data-dtype="Boolean"  {{checked reg_num}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.reg_num" data-dtype="Boolean"  {{checked reg_num}}/>
           </div>
      </div>
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_alpha_space"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.reg_alpha_space" data-dtype="Boolean"  {{checked reg_alpha_space}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.reg_alpha_space" data-dtype="Boolean"  {{checked reg_alpha_space}}/>
           </div>
      </div>
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_alpha_dot"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.reg_alpha_dot" data-dtype="Boolean"  {{checked reg_alpha_dot}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.reg_alpha_dot" data-dtype="Boolean"  {{checked reg_alpha_dot}}/>
           </div>
      </div>
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.reg_custom"}}</label>
           <div class="form-fields">
-            <input type="text" name="flags.autoIconFlags.reg_custom" value="{{reg_custom}}" />
+            <input type="text" name="flags.journal-icon-numbers.reg_custom" value="{{reg_custom}}" />
           </div>
           <p class="notes">{{localize "SETTINGS.AutoJournalIcon.reg_custom_hint"}}</p>
      </div>
@@ -52,7 +53,7 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.previewIconN"}}</label>
         <div class="form-fields">
-            <div  style="width:128px;height: 128px;"name="sample-icon"></div>
+            <div  style="width:128px;height: 128px;" name="sample-icon"></div>
         </div>
         
     </div>
@@ -61,5 +62,4 @@
     <button type="submit" name="submit">
         <i class="far fa-save"></i> {{localize 'SETTINGS.AutoJournalIcon.save'}}
     </button>
-</div>
 </form>

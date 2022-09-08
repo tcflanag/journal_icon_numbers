@@ -10,7 +10,7 @@ This module will automatically apply numbered icons (map pins) to journal entrie
 * [A-Z] (space)
 * Custom regex matching
 
-The last three are disabled by default, and they all can be enable/disable in the settings menu
+The last three are disabled by default, and they all can be enabled/disabled in the settings menu
 
 ![Example of assorted pins on a map](example.png)
 
@@ -35,8 +35,8 @@ The above screenshot uses the [Backgroundless Pins](https://foundryvtt.com/packa
     * `/^([a-zA-Z])\./`
 * Custom Regex
     * No need for leading or trailing /. 
-    * You should start with ^ to match off the first character of the jounal title 
-    * The last matchgroup used will be returned
+    * You should start with ^ to match off the first character of the journal title 
+    * The last match-group used will be returned
     * Multiple values can be separated | separated. 
         * e.g. `^\d:\d|^[a-zA-Z]\.\d{1,2}`
     * Use `CONFIG.debug.journal_icon_numbers = true` in the console for debugging

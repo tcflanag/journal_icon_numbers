@@ -1,6 +1,13 @@
+# 1.8.0
+ * Cleanup of a bunch of weird corner cases
+ * Rebuild now shows a progress bar instead of silence!
+ * Fix to proper use of flags api to address some possible compatibility issues. 
+ * v10 - Icon names can now be based on pages too
+   * Just drag the page from inside the journal window, and they will get the correct icon.
+ * v10 - Fix breaking issue `not read properties of undefined (reading 'checked')` that appeared after the official v10 release 
+ 
 # 1.7.3 
-* v10 support
-  * Feedback Wanted - v10 adds support for linking to sub-pages.  Do people want the auto icons to look at the pagename? 
+* v10 support 
 
 # 1.7.2
 * Added Japanese localization. Thanks to @besardida
@@ -23,7 +30,7 @@
 * Re-enabled bug-reporter support
 
 # 1.5.1
-* Fixed issue with default fontsize/iconsize appying when it shouldn't.
+* Fixed issue with default fontsize/icon-size applying when it shouldn't.
 
 # 1.5.0
 * Add ability to control the border width

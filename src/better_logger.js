@@ -5,8 +5,10 @@ export var betterLogger = {}
 function setLogger() {
   let version = ""
   let title = name
-  if (hasProperty(game, 'modules')) {
+  if (foundry.utils.hasProperty(game, 'modules')) {
+    // noinspection JSUnresolvedVariable
     version = game.modules.get(name).version??game.modules.get(name).data.version
+    // noinspection JSUnresolvedVariable
     title = game.modules.get(name).title??game.modules.get(name).data.title
     
   }
@@ -31,7 +33,7 @@ function setLogger() {
   
 }
 
-var isDebug = false
+let isDebug = false
 
 Object.defineProperty(CONFIG.debug, 'journal_icon_numbers', {
   get: function () { return isDebug; },

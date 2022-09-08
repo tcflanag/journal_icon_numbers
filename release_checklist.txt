@@ -1,0 +1,7 @@
+* Normal journal
+* Add City
+* Auto mode
+* Delete icon and soft rebuild
+* Change settings and hard rebuild
+
+* v10 Add as page

@@ -28,9 +28,9 @@ function templateDiamond(fill, stroke, stroke_width = 10) {
 
 }
 
-function templateHexH(fill, stroke, stroke_width = 10) {
+function hexPoints(stroke_width) {
   let r = (512 - stroke_width) / 2
-  let x1 = 0 + .27 * r / 2
+  let x1 = .27 * r / 2
   let x2 = 1.73 * r / 2 + .27 * r / 2
   let x3 = 1.73 * r + .27 * r / 2
 
@@ -38,19 +38,15 @@ function templateHexH(fill, stroke, stroke_width = 10) {
   let y1 = r / 2
   let y2 = 3 * r / 2
   let y3 = 4 * r / 2
+  return {x1, x2, x3, y0, y1, y2, y3};
+}
 
+function templateHexH(fill, stroke, stroke_width = 10) {
+  let {x1, x2, x3, y0, y1, y2, y3} = hexPoints(stroke_width);
   return `<polyline ${commonStyle(fill, stroke, stroke_width)} points="${x2},${y0} ${x3},${y1} ${x3},${y2} ${x2},${y3} ${x1},${y2} ${x1},${y1} ${x2},${y0}" />`
 }
 function templateHexV(fill, stroke, stroke_width = 10) {
-  let r = (512 - stroke_width) / 2
-  let x1 = 0 + .27 * r / 2
-  let x2 = 1.73 * r / 2 + .27 * r / 2
-  let x3 = 1.73 * r + .27 * r / 2
-
-  let y0 = 0
-  let y1 = r / 2
-  let y2 = 3 * r / 2
-  let y3 = 4 * r / 2
+  let {x1, x2, x3, y0, y1, y2, y3} = hexPoints(stroke_width);
   return `<polyline ${commonStyle(fill, stroke, stroke_width)} points="${y0},${x2} ${y1},${x3} ${y2},${x3} ${y3},${x2} ${y2},${x1} ${y1},${x1} ${y0},${x2}" />`
 }
 
@@ -60,6 +56,7 @@ function templateText(color, label, fontFamily, iconFontSize) {
   return `<text font-family='${fontFamily}' font-size="${iconFontSize}" font-weight="${iconFontSize}"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
 }
 function svgTemplate() {
+  // noinspection XmlUnusedNamespaceDeclaration
   return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 512 512" width="128" height="128"><g>';
 }
 
@@ -71,13 +68,13 @@ function fetchCSS(url) {
 
 
 function embedFonts(cssText) {
-  var fontLocations = cssText.match(/https:\/\/[^)]+/g)
-  var fontLoadedPromises = fontLocations.map(function (location) {
+  let fontLocations = cssText.match(/https:\/\/[^)]+/g)
+  let fontLoadedPromises = fontLocations.map(function (location) {
     return new Promise(function (resolve, reject) {
       fetch(location).then(function (res) {
         return res.blob()
       }).then(function (blob) {
-        var reader = new FileReader()
+        let reader = new FileReader()
         reader.addEventListener('load', function () {
           // Side Effect
           cssText = cssText.replace(location, this.result)
@@ -101,7 +98,7 @@ function errorHandler(e) {
 async function getEmbeddedFont(fontFamily, label) {
 
   if (fontFamily === "") return ""
-  let fontCSS = '<defs><style type="text/css">'
+  let fontCSS = '<defs><style>'
   // Get just the characters needed to save space
   fontCSS += await fetchCSS(`https://fonts.googleapis.com/css2?family=${fontFamily}&text=${label}`).then(embedFonts).catch(errorHandler)
   fontCSS += '</style></defs>'
@@ -109,7 +106,7 @@ async function getEmbeddedFont(fontFamily, label) {
 }
 
 String.prototype.hashCode = function () {
-  var hash = 4325, i = this.length
+  let hash = 4325, i = this.length
   while (i)
     hash = (hash * 43) ^ this.charCodeAt(--i)
   return (hash >>> 0).toString(16);
@@ -118,10 +115,10 @@ String.prototype.hashCode = function () {
 
 export async function getSvgString(flags) {
 
-  var svgString = svgTemplate()
+  let svgString = svgTemplate()
 
 
-  var fontFamily = flags.fontFamily
+  let fontFamily = flags.fontFamily
   
   if (flags.fontItalics && flags.fontBold){
     fontFamily += ":ital,wght@1,700"
@@ -137,11 +134,11 @@ export async function getSvgString(flags) {
 
   let backFunction = () => { }  // Default case
 
-  if (flags.iconType == "square") backFunction = templateSquare
-  if (flags.iconType == "diamond") backFunction = templateDiamond
-  if (flags.iconType == "circle") backFunction = templateCircle
-  if (flags.iconType == "hexh") backFunction = templateHexH
-  if (flags.iconType == "hexv") backFunction = templateHexV
+  if (flags.iconType === "square") backFunction = templateSquare
+  if (flags.iconType === "diamond") backFunction = templateDiamond
+  if (flags.iconType === "circle") backFunction = templateCircle
+  if (flags.iconType === "hexh") backFunction = templateHexH
+  if (flags.iconType === "hexv") backFunction = templateHexV
 
   svgString += backFunction(flags.backColor, flags.foreColor, flags.strokeWidth)
   svgString += templateText(flags.foreColor, flags.iconText, flags.fontFamily, flags.iconFontSize);
@@ -150,44 +147,46 @@ export async function getSvgString(flags) {
 
 export async function getMakeIcon(flags) {
 
-  var svgString = await getSvgString(flags)
+  let svgString = await getSvgString(flags)
 
   // user-placed map note
   if (!flags.autoIcon) { return null }
 
   // Shorten the name, as well as cover for non-case sensitive host OS's (like Windows)
   // Keep iconText in here as well as in the file name for clarity and to (hopefully) minimize collisions.
-  var iconFilename = `${JSON.stringify(flags).hashCode()}_${flags.iconText}.svg`;
+  let iconFilename = `${JSON.stringify(flags).hashCode()}_${flags.iconText}.svg`;
 
   betterLogger.debug("Making", flags.iconText, iconFilename);
 
   let file = new File([svgString], iconFilename, {});
-  var uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
+  let uploadPath = game.settings.get('journal-icon-numbers', "uploadPath")
   uploadPath = uploadPath.replace(/\/*$/,"") // Strip trailing slashes
   uploadPath = uploadPath.replace(/^\/*/,"") // Strip leading slashes
 
-  var full_path=pathJoin(uploadPath,iconFilename)
+  let full_path=pathJoin(uploadPath,iconFilename)
 
-  var dest = typeof ForgeVTT === "undefined" ? "data" : "forgevtt"
-  var existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
+  // noinspection JSUnresolvedVariable
+  const usingForge = typeof ForgeVTT === "undefined"
+  let dest = usingForge ? "data" : "forgevtt"
+  let existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
   betterLogger.debug("FilePicker",existing)
-  if (existing == undefined || existing.target != uploadPath) { // Directory not found above
+  if (existing === undefined || existing.target !== uploadPath) { // Directory not found above
     await makeDirs(dest, uploadPath)
   }
   else if (existing.files.includes(full_path)) {
     return full_path
   }
-  else if  (typeof ForgeVTT !== "undefined") {
+  else if  (!usingForge) {
     for (const file of existing.files){
-      // TheForge returns full URIs with a random hash at the begining. Strip those for testing
-      if (pathJoin(... new URL(file)["pathname"].split('/').splice(2)) == full_path) {
+      // TheForge returns full URIs with a random hash at the beginning. Strip those for testing
+      if (pathJoin(... new URL(file)["pathname"].split('/').splice(2)) === full_path) {
         return file
       }
     }
   }
 
 
-  var result = await FilePicker.upload(dest, uploadPath, file, {});
+  let result= await FilePicker.upload(dest, uploadPath, file, {});
   betterLogger.debug("GetMake",result)
   return result.path;
 
@@ -197,11 +196,11 @@ export async function getMakeIcon(flags) {
 async function makeDirs(dest, full_path) {
   betterLogger.debug("Creating dirs");
 
-  var base_path = ""
-  for (var path of full_path.split("/")) {
+  let base_path = ""
+  for (let path of full_path.split("/")) {
     base_path += path + "/"
     await FilePicker.createDirectory(dest, base_path, {}).then((result) => {
-      betterLogger.log("Created " + base_path);
+      betterLogger.log("Created " + base_path, result);
     })
       .catch((error) => {
         if (!error.includes("EEXIST")) {
@@ -209,7 +208,7 @@ async function makeDirs(dest, full_path) {
         }
       });
   }
-};
+}
 
 function pathJoin(...args){
   const separator = '/';

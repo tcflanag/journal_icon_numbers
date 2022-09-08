@@ -1,23 +1,24 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <form autocomplete="off" onsubmit="event.preventDefault()">
 
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.iconSampleTextN"}}</label>
           <div class="form-fields">
-            <input type="text" name="flags.autoIconFlags.iconText" value="42a"/>
+            <input type="text" name="flags.journal-icon-numbers.iconText" value="42a"/>
           </div>
           <p class="notes">{{localize "SETTINGS.AutoJournalIcon.iconSampleTextH"}}</p>
      </div>
 
     <hr>
 
-    <input type="checkbox" name="flags.autoIconFlags.autoIcon" data-dtype="Boolean" checked hidden/>
+    <input type="checkbox" name="flags.journal-icon-numbers.autoIcon" data-dtype="Boolean" checked hidden/>
 
 
     
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.iconScaleN"}}</label>
          <div class="form-fields">
-             <input type="text" name="flags.autoIconFlags.iconScale" value="{{iconScale}}" />
+             <input type="text" name="flags.journal-icon-numbers.iconScale" value="{{iconScale}}" />
          </div>
          <p class="notes">{{localize "SETTINGS.AutoJournalIcon.iconScaleH"}}</p>
      </div>
@@ -25,7 +26,7 @@
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.fontSizeN"}}</label>
          <div class="form-fields">
-             <input type="text" name="flags.autoIconFlags.fontSize" value="{{fontSize}}" />
+             <input type="text" name="flags.journal-icon-numbers.fontSize" value="{{fontSize}}" />
          </div>
          <p class="notes">{{localize "SETTINGS.AutoJournalIcon.fontSizeH"}}</p>
      </div>
@@ -33,7 +34,7 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.IconStyleN"}}</label>
         <div class="form-fields">
-            <select name="flags.autoIconFlags.iconType" data-dtype="String">
+            <select name="flags.journal-icon-numbers.iconType" data-dtype="String">
                 {{#select iconType}}
                 {{#each iconTypes as |v k|}}
                 <option value="{{k}}">{{v}}</option>
@@ -46,7 +47,7 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.fontFamilyN"}}</label>
           <div class="form-fields">
-            <select name="flags.autoIconFlags.fontFamily" data-dtype="String">
+            <select name="flags.journal-icon-numbers.fontFamily" data-dtype="String">
                 {{#select fontFamily}}
                 {{#each fontTypes as |k|}}
                 <option value="{{k}}">{{k}}</option>
@@ -61,21 +62,21 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.fontStyleBold"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.fontBold" data-dtype="Boolean"  {{checked fontBold}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.fontBold" data-dtype="Boolean"  {{checked fontBold}}/>
           </div>
      </div>
     
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.fontStyleItalics"}}</label>
           <div class="form-fields">
-            <input type="checkbox" name="flags.autoIconFlags.fontItalics" data-dtype="Boolean"  {{checked fontItalics}}/>
+            <input type="checkbox" name="flags.journal-icon-numbers.fontItalics" data-dtype="Boolean"  {{checked fontItalics}}/>
           </div>
      </div>
 
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.iconFontSizeN"}}</label>
          <div class="form-fields">
-             <input type="text" name="flags.autoIconFlags.iconFontSize" value="{{iconFontSize}}" />
+             <input type="text" name="flags.journal-icon-numbers.iconFontSize" value="{{iconFontSize}}" />
          </div>
          <p class="notes">{{localize "SETTINGS.AutoJournalIcon.iconFontSizeH"}}</p>
      </div>
@@ -83,14 +84,14 @@
      <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.strokeWidth"}}</label>
          <div class="form-fields">
-             <input type="text" name="flags.autoIconFlags.strokeWidth" value="{{strokeWidth}}" />
+             <input type="text" name="flags.journal-icon-numbers.strokeWidth" value="{{strokeWidth}}" />
          </div>
      </div>
    
     <div class="form-group">
        <label>{{localize "SETTINGS.AutoJournalIcon.foreColorN"}}</label>
         <div class="form-fields">
-            <input class="color" type="text" name="flags.autoIconFlags.foreColor" value="{{foreColor}}"  is="colorpicker-input" data-responsive-color/>
+            <input class="color" type="text" name="flags.journal-icon-numbers.foreColor" value="{{foreColor}}"  is="colorpicker-input" data-responsive-color/>
         </div>
         <p class="notes">{{localize "SETTINGS.AutoJournalIcon.colorH"}}</p>
     </div>
@@ -98,7 +99,7 @@
     <div class="form-group">
        <label>{{localize "SETTINGS.AutoJournalIcon.backColorN"}}</label>
         <div class="form-fields">
-            <input class="color" type="text" name="flags.autoIconFlags.backColor" value="{{backColor}}"  is="colorpicker-input" data-responsive-color/>
+            <input class="color" type="text" name="flags.journal-icon-numbers.backColor" value="{{backColor}}"  is="colorpicker-input" data-responsive-color/>
         </div>
         <p class="notes">{{localize "SETTINGS.AutoJournalIcon.colorH"}}</p>
     </div>
@@ -108,7 +109,7 @@
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.previewIconN"}}</label>
         <div class="form-fields">
-            <div  style="width:128px;height: 128px;"name="sample-icon"></div>
+            <div  style="width:128px;height: 128px;" name="sample-icon"></div>
         </div>
         
     </div>

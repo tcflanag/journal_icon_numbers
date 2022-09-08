@@ -10,7 +10,7 @@
     "SETTINGS.AutoJournalIcon.backColorH": "Select the background coloring",
     "SETTINGS.AutoJournalIcon.backColorL": "Background Color Picker",
     
-    "SETTINGS.AutoJournalIcon.colorH": "This accepts both RBG and RBGA (transparency) color codes",
+    "SETTINGS.AutoJournalIcon.colorH": "This accepts both RGB and RGBA (transparency) color codes",
     
     "SETTINGS.AutoJournalIcon.autoIconN": "Use Auto Icon",
     "SETTINGS.AutoJournalIcon.autoIconH": "Overrides whatever icon is selected above.",
@@ -41,12 +41,12 @@
     "AutoJournalIcon.HexagonV": "HexagonV",
 
 
-    "AutoJournalIcon.norebuild": "No rebuild",
-    "AutoJournalIcon.partialrebuild": "Rebuild all icons, keeping their settings",
-    "AutoJournalIcon.fullrebuild": "Rebuild all icons, overriding settings to global values",
+    "AutoJournalIcon.no_rebuild": "No rebuild",
+    "AutoJournalIcon.partial_rebuild": "Rebuild all icons, keeping their settings",
+    "AutoJournalIcon.full_rebuild": "Rebuild all icons, overriding settings to global values",
 
     "SETTINGS.AutoJournalIcon.folderIconN": "Icons from Folders",
-    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default. Journal name matchign has priority over folder name.",
+    "SETTINGS.AutoJournalIcon.folderIconH": "Set default icon name based on the folder name. e.g. Journals in a folder called 'Village' would get the village icon by default. Journal name matching has priority over folder name.",
 
     "SETTINGS.AutoJournalIcon.fontSizeN": "Mouse-over Font Size",
     "SETTINGS.AutoJournalIcon.fontSizeH": "Default font size for hover-text.",
@@ -67,7 +67,7 @@
 
     "SETTINGS.AutoJournalIcon.iconSettingsN": "Default Icon Style",
     "SETTINGS.AutoJournalIcon.iconSettingsL": "Default Icon Style",
-    "SETTINGS.AutoJournalIcon.iconSettingsH": "Configure the default icon style. All choices can be overriden on a per-icon basis.",
+    "SETTINGS.AutoJournalIcon.iconSettingsH": "Configure the default icon style. All choices can be overridden on a per-icon basis.",
 
     "SETTINGS.AutoJournalIcon.regexSettingsN": "Name matching algorithm",
     "SETTINGS.AutoJournalIcon.regexSettingsL": "Name matching algorithm",
