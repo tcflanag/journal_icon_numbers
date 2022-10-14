@@ -1,3 +1,7 @@
+# 1.8.1
+ * (v10) Add support for pulling from journal image page (#33)
+ * (v10) Fix depreciation checker (#32)
+
 # 1.8.0
  * Cleanup of a bunch of weird corner cases
  * Rebuild now shows a progress bar instead of silence!

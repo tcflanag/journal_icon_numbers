@@ -78,6 +78,9 @@
     "SETTINGS.AutoJournalIcon.iconFontSizeH": "Default font size for the icon",
 
     "SETTINGS.AutoJournalIcon.autoCloseN": "Quick Add Mode",
-    "SETTINGS.AutoJournalIcon.autoCloseH": "Automatically close the icon creation window for new icons that match the auto icon criteria."
+    "SETTINGS.AutoJournalIcon.autoCloseH": "Automatically close the icon creation window for new icons that match the auto icon criteria.",
+
+    "SETTINGS.AutoJournalIcon.autoPageImageN": "Icons from Page Image",
+    "SETTINGS.AutoJournalIcon.autoPageImageH": "Automatically make an icon based on the first journal image page"
 }
 

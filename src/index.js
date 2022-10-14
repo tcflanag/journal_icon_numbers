@@ -44,6 +44,54 @@ export function regTester(label_source, reg_list) {
     }
 }
 
+function autoFolder(data, flags) {
+    // folderIcon Mode - Sets the icon based on the folder name (stock icons)
+
+    if (!game.settings.get('journal-icon-numbers', "folderIcon"))
+        return false
+
+    if (game.release.generation === 9) {
+        for (const iconData of Object.entries(data.icons)) {
+            if (iconData[0] === flags['folder']) {
+                $('select[name="icon"]').val(iconData[1])
+                $('input.icon-path[name="icon"]').val(iconData[1]);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
+                return true
+            }
+        }
+    } else {
+        for (const icon of data.icons) {
+            if (flags['folder'] === icon.label) {
+                $('select[name="icon.selected"]').val(icon.src)
+                || game.settings.get('journal-icon-numbers', "folderIcon")
+                return true
+            }
+        }
+    }
+    return false;
+}
+
+function autoPageImage(data, html) {
+
+    // Pages were added in v10
+    if (game.release.generation === 9)
+        return false
+
+    if (!game.settings.get('journal-icon-numbers', "autoPageImage"))
+        return false
+
+    // Sort them based on the page order
+    const sortedPages =  data.pages.sort((a, b) => a.sort - b.sort);
+    for (const page of sortedPages) {
+        if (page.type === 'image' && page.src) {
+            html.find('[name="icon.custom"]').val(page.src)
+            $('[name="icon.selected"]').val("").change()
+            return true
+        }
+        // Break here if we want to only test the first image.
+    }
+    return false
+}
+
 async function renderNoteConfig(app, html, data) {
 
     const flags = getAllFlags(app.document);
@@ -61,26 +109,15 @@ async function renderNoteConfig(app, html, data) {
 
     }
 
-    let autoClose = firstTime && game.settings.get('journal-icon-numbers', "autoClose") && flags.autoIcon
-    // folderIcon Mode - Sets the icon based on the folder name (stock icons)
-    if (firstTime && game.settings.get('journal-icon-numbers', "folderIcon")) { // Only set the folder icon the first time the journal is created.
-        if (game.release.generation === 9) {
-            for (const iconData of Object.entries(data.icons)) {
-                if (iconData[0] === flags['folder']) {
-                    $('select[name="icon"]', html).val(iconData[1])
-                    $('input.icon-path[name="icon"]').val(iconData[1]);            // Fix for Pin Cushion, which uses a file picker instead of the dropdown
-                    autoClose = firstTime && game.settings.get('journal-icon-numbers', "autoClose")
-                }
-            }
-        } else {
-            for (const icon of data.icons) {
-                if (flags['folder'] === icon.label) {
-                    $('select[name="icon.selected"]').val(icon.src)
-                    || game.settings.get('journal-icon-numbers', "folderIcon")
-                    autoClose = firstTime && game.settings.get('journal-icon-numbers', "autoClose")
-                }
-            }
+    let autoClose = false;
+
+    if (firstTime) { // Only set the folder icon the first time the journal is created.
+        let autoCloseSetting =  game.settings.get('journal-icon-numbers', "autoClose")
+        if(!flags.autoIcon) {
+            autoClose = autoFolder(data, flags) ? autoCloseSetting : autoClose;
+            autoClose = autoPageImage(data, html) ? autoCloseSetting : autoClose;
         }
+        autoClose = flags.autoIcon ? autoCloseSetting : autoClose;
     }
 
 
@@ -92,14 +129,15 @@ async function renderNoteConfig(app, html, data) {
 
 
     betterLogger.debug("Render Flags", flags)
-    let new_html = await renderTemplate(templateName, {
-        iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: flags, autoClose: autoClose
-    })
+    let new_html = await renderTemplate(templateName,{iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: flags })
     betterLogger.debug("Rendered result", data)
 
     // Need to keep anything critical for quick mode above here
     html.find('button[type="submit"]').before(new_html);
 
+    if (autoClose) {
+        html.find('button[type="submit"]')[0].click()
+    }
     await svgWrapper(html)
 
     // Add listeners for auto updating icon
@@ -351,6 +389,15 @@ async function registerSettings() {
         type: Boolean,
         default: false,
         config: true
+    });
+
+    game.settings.register('journal-icon-numbers', "autoPageImage", {
+        name: "SETTINGS.AutoJournalIcon.autoPageImageN",
+        hint: "SETTINGS.AutoJournalIcon.autoPageImageH",
+        scope: "world",
+        type: Boolean,
+        default: false,
+        config: game.release.generation !== 9 // Only supported in v10
     });
 
     game.settings.register('journal-icon-numbers', "uploadPath", {
