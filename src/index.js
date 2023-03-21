@@ -216,8 +216,11 @@ Hooks.once('ready', () => {
         // noinspection JSUnresolvedFunction
         ui.notifications.notify('Please make sure you have the "lib - ColorSettings" module installed and enabled.', "error");
     }
-    if (game.user.isGM) {
+    if (game.permissions.NOTE_CREATE.includes(game.user.role)) {
         Hooks.on("renderNoteConfig", renderNoteConfig);
+    }
+    if (game.permissions.FILES_UPLOAD.includes(game.user.role)
+        && game.permissions.FILES_BROWSE.includes(game.user.role)) {
         Hooks.on("updateNote", updateNote)
         Hooks.on("createNote", updateNote)
     }
