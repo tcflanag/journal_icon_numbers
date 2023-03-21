@@ -1,3 +1,8 @@
+# 1.8.2
+* Add support for players with "Create Map Notes" permissions. (#36)  
+  * If the user doesn't also have Upload & Browse permissions, they can only use this feature when the GM is connected (or someone else who has the Upload perms)
+* Fix bug with Firefox rendering some fonts weirdly. (#34)
+
 # 1.8.1
  * (v10) Add support for pulling from journal image page (#33)
  * (v10) Fix depreciation checker (#32)
