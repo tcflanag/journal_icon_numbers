@@ -53,7 +53,7 @@ function templateHexV(fill, stroke, stroke_width = 10) {
 const stock_font = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
 function templateText(color, label, fontFamily, iconFontSize) {
   if (fontFamily === "") fontFamily = stock_font
-  return `<text font-family='${fontFamily}' font-size="${iconFontSize}" font-weight="${iconFontSize}"  x="50%" y="50%" text-anchor="middle" fill="${color}" stroke="${color}" dy=".3em">${label}</text></g></svg>`
+  return `<text font-family='${fontFamily}' font-size="${iconFontSize}" font-weight="${iconFontSize}"  x="50%" y="50%" text-anchor="middle" fill="${color}" dy=".3em">${label}</text></g></svg>`
 }
 function svgTemplate() {
   // noinspection XmlUnusedNamespaceDeclaration
