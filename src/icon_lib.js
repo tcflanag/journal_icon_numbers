@@ -168,7 +168,7 @@ export async function getMakeIcon(flags) {
   // noinspection JSUnresolvedVariable
   const usingForge = typeof ForgeVTT === "undefined"
   let dest = usingForge ? "data" : "forgevtt"
-  let existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!error.includes("does not exist")) betterLogger.error(error) })
+  let existing = await FilePicker.browse(dest, uploadPath).catch((error) => { if (!(error?.message || error).includes("does not exist")) betterLogger.error((error?.message || error)) })
   betterLogger.debug("FilePicker",existing)
   if (existing === undefined || existing.target !== uploadPath) { // Directory not found above
     await makeDirs(dest, uploadPath)
@@ -203,8 +203,8 @@ async function makeDirs(dest, full_path) {
       betterLogger.log("Created " + base_path, result);
     })
       .catch((error) => {
-        if (!error.includes("EEXIST")) {
-          betterLogger.error(error);
+        if (!(error?.message || error).includes("EEXIST")) {
+          betterLogger.error((error?.message || error));
         }
       });
   }
