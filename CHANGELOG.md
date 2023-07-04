@@ -1,3 +1,7 @@
+# 1.9.0
+* (v11) Fix issue where icons weren't being created on new installs
+* Add support for `42.` (number followed by period) parsing format. (Disabled by default in settings)
+
 # 1.8.2
 * Add support for players with "Create Map Notes" permissions. (#36)  
   * If the user doesn't also have Upload & Browse permissions, they can only use this feature when the GM is connected (or someone else who has the Upload perms)
