@@ -19,16 +19,15 @@ function setLogger() {
 
   betterLogger["info"] = window.console.info.bind(window.console, ...LOG_PREFIX)
   betterLogger["log"] = window.console.info.bind(window.console, ...LOG_PREFIX)
+  betterLogger["error"] = window.console.error.bind(window.console, ...ERROR_PREFIX)
 
   if (isDebug) {
     betterLogger["debug"] = window.console.debug.bind(window.console, ...DEBUG_PREFIX)
     betterLogger["warn"] = window.console.warn.bind(window.console, ...WARN_PREFIX)
-    betterLogger["error"] = window.console.error.bind(window.console, ...ERROR_PREFIX)
   }
   else {
     betterLogger["debug"] = function () { };
     betterLogger["warn"] = function () { };
-    betterLogger["error"] = function () { };
   }
   
 }
