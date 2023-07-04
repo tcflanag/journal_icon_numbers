@@ -238,6 +238,7 @@ function getAllFlags(document, defaults_only = false) {
     if (settings.reg_num) reg_list.push(/^\d{1,4}/)
     if (settings.reg_alpha_space) reg_list.push(/^([a-zA-Z]) /)
     if (settings.reg_alpha_dot) reg_list.push(/^([a-zA-Z])\./)
+    if (settings.reg_num_dot) reg_list.push(/^\d{1,4}\./)
     if (settings.reg_custom) reg_list.push(RegExp(settings.reg_custom))
 
     betterLogger.debug("Label to test", label_source)
@@ -426,6 +427,7 @@ async function registerSettings() {
     game.settings.register('journal-icon-numbers', "reg_num", {type: Boolean, default: true, scope: "world"});
     game.settings.register('journal-icon-numbers', "reg_alpha_space", {type: Boolean, default: false, scope: "world"});
     game.settings.register('journal-icon-numbers', "reg_alpha_dot", {type: Boolean, default: false, scope: "world"});
+    game.settings.register('journal-icon-numbers', "reg_num_dot", {type: Boolean, default: false, scope: "world"});
     game.settings.register('journal-icon-numbers', "reg_custom", {type: String, default: "", scope: "world"});
 
     game.settings.register('journal-icon-numbers', "foreColor", {type: String, default: "#000000ff", scope: "world"});

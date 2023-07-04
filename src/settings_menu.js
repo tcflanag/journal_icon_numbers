@@ -82,6 +82,7 @@ export class MySubmenuApplicationClass extends FormApplication {
             reg_num: html.find('input[name="flags.journal-icon-numbers.reg_num"]')[0].checked,
             reg_alpha_space: html.find('input[name="flags.journal-icon-numbers.reg_alpha_space"]')[0].checked,
             reg_alpha_dot: html.find('input[name="flags.journal-icon-numbers.reg_alpha_dot"]')[0].checked,
+            reg_num_dot: html.find('input[name="flags.journal-icon-numbers.reg_num_dot"]')[0].checked,
             reg_custom: html.find('input[name="flags.journal-icon-numbers.reg_custom"]').val(),
             sampleText: html.find('input[name="flags.journal-icon-numbers.sampleText"]').val() ,
         }
@@ -108,6 +109,7 @@ export class MySubmenuApplicationClass extends FormApplication {
         if (flags.reg_alpha_dot){
             reg_list.push(/^([a-zA-Z])\./)
         }
+        if (flags.reg_num_dot) reg_list.push(/^\d{1,4}\./)
         if (flags.reg_custom){
             reg_list.push(RegExp(flags.reg_custom))
         }
@@ -132,7 +134,7 @@ export class MySubmenuApplicationClass extends FormApplication {
     }
   }
 
-const settings = ["reg_custom","reg_alpha_dot","reg_alpha_space","reg_num","reg_num_alpha","reg_alpha_num","iconScale","iconFontSize","fontSize","fontItalics","fontBold","fontFamily","backColor","foreColor","iconType","strokeWidth"]
+const settings = ["reg_custom","reg_alpha_dot","reg_num_dot","reg_alpha_space","reg_num","reg_num_alpha","reg_alpha_num","iconScale","iconFontSize","fontSize","fontItalics","fontBold","fontFamily","backColor","foreColor","iconType","strokeWidth"]
 export function set_settings(data) {
     
     for (const [key, value] of Object.entries(data)) {

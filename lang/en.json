@@ -56,6 +56,7 @@
     "SETTINGS.AutoJournalIcon.reg_num": "Just numbers (123)",
     "SETTINGS.AutoJournalIcon.reg_alpha_space": "A letter followed by a space (Q )",
     "SETTINGS.AutoJournalIcon.reg_alpha_dot": "A letter followed by a period (Z.)",
+    "SETTINGS.AutoJournalIcon.reg_num_dot": "Numbers by a period (123.)",
     "SETTINGS.AutoJournalIcon.reg_custom": "Custom RegEx",
     "SETTINGS.AutoJournalIcon.reg_custom_hint": "Leave blank to disable. See README.md for more details",
     "SETTINGS.AutoJournalIcon.fontStyleBold":"Bold",
