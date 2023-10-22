@@ -91,12 +91,24 @@ function autoPageImage(data, html) {
     }
     return false
 }
+function dropCanvasJournalPage(_, dropData) {
+    var label = ""
+    if (dropData.type === "JournalEntryPage" && dropData.anchor?.slug)
+        label = dropData.anchor?.name
 
-async function renderNoteConfig(app, html, data) {
+    Hooks.once("renderNoteConfig", (app, html, data,) => {renderNoteConfig(app, html, data, label)});
+}
 
-    const flags = getAllFlags(app.document);
+async function renderNoteConfig(app, html, data, label) {
+    const flags = getAllFlags(app.document, label);
 
     const firstTime = !foundry.utils.hasProperty(data?.data, "_id") || data?.data?._id == null
+
+    if (firstTime && label === undefined){
+        // We're creating a new icon, but didn't come from the once hook in the dropCanvasJournalPage
+        // This is to support linking to headers in pages!
+        return
+    }
 
     if (firstTime) {// Only force the size once, so that user can override it. This checks for item creation
         // Set some default global sizes
@@ -218,6 +230,7 @@ Hooks.once('ready', () => {
     }
     if (game.permissions.NOTE_CREATE.includes(game.user.role)) {
         Hooks.on("renderNoteConfig", renderNoteConfig);
+        Hooks.on("dropCanvasData", dropCanvasJournalPage);
     }
     if (game.permissions.FILES_UPLOAD.includes(game.user.role)
         && game.permissions.FILES_BROWSE.includes(game.user.role)) {
@@ -226,10 +239,10 @@ Hooks.once('ready', () => {
     }
 });
 
-function getAllFlags(document, defaults_only = false) {
+function getAllFlags(document, label = "",defaults_only = false) {
 
     const folder = document?.entry?.folder?.name
-    const label_source = document.label
+    const label_source = label === ""? document.label : label
     const settings = get_all_settings()
 
     let reg_list = []
@@ -324,7 +337,8 @@ async function cleanup_legacy_icons(value) {
     let curNoteNum = 0
 
     async function iconRebuild(note, scene) {
-        let flags = getAllFlags(note, value ==="full")
+        const label = note.flags['journal-icon-numbers'].iconText
+        let flags = getAllFlags(note, label, value ==="full")
 
         if (!flags['autoIcon']) return
 

@@ -1,7 +1,7 @@
 # Automatic Journal Icon Numbers
 
 ## Features
-This module will automatically apply numbered icons (map pins) to journal entries that start with a number.  It supports the following numbering formats automatically, with both upper and lower cases.
+This module will automatically apply numbered icons (map pins) to journal entries that start with a number.  It supports the following numbering formats automatically, with both upper and lower cases. It supports Journal Entries, Pages, and headers. (Though it doesn't provide any direct linking for headers. You'll need to look at other modules for that.)
 
 
 * [0-9999]
