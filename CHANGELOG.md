@@ -1,3 +1,6 @@
+# 1.9.2
+* Update compatibility for v12
+
 # 1.9.1
 * Add support for linking directly to journal headings.  This works well with mods like 'Journal Anchor Links' (https://foundryvtt.com/packages/jal), and 'DDB-Importer'( https://foundryvtt.com/packages/ddb-importer) which support creating map notes to headings (#40)
 
