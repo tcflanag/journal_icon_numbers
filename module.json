@@ -8,7 +8,7 @@
     "email":"tiwato@gmail.com",
     "discord":"ChrisF#4895"
     }],
-  "version": "v1.9.2",
+  "version": "v1.9.3",
   "minimumCoreVersion": "0.8.0",
   "compatibleCoreVersion":"9",
   "compatibility": {
@@ -16,17 +16,17 @@
     "verified": "12.324"
   },
   "esmodules":["src/index.js"],
-  "url":"https://gitlab.com/tiwato/journal_icon_numbers",
-  "manifest": "https://gitlab.com/tiwato/journal_icon_numbers/raw/master/module.json",
-  "download": "https://gitlab.com/tiwato/journal_icon_numbers/-/archive/v1.9.2/journal_icon_numbers.zip",
+  "url":"https://github.com/tcflanag/journal_icon_numbers",
+  "manifest": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/module.json",
+  "download": "https://github.com/tcflanag/journal_icon_numbers/archive/refs/tags/v1.9.3.zip",
   
-  "readme": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/README.md",
-  "bugs": "https://gitlab.com/tiwato/journal_icon_numbers/-/issues",
+  "readme": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/README.md",
+  "bugs": "https://github.com/tcflanag/journal_icon_numbers/issues",
   "allowBugReporter": true,
   "flags":{
     "allowBugReporter": true
   },
-  "changelog": "https://gitlab.com/tiwato/journal_icon_numbers/-/blob/master/CHANGELOG.md",
+  "changelog": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/CHANGELOG.md",
   "dependencies": [
     {
       "id": "colorsettings",
@@ -46,11 +46,11 @@
   "media": [
     {
       "type": "screenshot",
-      "url": "https://gitlab.com/tiwato/journal_icon_numbers/-/raw/master/example.png"
+      "url": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/example.png"
     },
     {
       "type": "cover",
-      "url": "https://gitlab.com/tiwato/journal_icon_numbers/-/raw/master/cover.png"
+      "url": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/cover.png"
     }
   ],
 
