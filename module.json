@@ -8,7 +8,7 @@
     "email":"tiwato@gmail.com",
     "discord":"ChrisF#4895"
     }],
-  "version": "v1.9.3",
+  "version": "v1.9.4",
   "minimumCoreVersion": "0.8.0",
   "compatibleCoreVersion":"9",
   "compatibility": {
@@ -18,7 +18,7 @@
   "esmodules":["src/index.js"],
   "url":"https://github.com/tcflanag/journal_icon_numbers",
   "manifest": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/module.json",
-  "download": "https://github.com/tcflanag/journal_icon_numbers/archive/refs/tags/v1.9.3.zip",
+  "download": "https://github.com/tcflanag/journal_icon_numbers/archive/refs/tags/v1.9.4.zip",
   
   "readme": "https://raw.githubusercontent.com/tcflanag/journal_icon_numbers/master/README.md",
   "bugs": "https://github.com/tcflanag/journal_icon_numbers/issues",

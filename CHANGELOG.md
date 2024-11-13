@@ -1,3 +1,9 @@
+# 1.9.4
+* Show GUI when opened through "Create Map Note" tool (Closes #2)
+
+# 1.9.3
+Migrate to GitHub
+
 # 1.9.2
 * Update compatibility for v12
 

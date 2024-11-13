@@ -104,7 +104,7 @@ async function renderNoteConfig(app, html, data, label) {
 
     const firstTime = !foundry.utils.hasProperty(data?.data, "_id") || data?.data?._id == null
 
-    if (firstTime && label === undefined){
+    if (firstTime && label === undefined && data?.data.entryId != null){
         // We're creating a new icon, but didn't come from the once hook in the dropCanvasJournalPage
         // This is to support linking to headers in pages!
         return
