@@ -1,3 +1,8 @@
+# 1.9.5
+* Fix compatibility issue on note create with Quick Encounters module (Closes #3)
+* Remove legacy manifest keys. (Closes #1)
+* Fix issue with icon rebuilding failing due to missing key (Closes #4)
+
 # 1.9.4
 * Show GUI when opened through "Create Map Note" tool (Closes #2)
 

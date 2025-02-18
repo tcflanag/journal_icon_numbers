@@ -148,7 +148,7 @@ export function get_all_settings() {
 
     let data = {
         iconTypes:   getIconTypes(),
-        fontTypes:   Object.keys(fontData),
+        fontTypes:   Object.assign({}, ...Object.keys(fontData).map((x) => ({[x]: x})))
     }
 
     for (const x of settings) {

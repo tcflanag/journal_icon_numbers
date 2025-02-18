@@ -35,7 +35,7 @@ export var fontData = {}
 
 export function regTester(label_source, reg_list) {
     for (let reg of reg_list) {
-        betterLogger.debug("Testing Regex", reg)
+        betterLogger.debug("Testing Regex", reg, label_source)
         let matches = label_source.match(reg)
         if (matches) {
             betterLogger.debug("Matches", matches)
@@ -92,6 +92,9 @@ function autoPageImage(data, html) {
     return false
 }
 function dropCanvasJournalPage(_, dropData) {
+    // Check permission to prevent calls when use can't update nodes
+    if (!game.permissions.NOTE_CREATE.includes(game.user.role)) return
+
     var label = ""
     if (dropData.type === "JournalEntryPage" && dropData.anchor?.slug)
         label = dropData.anchor?.name
@@ -141,7 +144,8 @@ async function renderNoteConfig(app, html, data, label) {
 
 
     betterLogger.debug("Render Flags", flags)
-    let new_html = await renderTemplate(templateName,{iconTypes: getIconTypes(), fontTypes: Object.keys(fontData), flags: flags })
+    const fontKeys = Object.assign({}, ...Object.keys(fontData).map((x) => ({[x]: x})));
+    let new_html = await renderTemplate(templateName,{iconTypes: getIconTypes(), fontTypes: fontKeys, flags: flags })
     betterLogger.debug("Rendered result", data)
 
     // Need to keep anything critical for quick mode above here
@@ -218,7 +222,8 @@ export async function svgWrapper(html) {
 
 }
 
-
+// Register this early to avoid conflict with Quick Encounters
+Hooks.on("dropCanvasData", dropCanvasJournalPage);
 Hooks.once("init", registerSettings);
 Hooks.once('ready', () => {
     try {
@@ -230,7 +235,6 @@ Hooks.once('ready', () => {
     }
     if (game.permissions.NOTE_CREATE.includes(game.user.role)) {
         Hooks.on("renderNoteConfig", renderNoteConfig);
-        Hooks.on("dropCanvasData", dropCanvasJournalPage);
     }
     if (game.permissions.FILES_UPLOAD.includes(game.user.role)
         && game.permissions.FILES_BROWSE.includes(game.user.role)) {
@@ -255,6 +259,7 @@ function getAllFlags(document, label = "",defaults_only = false) {
     if (settings.reg_custom) reg_list.push(RegExp(settings.reg_custom))
 
     betterLogger.debug("Label to test", label_source)
+    if (typeof label_source !== "string") return
     const result = regTester(label_source, reg_list)
     betterLogger.debug("Result", result)
 
@@ -337,8 +342,10 @@ async function cleanup_legacy_icons(value) {
     let curNoteNum = 0
 
     async function iconRebuild(note, scene) {
+        if (!('journal-icon-numbers' in note.flags)) return
         const label = note.flags['journal-icon-numbers'].iconText
         let flags = getAllFlags(note, label, value ==="full")
+        if (flags === undefined) return
 
         if (!flags['autoIcon']) return
 

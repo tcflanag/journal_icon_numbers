@@ -12,11 +12,7 @@
         <label>{{localize "SETTINGS.AutoJournalIcon.IconStyleN"}}</label>
         <div class="form-fields">
             <select name="flags.journal-icon-numbers.iconType" data-dtype="String">
-                {{#select flags.iconType}}
-                {{#each iconTypes as |v k|}}
-                <option value="{{k}}">{{v}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions iconTypes selected=flags.iconType}}
             </select>
         </div>
     </div>
@@ -25,11 +21,7 @@
         <label>{{localize "SETTINGS.AutoJournalIcon.fontFamilyN"}}</label>
           <div class="form-fields">
             <select name="flags.journal-icon-numbers.fontFamily" data-dtype="String">
-                {{#select flags.fontFamily}}
-                {{#each fontTypes as |k|}}
-                <option value="{{k}}">{{k}}</option>
-                {{/each}}
-                {{/select}}
+                {{selectOptions fontTypes selected=flags.fontFamily}}
             </select>
           </div>
           <p class="notes">{{localize "SETTINGS.AutoJournalIcon.fontFamilyH"}}</p>
