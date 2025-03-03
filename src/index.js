@@ -50,7 +50,15 @@ function autoFolder(data, flags) {
     if (!game.settings.get('journal-icon-numbers', "folderIcon"))
         return false
 
-    if (game.release.generation === 9) {
+    if (game.release.generation >= 13) {
+        for (let [src, label ] of Object.entries(data.icons)) {
+            if (flags['folder'] === label) {
+                $('select[name="icon.selected"]').val(src)
+                || game.settings.get('journal-icon-numbers', "folderIcon")
+                return true
+            }
+        }
+    }  else if (game.release.generation === 9) {
         for (const iconData of Object.entries(data.icons)) {
             if (iconData[0] === flags['folder']) {
                 $('select[name="icon"]').val(iconData[1])
@@ -70,7 +78,7 @@ function autoFolder(data, flags) {
     return false;
 }
 
-function autoPageImage(data, html) {
+function autoPageImage(data) {
 
     // Pages were added in v10
     if (game.release.generation === 9)
@@ -80,10 +88,9 @@ function autoPageImage(data, html) {
         return false
 
     // Sort them based on the page order
-    const sortedPages =  data.pages.sort((a, b) => a.sort - b.sort);
-    for (const page of sortedPages) {
+    for (const page of data.entry.pages.values()) {
         if (page.type === 'image' && page.src) {
-            html.find('[name="icon.custom"]').val(page.src)
+            $('[name="icon.custom"]').val(page.src)
             $('[name="icon.selected"]').val("").change()
             return true
         }
@@ -91,27 +98,11 @@ function autoPageImage(data, html) {
     }
     return false
 }
-function dropCanvasJournalPage(_, dropData) {
-    // Check permission to prevent calls when use can't update nodes
-    if (!game.permissions.NOTE_CREATE.includes(game.user.role)) return
 
-    var label = ""
-    if (dropData.type === "JournalEntryPage" && dropData.anchor?.slug)
-        label = dropData.anchor?.name
-
-    Hooks.once("renderNoteConfig", (app, html, data,) => {renderNoteConfig(app, html, data, label)});
-}
-
-async function renderNoteConfig(app, html, data, label) {
-    const flags = getAllFlags(app.document, label);
+async function renderNoteConfig(app, html, data) {
+    const flags = getAllFlags(app.document);
 
     const firstTime = !foundry.utils.hasProperty(data?.data, "_id") || data?.data?._id == null
-
-    if (firstTime && label === undefined && data?.data.entryId != null){
-        // We're creating a new icon, but didn't come from the once hook in the dropCanvasJournalPage
-        // This is to support linking to headers in pages!
-        return
-    }
 
     if (firstTime) {// Only force the size once, so that user can override it. This checks for item creation
         // Set some default global sizes
@@ -130,14 +121,12 @@ async function renderNoteConfig(app, html, data, label) {
         let autoCloseSetting =  game.settings.get('journal-icon-numbers', "autoClose")
         if(!flags.autoIcon) {
             autoClose = autoFolder(data, flags) ? autoCloseSetting : autoClose;
-            autoClose = autoPageImage(data, html) ? autoCloseSetting : autoClose;
+            autoClose = autoPageImage(data) ? autoCloseSetting : autoClose;
         }
         autoClose = flags.autoIcon ? autoCloseSetting : autoClose;
     }
 
 
-    html[0].style.height = "" //Dynamic height. Especially useful for the new color picker
-    html[0].style.top = ""; // shift the window up to make room
 
     const templateName = "modules/journal-icon-numbers/templates/template_notesPage.html"
 
@@ -148,82 +137,92 @@ async function renderNoteConfig(app, html, data, label) {
     let new_html = await renderTemplate(templateName,{iconTypes: getIconTypes(), fontTypes: fontKeys, flags: flags })
     betterLogger.debug("Rendered result", data)
 
-    // Need to keep anything critical for quick mode above here
-    html.find('button[type="submit"]').before(new_html);
+    const template = document.createElement('fieldset');
+    template.innerHTML = new_html;
+    if (game.release.generation >= 13) {
+        // Insert it inside the scroll box
+        $('.form-body')[0].appendChild(template)
+    }
+    else {
+        $('button[type="submit"]').before(template);
+    }
+    // Top align it to make sure there is room
+    $("[id^=NoteConfig]")[0].style.top = ""
+    $("[id^=NoteConfig]")[0].style.height = ""
 
     if (autoClose) {
-        html.find('button[type="submit"]')[0].click()
+        // Need to keep anything critical for quick mode above here
+        $('button[type="submit"]')[0].click()
     }
-    await svgWrapper(html)
+    await svgWrapper()
 
     // Add listeners for auto updating icon
-    html.find('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('input', () => {
-        svgWrapper(html)
+    $('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('input', () => {
+        svgWrapper()
     }))
-    html.find('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('change', () => {
-        svgWrapper(html)
+    $('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('change', () => {
+        svgWrapper()
     }))
 
     //Hook on standard icon changes to detect that (works with pincushion too)
-    html.find('[name^="icon"]').each((i, x) => x.addEventListener('change', () => {
-        svgWrapper(html)
+    $('[name^="icon"]').each((i, x) => x.addEventListener('change', () => {
+        svgWrapper()
     }))
 
 
 }
 
-export async function svgWrapper(html) {
+export async function svgWrapper() {
 
-    if (html.find('input[name="flags.journal-icon-numbers.autoIcon"]').length === 0) return;
+    if ($('input[name="flags.journal-icon-numbers.autoIcon"]').length === 0) return;
 
-    if (html.find('input[name="flags.journal-icon-numbers.autoIcon"]')[0].checked) {
+    if ($('input[name="flags.journal-icon-numbers.autoIcon"]')[0].checked) {
         const flags = {
-            autoIcon: html.find('input[name="flags.journal-icon-numbers.autoIcon"]')[0].checked,
-            iconType: html.find('select[name="flags.journal-icon-numbers.iconType"]').val(),
-            iconText: html.find('input[name="flags.journal-icon-numbers.iconText"]').val(),
-            foreColor: html.find('input[name="flags.journal-icon-numbers.foreColor"]').val(),
-            backColor: html.find('input[name="flags.journal-icon-numbers.backColor"]').val(),
-            fontFamily: html.find('select[name="flags.journal-icon-numbers.fontFamily"]').val(),
-            strokeWidth: html.find('input[name="flags.journal-icon-numbers.strokeWidth"]').val(),
-            iconFontSize: html.find('input[name="flags.journal-icon-numbers.iconFontSize"]').val(),
-            fontBold: html.find('input[name="flags.journal-icon-numbers.fontBold"]')[0].checked,
-            fontItalics: html.find('input[name="flags.journal-icon-numbers.fontItalics"]')[0].checked,
+            autoIcon: $('input[name="flags.journal-icon-numbers.autoIcon"]')[0].checked,
+            iconType: $('select[name="flags.journal-icon-numbers.iconType"]').val(),
+            iconText: $('input[name="flags.journal-icon-numbers.iconText"]').val(),
+            foreColor: $('input[name="flags.journal-icon-numbers.foreColor"]').val(),
+            backColor: $('input[name="flags.journal-icon-numbers.backColor"]').val(),
+            fontFamily: $('select[name="flags.journal-icon-numbers.fontFamily"]').val(),
+            strokeWidth: $('input[name="flags.journal-icon-numbers.strokeWidth"]').val(),
+            iconFontSize: $('input[name="flags.journal-icon-numbers.iconFontSize"]').val(),
+            fontBold: $('input[name="flags.journal-icon-numbers.fontBold"]')[0].checked,
+            fontItalics: $('input[name="flags.journal-icon-numbers.fontItalics"]')[0].checked,
 
         }
-        getSvgString(flags).then(v => html.find('div[name="sample-icon"]')[0].innerHTML = v)
+        getSvgString(flags).then(v => $('div[name="sample-icon"]')[0].innerHTML = v)
 
-        let fontName = html.find('select[name="flags.journal-icon-numbers.fontFamily"]').val()
+        let fontName = $('select[name="flags.journal-icon-numbers.fontFamily"]').val()
         betterLogger.debug(fontName, fontData[fontName])
 
         if (fontData[fontName].includes('700')) {
-            html.find('input[name="flags.journal-icon-numbers.fontBold"]')[0].disabled = false
+            $('input[name="flags.journal-icon-numbers.fontBold"]')[0].disabled = false
         } else {
-            html.find('input[name="flags.journal-icon-numbers.fontBold"]')[0].disabled = true
-            html.find('input[name="flags.journal-icon-numbers.fontBold"]')[0].checked = false
+            $('input[name="flags.journal-icon-numbers.fontBold"]')[0].disabled = true
+            $('input[name="flags.journal-icon-numbers.fontBold"]')[0].checked = false
         }
 
         if (fontData[fontName].includes('italic')) {
-            html.find('input[name="flags.journal-icon-numbers.fontItalics"]')[0].disabled = false
+            $('input[name="flags.journal-icon-numbers.fontItalics"]')[0].disabled = false
         } else {
-            html.find('input[name="flags.journal-icon-numbers.fontItalics"]')[0].disabled = true
-            html.find('input[name="flags.journal-icon-numbers.fontItalics"]')[0].checked = false
+            $('input[name="flags.journal-icon-numbers.fontItalics"]')[0].disabled = true
+            $('input[name="flags.journal-icon-numbers.fontItalics"]')[0].checked = false
         }
 
         betterLogger.debug("DONE")
     } else {
         // Preview built-in icons
-        let path = html.find('[name="icon"]').val() // V9 only
+        let path = $('[name="icon"]').val() // V9 only
         if (!path) // V10 Built-in
-            path = html.find('[name="icon.selected"]').val()
+            path = $('[name="icon.selected"]').val()
         if (!path) // V10 custom path (ala pin cushion)
-            path = html.find('[name="icon.custom"]').val()
-        html.find('div[name="sample-icon"]')[0].innerHTML = `<img alt="Icon Preview" height=128 width=128 style="border: 0;" src="${path}">`
+            path = $('[name="icon.custom"]').val()
+        $('div[name="sample-icon"]')[0].innerHTML = `<img alt="Icon Preview" height=128 width=128 style="border: 0;" src="${path}">`
     }
 
 }
 
 // Register this early to avoid conflict with Quick Encounters
-Hooks.on("dropCanvasData", dropCanvasJournalPage);
 Hooks.once("init", registerSettings);
 Hooks.once('ready', () => {
     try {

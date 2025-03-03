@@ -1,3 +1,7 @@
+# 1.10.0
+* Support for FoundryVTT v13
+* Cleanup rare fails on font fetchign
+
 # 1.9.5
 * Fix compatibility issue on note create with Quick Encounters module (Closes #3)
 * Remove legacy manifest keys. (Closes #1)

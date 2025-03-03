@@ -1,11 +1,11 @@
 <!--suppress HtmlFormInputWithoutLabel -->
-    <hr>
+<legend>Automatic Icons</legend>
     <div class="form-group">
         <label>{{localize "SETTINGS.AutoJournalIcon.autoIconN"}}</label>
         <div class="form-fields">
         <input type="checkbox" name="flags.journal-icon-numbers.autoIcon" data-dtype="Boolean" {{checked flags.autoIcon}}/>
         </div>
-        <p class="notes">{{localize "SETTINGS.AutoJournalIcon.autoIconH"}}</p>
+        <p class="notes hint">{{localize "SETTINGS.AutoJournalIcon.autoIconH"}}</p>
     </div>
     
     <div class="form-group">
@@ -24,7 +24,7 @@
                 {{selectOptions fontTypes selected=flags.fontFamily}}
             </select>
           </div>
-          <p class="notes">{{localize "SETTINGS.AutoJournalIcon.fontFamilyH"}}</p>
+          <p class="notes hint">{{localize "SETTINGS.AutoJournalIcon.fontFamilyH"}}</p>
      </div>
 
 
@@ -84,5 +84,5 @@
         <div class="form-fields">
             <div  style="width:128px;height: 128px;" name="sample-icon"></div>
         </div>
-        
+
     </div>

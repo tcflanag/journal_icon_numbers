@@ -25,15 +25,15 @@ export class MySubmenuApplicationClass extends FormApplication {
     }
     activateListeners(html) {
         super.activateListeners(html);
-        svgWrapper(html).then()
+        svgWrapper().then()
 
         // Add listeners for auto updating icon
-        html.find('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('input', () => { svgWrapper(html).then() }))
-        html.find('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html).then() }))
-        html.find('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('focusout', () => { svgWrapper(html).then() }))
+        $('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('input', () => { svgWrapper().then() }))
+        $('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('change', () => { svgWrapper().then() }))
+        $('[name^="flags.journal-icon-numbers"]').each((i, x) => x.addEventListener('focusout', () => { svgWrapper().then() }))
     
         //Hook on standard icon changes to detect that (works with pincushion too)
-        html.find('[name="icon"]').each((i, x) => x.addEventListener('change', () => { svgWrapper(html).then() }))
+        $('[name="icon"]').each((i, x) => x.addEventListener('change', () => { svgWrapper().then() }))
     }
     async _updateObject(event, formData) {
       const data = foundry.utils.expandObject(formData);
@@ -66,8 +66,8 @@ export class MySubmenuApplicationClass extends FormApplication {
         super.activateListeners(html);
 
         // Add listeners for auto updating icon
-        this._testRegex(html)
-        html.find('input').each((i, x) => x.addEventListener('change', () => {this._testRegex(html) }))
+        this._testRegex()
+        $('input').each((i, x) => x.addEventListener('change', () => {this._testRegex() }))
 
     }
     async _updateObject(event, formData) {
@@ -75,16 +75,16 @@ export class MySubmenuApplicationClass extends FormApplication {
       set_settings(data.flags['journal-icon-numbers'])
     }
 
-    _testRegex(html){  
+    _testRegex(){
         let flags = {
-            reg_alpha_num: html.find('input[name="flags.journal-icon-numbers.reg_alpha_num"]')[0].checked,
-            reg_num_alpha: html.find('input[name="flags.journal-icon-numbers.reg_num_alpha"]')[0].checked,
-            reg_num: html.find('input[name="flags.journal-icon-numbers.reg_num"]')[0].checked,
-            reg_alpha_space: html.find('input[name="flags.journal-icon-numbers.reg_alpha_space"]')[0].checked,
-            reg_alpha_dot: html.find('input[name="flags.journal-icon-numbers.reg_alpha_dot"]')[0].checked,
-            reg_num_dot: html.find('input[name="flags.journal-icon-numbers.reg_num_dot"]')[0].checked,
-            reg_custom: html.find('input[name="flags.journal-icon-numbers.reg_custom"]').val(),
-            sampleText: html.find('input[name="flags.journal-icon-numbers.sampleText"]').val() ,
+            reg_alpha_num: $('input[name="flags.journal-icon-numbers.reg_alpha_num"]')[0].checked,
+            reg_num_alpha: $('input[name="flags.journal-icon-numbers.reg_num_alpha"]')[0].checked,
+            reg_num: $('input[name="flags.journal-icon-numbers.reg_num"]')[0].checked,
+            reg_alpha_space: $('input[name="flags.journal-icon-numbers.reg_alpha_space"]')[0].checked,
+            reg_alpha_dot: $('input[name="flags.journal-icon-numbers.reg_alpha_dot"]')[0].checked,
+            reg_num_dot: $('input[name="flags.journal-icon-numbers.reg_num_dot"]')[0].checked,
+            reg_custom: $('input[name="flags.journal-icon-numbers.reg_custom"]').val(),
+            sampleText: $('input[name="flags.journal-icon-numbers.sampleText"]').val() ,
         }
 
 
@@ -120,16 +120,16 @@ export class MySubmenuApplicationClass extends FormApplication {
 
 
         betterLogger.debug("Test Regex",flags)
-        betterLogger.debug(html.find('[name="flags.journal-icon-numbers.result"]'))
+        betterLogger.debug($('[name="flags.journal-icon-numbers.result"]'))
 
         if(result) {
             flags = get_all_settings()
             flags['iconText'] = result
-            getSvgString(flags).then(v => html.find('div[name="sample-icon"]')[0].innerHTML = v)
+            getSvgString(flags).then(v => $('div[name="sample-icon"]')[0].innerHTML = v)
         }
         else {
             // noinspection HtmlUnknownTarget
-            html.find('div[name="sample-icon"]')[0].innerHTML = `<img alt="Example Icon" height=128 width=128 style="border: 0;" src="icons/svg/anchor.svg">`
+            $('div[name="sample-icon"]')[0].innerHTML = `<img alt="Example Icon" height=128 width=128 style="border: 0;" src="icons/svg/anchor.svg">`
         }
     }
   }

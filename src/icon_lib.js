@@ -98,11 +98,10 @@ function errorHandler(e) {
 async function getEmbeddedFont(fontFamily, label) {
 
   if (fontFamily === "") return ""
-  let fontCSS = '<defs><style>'
   // Get just the characters needed to save space
-  fontCSS += await fetchCSS(`https://fonts.googleapis.com/css2?family=${fontFamily}&text=${label}`).then(embedFonts).catch(errorHandler)
-  fontCSS += '</style></defs>'
-  return fontCSS
+  let fontCSS = await fetchCSS(`https://fonts.googleapis.com/css2?family=${fontFamily}&text=${label}`).then(embedFonts).catch(errorHandler)
+  if (fontCSS === undefined) return ""
+  return '<defs><style>' + fontCSS +'</style></defs>'
 }
 
 String.prototype.hashCode = function () {
