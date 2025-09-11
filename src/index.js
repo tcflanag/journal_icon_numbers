@@ -100,9 +100,9 @@ function autoPageImage(data) {
 }
 
 async function renderNoteConfig(app, html, data) {
+    const firstTime = !foundry.utils.hasProperty(app.document.flags, "journal-icon-numbers")
     const flags = getAllFlags(app.document);
 
-    const firstTime = !foundry.utils.hasProperty(data?.data, "_id") || data?.data?._id == null
 
     if (firstTime) {// Only force the size once, so that user can override it. This checks for item creation
         // Set some default global sizes

@@ -1,3 +1,6 @@
+# 1.10.1
+* Fix Quick Add Mode causing window to auto close. Closes #6
+
 # 1.10.0
 * Support for FoundryVTT v13
 * Cleanup rare fails on font fetchign
