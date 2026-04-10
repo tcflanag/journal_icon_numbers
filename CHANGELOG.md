@@ -1,3 +1,6 @@
+# 1.10.2
+* V14 support
+
 # 1.10.1
 * Fix Quick Add Mode causing window to auto close. Closes #6
 
