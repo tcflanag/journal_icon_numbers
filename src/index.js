@@ -50,7 +50,16 @@ function autoFolder(data, flags) {
     if (!game.settings.get('journal-icon-numbers', "folderIcon"))
         return false
 
-    if (game.release.generation >= 13) {
+     if (game.release.generation >= 14) {
+        for (let [src, label ] of Object.entries(data.icon.field.choices)) {
+            if (flags['folder'] === label) {
+                $('select[name="icon.selected"]').val(src)
+                || game.settings.get('journal-icon-numbers', "folderIcon")
+                return true
+            }
+        }
+    }
+    else if (game.release.generation == 13) {
         for (let [src, label ] of Object.entries(data.icons)) {
             if (flags['folder'] === label) {
                 $('select[name="icon.selected"]').val(src)
